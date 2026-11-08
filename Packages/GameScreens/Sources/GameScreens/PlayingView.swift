@@ -86,11 +86,11 @@ public struct PlayingView: View {
 extension ToolbarItemPlacement {
     // The macOS build only exists so the package's tests run on the host.
     #if os(iOS)
-        fileprivate static var leadingBar: ToolbarItemPlacement { .topBarLeading }
-        fileprivate static var trailingBar: ToolbarItemPlacement { .topBarTrailing }
+        static var leadingBar: ToolbarItemPlacement { .topBarLeading }
+        static var trailingBar: ToolbarItemPlacement { .topBarTrailing }
     #else
-        fileprivate static var leadingBar: ToolbarItemPlacement { .navigation }
-        fileprivate static var trailingBar: ToolbarItemPlacement { .primaryAction }
+        static var leadingBar: ToolbarItemPlacement { .navigation }
+        static var trailingBar: ToolbarItemPlacement { .primaryAction }
     #endif
 }
 
@@ -318,8 +318,15 @@ private struct GuessMessageView: View {
 }
 
 /// The loading failure: offline, an outdated app, rate limited, or a server error, with a retry.
-private struct ProblemView: View {
+struct ProblemView: View {
+    /// What failed to load.
+    enum Subject {
+        case puzzle
+        case archive
+    }
+
     let problem: PlayingProblem
+    var subject: Subject = .puzzle
     let retry: () -> Void
 
     var body: some View {
@@ -384,9 +391,16 @@ private struct ProblemView: View {
                 "Try again in \(retryAfter.retryText()).", bundle: .module,
                 comment: "Description when rate limited. The argument is a wait such as \"30 seconds\".")
         case .unavailable:
-            Text(
-                "The puzzle couldn't be loaded. Try again in a moment.", bundle: .module,
-                comment: "Description when the puzzle failed to load.")
+            switch subject {
+            case .puzzle:
+                Text(
+                    "The puzzle couldn't be loaded. Try again in a moment.", bundle: .module,
+                    comment: "Description when the puzzle failed to load.")
+            case .archive:
+                Text(
+                    "The archive couldn't be loaded. Try again in a moment.", bundle: .module,
+                    comment: "Description when the list of past puzzles failed to load.")
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import TrackdownAPI
 
 /// A screen pushed onto the main navigation stack.
 enum Route: Hashable {
+    /// The archive of past puzzles.
+    case archive
     /// A past puzzle, played on the playing screen.
     case archivedPuzzle(ArchivedPuzzle)
     /// The network picker.
@@ -53,6 +55,21 @@ final class AppModel {
     /// The Solved or Missed sheet of the finished game `key`.
     func results(_ key: GameKey) -> ResultsModel {
         ResultsModel(key: key, store: games, service: service)
+    }
+
+    /// The archive of the current network.
+    func archive() -> ArchiveModel {
+        ArchiveModel(network: network, store: games, service: service)
+    }
+
+    /// Pushes the archive, or goes back to it when it is already on the stack, so playing a past puzzle and
+    /// opening the archive again does not stack a second one.
+    func openArchive() {
+        if let index = path.lastIndex(of: .archive) {
+            path.removeSubrange((index + 1)...)
+        } else {
+            path.append(.archive)
+        }
     }
 
     /// A playing screen for a past puzzle of the current network.

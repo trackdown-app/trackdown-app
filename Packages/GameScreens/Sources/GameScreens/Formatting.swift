@@ -7,13 +7,30 @@ extension PuzzleDate {
     /// The day is a calendar day, so it is formatted in Amsterdam, where puzzle days start, whatever the device's
     /// time zone.
     func title(locale: Locale = .autoupdatingCurrent) -> String {
+        formatted(locale: locale) { $0.weekday(.wide).day().month(.wide) }
+    }
+
+    /// The short weekday above the day in an archive row: "Fri".
+    func shortWeekday(locale: Locale = .autoupdatingCurrent) -> String {
+        formatted(locale: locale) { $0.weekday(.abbreviated) }
+    }
+
+    /// The month and year over a month of archive rows: "November 2026".
+    func monthTitle(locale: Locale = .autoupdatingCurrent) -> String {
+        formatted(locale: locale) { $0.month(.wide).year() }
+    }
+
+    /// The day formatted in Amsterdam, where puzzle days start, whatever the device's time zone.
+    private func formatted(
+        locale: Locale,
+        _ fields: (Date.FormatStyle) -> Date.FormatStyle
+    ) -> String {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = PuzzleCalendar.timeZone
         // Noon, well clear of any clock change.
         let components = DateComponents(year: year, month: month, day: day, hour: 12)
         guard let date = calendar.date(from: components) else { return iso8601 }
-        var style = Date.FormatStyle(locale: locale, calendar: calendar, timeZone: PuzzleCalendar.timeZone)
-            .weekday(.wide).day().month(.wide)
+        var style = fields(Date.FormatStyle(locale: locale, calendar: calendar, timeZone: PuzzleCalendar.timeZone))
         style.capitalizationContext = .beginningOfSentence
         return date.formatted(style)
     }

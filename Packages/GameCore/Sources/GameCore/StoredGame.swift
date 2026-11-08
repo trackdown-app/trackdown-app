@@ -37,17 +37,27 @@ public struct StoredGame: Sendable, Hashable, Codable {
     public var archive: Bool
     /// How the game ended, or `nil` while it is still on.
     public var outcome: Outcome?
+    /// The mystery station, once a finished game is revealed. The app keeps it so the archive can name past
+    /// stations without asking the server again; the website does not store it.
+    public var station: StationCode?
 
-    public init(guesses: [StationCode], archive: Bool = false, outcome: Outcome? = nil) {
+    public init(
+        guesses: [StationCode],
+        archive: Bool = false,
+        outcome: Outcome? = nil,
+        station: StationCode? = nil
+    ) {
         self.guesses = guesses
         self.archive = archive
         self.outcome = outcome
+        self.station = station
     }
 
     private enum CodingKeys: String, CodingKey {
         case guesses
         case archive
         case outcome
+        case station
     }
 
     /// Reads `outcome` as `nil` when it is missing or a value this version does not know.
@@ -56,9 +66,11 @@ public struct StoredGame: Sendable, Hashable, Codable {
         guesses = try container.decode([StationCode].self, forKey: .guesses)
         archive = try container.decodeIfPresent(Bool.self, forKey: .archive) ?? false
         outcome = (try? container.decodeIfPresent(String.self, forKey: .outcome)).flatMap(Outcome.init(rawValue:))
+        station = try? container.decodeIfPresent(StationCode.self, forKey: .station)
     }
 
-    /// Leaves `archive` out unless it is `true`, as the website does, and `outcome` out while the game is on.
+    /// Leaves `archive` out unless it is `true`, as the website does, and `outcome` and `station` out until they
+    /// are known.
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(guesses, forKey: .guesses)
@@ -66,6 +78,7 @@ public struct StoredGame: Sendable, Hashable, Codable {
             try container.encode(true, forKey: .archive)
         }
         try container.encodeIfPresent(outcome, forKey: .outcome)
+        try container.encodeIfPresent(station, forKey: .station)
     }
 }
 

@@ -79,6 +79,19 @@ struct ResultsModelTests {
         #expect(model.stationName == "Utrecht Centraal")
     }
 
+    @Test("Opens a past game the archive has not opened yet")
+    func opensPastGame() async throws {
+        let past = GameKey(network: .nl, number: 141)
+        let storage = MemoryGameStorage([past: StoredGame(guesses: ["mt", "ut"], archive: true, outcome: .won)])
+        let store = GameStore(service: service, storage: storage)
+        let model = ResultsModel(key: past, store: store, service: service, locale: .en)
+        await model.load()
+
+        #expect(model.outcome == .solved(guesses: 2, maxGuesses: 6))
+        #expect(model.stationName == "Utrecht Centraal")
+        #expect(!model.hasNewerPuzzle)
+    }
+
     @Test("Has no newer puzzle while today's game is still today's")
     func noNewerPuzzle() async throws {
         let store = try await makeStore(guesses: ["ut"])

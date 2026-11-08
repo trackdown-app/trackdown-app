@@ -106,6 +106,10 @@ public final class ResultsModel {
         guard reveal.value == nil else { return }
         reveal = .loading
         do {
+            // Opened from the archive, a past game may not be open yet: replay it so the sheet knows how it went.
+            if game == nil || game?.status == .restoring {
+                try await store.openArchive(number: key.number, network: key.network)
+            }
             reveal = .loaded(try await store.reveal(key))
         } catch is CancellationError {
             return
