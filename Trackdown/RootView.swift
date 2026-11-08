@@ -20,14 +20,24 @@ struct RootView: View {
                     }
                 }
         }
-        // The archive, How to play, statistics, network picker and Solved screens are separate tickets; until they
-        // land each destination opens an empty sheet with its title.
-        .glassSheet(item: $destination) { destination in
-            VStack(alignment: .leading, spacing: 20) {
-                GlassSheetHeader { destination.title }
-                Spacer()
+        .glassSheet(item: $destination, detents: Self.detents(for:)) { destination in
+            switch destination {
+            case .solved(let key):
+                ResultsSheet(model: model.results(key)) {
+                    self.destination = .archive
+                } onNextPuzzle: {
+                    self.destination = nil
+                    model.path = []
+                }
+            case .archive, .howToPlay, .statistics, .chooseNetwork:
+                // The archive, How to play, statistics and network picker are separate tickets; until they land each
+                // destination opens an empty sheet with its title.
+                VStack(alignment: .leading, spacing: 20) {
+                    GlassSheetHeader { destination.title }
+                    Spacer()
+                }
+                .padding(24)
             }
-            .padding(24)
         }
         // Loads and restores today's game, then picks up the next puzzle at `nextPuzzleAt` while the app is open.
         .task(id: model.network) {
@@ -38,6 +48,33 @@ struct RootView: View {
             // A suspended app misses the rollover; catch up when it comes back.
             Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
         }
+    }
+}
+
+extension RootView {
+    /// The Solved sheet leaves the revealed game showing above it; the others fill the screen.
+    fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
+        switch destination {
+        case .solved: [.fraction(0.75), .large]
+        case .archive, .howToPlay, .statistics, .chooseNetwork: [.large]
+        }
+    }
+}
+
+/// The Solved or Missed sheet. Owns its model for as long as the sheet is up.
+private struct ResultsSheet: View {
+    @State private var model: ResultsModel
+    private let onOlderPuzzles: () -> Void
+    private let onNextPuzzle: () -> Void
+
+    init(model: ResultsModel, onOlderPuzzles: @escaping () -> Void, onNextPuzzle: @escaping () -> Void) {
+        self.model = model
+        self.onOlderPuzzles = onOlderPuzzles
+        self.onNextPuzzle = onNextPuzzle
+    }
+
+    var body: some View {
+        ResultsView(model: model, onOlderPuzzles: onOlderPuzzles, onNextPuzzle: onNextPuzzle)
     }
 }
 

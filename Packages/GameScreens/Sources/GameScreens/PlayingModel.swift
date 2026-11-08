@@ -156,15 +156,26 @@ public final class PlayingModel {
         return game.isOver ? max(game.guesses.count, 1) : min(game.guesses.count + 1, game.maxGuesses)
     }
 
-    /// Every guess with its trip, newest first.
+    /// The answer of the finished game, once revealed.
+    public var reveal: Reveal? { key.flatMap { store.reveals[$0] } }
+
+    /// The mystery station's name, once the finished game is revealed.
+    public var revealedStation: String? { reveal.map { name(of: $0.station) } }
+
+    /// Every guess with its trip, newest first. Once the game is revealed, every change names its station.
     public var rows: [GuessRow] {
         guard let trips = game?.trips else { return [] }
+        let revealed = reveal?.guesses
         return trips.enumerated().reversed().map { index, trip in
-            GuessRow(
+            var steps = trip.steps
+            if let revealed, revealed.indices.contains(index), revealed[index].guess == trip.guess {
+                steps = revealed[index].steps
+            }
+            return GuessRow(
                 number: index + 1,
                 code: trip.guess,
                 station: name(of: trip.guess),
-                steps: trip.steps,
+                steps: steps,
                 correct: trip.correct
             )
         }
@@ -191,12 +202,20 @@ public final class PlayingModel {
             guard network == self.network else { return }
             install(loaded, network: network)
             loadState = .ready
+            await revealIfOver()
         } catch is CancellationError {
             return
         } catch {
             guard network == self.network else { return }
             loadState = .failed(PlayingProblem(error))
         }
+    }
+
+    /// Asks for the answer of a finished game, so every change can be named. Best effort: without it the trips keep
+    /// their hidden changes, and the results sheet asks again.
+    private func revealIfOver() async {
+        guard let key, game?.isOver == true, reveal == nil else { return }
+        _ = try? await store.reveal(key)
     }
 
     private func loadStations(network: Network) async throws -> [Station] {

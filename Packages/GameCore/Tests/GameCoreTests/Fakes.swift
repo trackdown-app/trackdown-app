@@ -18,6 +18,7 @@ final class FakePuzzleService: PuzzleService {
     private struct State {
         var guessCalls: [GuessCall] = []
         var todayCalls = 0
+        var revealCalls = 0
         var guessError: PuzzleServiceError?
         /// How far the server's clock is behind the device's.
         var clockLag: TimeInterval = 0
@@ -31,6 +32,7 @@ final class FakePuzzleService: PuzzleService {
 
     var guessCalls: [GuessCall] { state.withLock { $0.guessCalls } }
     var todayCalls: Int { state.withLock { $0.todayCalls } }
+    var revealCalls: Int { state.withLock { $0.revealCalls } }
 
     func failGuesses(with error: PuzzleServiceError?) {
         state.withLock { $0.guessError = error }
@@ -104,7 +106,8 @@ final class FakePuzzleService: PuzzleService {
     }
 
     func reveal(guesses: [StationCode], puzzle: Int, network: Network) async throws -> Reveal {
-        Reveal(station: answer, solved: guesses.contains(answer), guesses: [])
+        state.withLock { $0.revealCalls += 1 }
+        return Reveal(station: answer, solved: guesses.contains(answer), guesses: [])
     }
 
     /// A trip whose length depends on the station, so tests can tell trips apart.

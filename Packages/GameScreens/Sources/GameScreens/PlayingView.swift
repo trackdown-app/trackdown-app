@@ -114,7 +114,7 @@ private struct PlayingBoard: View {
                 } else {
                     EmptyView()
                 }
-                MysteryStationMarker()
+                MysteryStationMarker(station: model.revealedStation)
                     .padding(.top, 24)
                     .padding(.bottom, 8)
                 GuessList(rows: model.rows, stationName: model.name(of:))
@@ -246,14 +246,28 @@ private struct Rule: View {
     }
 }
 
-/// "Mystery station", above the column of mystery-station bars. A label alone, as on trackdown.nl: a "?" only ever
-/// marks a change the player has not found, never the mystery station.
+/// "Mystery station", above the column of mystery-station bars, or the station's name once the game is revealed. A
+/// label alone, as on trackdown.nl: a "?" only ever marks a change the player has not found, never the mystery station.
 private struct MysteryStationMarker: View {
+    /// The mystery station's name, once revealed.
+    let station: String?
+
     var body: some View {
-        Text("Mystery station", bundle: .module, comment: "Label above the bars that stand for the mystery station.")
-            .font(TrackdownFont.subheadlineEmphasized)
-            .foregroundStyle(TrackdownColor.ink)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+        Group {
+            if let station {
+                Text(verbatim: station)
+                    .font(TrackdownFont.title3)
+            } else {
+                Text(
+                    "Mystery station", bundle: .module,
+                    comment: "Label above the bars that stand for the mystery station."
+                )
+                .font(TrackdownFont.subheadlineEmphasized)
+            }
+        }
+        .foregroundStyle(TrackdownColor.ink)
+        .multilineTextAlignment(.trailing)
+        .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
 

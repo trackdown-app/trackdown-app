@@ -213,6 +213,47 @@ struct GameStoreTests {
         #expect(!game.isArchive)
     }
 
+    @Test("Stores the outcome of a finished game restored without one")
+    func backfillsOutcome() async throws {
+        try storage.save(StoredGame(guesses: ["ut", "asd"]), for: todaysKey)
+        let store = makeStore()
+
+        try await store.loadToday(network: .nl)
+
+        #expect(storage.load(todaysKey) == StoredGame(guesses: ["ut", "asd"], outcome: .won))
+    }
+
+    @Test("Reveals a finished game once and keeps the answer")
+    func revealsOnce() async throws {
+        let store = makeStore()
+        try await store.loadToday(network: .nl)
+        try await store.submit("ut", to: todaysKey)
+        try await store.submit("asd", to: todaysKey)
+
+        let reveal = try await store.reveal(todaysKey)
+        let again = try await store.reveal(todaysKey)
+
+        #expect(reveal.station == "asd")
+        #expect(reveal.solved)
+        #expect(again == reveal)
+        #expect(store.reveals[todaysKey] == reveal)
+        #expect(service.revealCalls == 1)
+    }
+
+    @Test("Does not reveal a game still on, or one not opened")
+    func refusesEarlyReveal() async throws {
+        let store = makeStore()
+
+        await #expect(throws: GameError.notOpened) { try await store.reveal(todaysKey) }
+
+        try await store.loadToday(network: .nl)
+        try await store.submit("ut", to: todaysKey)
+
+        await #expect(throws: PuzzleServiceError.gameNotOver) { try await store.reveal(todaysKey) }
+        #expect(store.reveals.isEmpty)
+        #expect(service.revealCalls == 0)
+    }
+
     @Test("Picks up the new puzzle on foreground only once its day is over")
     func rolloverIfNeeded() async throws {
         let store = makeStore()

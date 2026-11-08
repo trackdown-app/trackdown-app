@@ -29,6 +29,7 @@ final class FakePuzzleService: PuzzleService {
         var guesses: [StationCode] = []
         var guessError: PuzzleServiceError?
         var todayError: PuzzleServiceError?
+        var revealError: PuzzleServiceError?
     }
 
     init(answer: StationCode = "ut") {
@@ -56,7 +57,10 @@ final class FakePuzzleService: PuzzleService {
     }
 
     func puzzles(network: Network) async throws -> [ArchivedPuzzle] {
-        [ArchivedPuzzle(number: 141, date: PuzzleDate(year: 2026, month: 11, day: 5))]
+        [
+            ArchivedPuzzle(number: 141, date: PuzzleDate(year: 2026, month: 11, day: 5)),
+            ArchivedPuzzle(number: Self.puzzle.number, date: Self.puzzle.date),
+        ]
     }
 
     func guess(
@@ -80,8 +84,13 @@ final class FakePuzzleService: PuzzleService {
         )
     }
 
+    func failReveals(with error: PuzzleServiceError?) {
+        state.withLock { $0.revealError = error }
+    }
+
     func reveal(guesses: [StationCode], puzzle: Int, network: Network) async throws -> Reveal {
-        Reveal(station: answer, solved: guesses.last == answer, guesses: [])
+        if let error = state.withLock({ $0.revealError }) { throw error }
+        return Reveal(station: answer, solved: guesses.last == answer, guesses: [])
     }
 
     private func trip(from station: StationCode) -> [TripStep] {
