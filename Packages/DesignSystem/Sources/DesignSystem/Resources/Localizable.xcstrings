@@ -1,0 +1,66 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Already guessed" : {
+      "comment" : "VoiceOver value of a suggestion the player already guessed in this game.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Al geraden" } }
+      }
+    },
+    "Archive" : {
+      "comment" : "Icon button that opens the archive of past puzzles.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Archief" } }
+      }
+    },
+    "Back" : {
+      "comment" : "Icon button that goes back to the previous screen.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Terug" } }
+      }
+    },
+    "Close" : {
+      "comment" : "Icon button that closes a sheet.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Sluiten" } }
+      }
+    },
+    "Guess" : {
+      "comment" : "Button that submits the selected station as a guess. A verb.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad" } }
+      }
+    },
+    "Guess a station" : {
+      "comment" : "Placeholder and label of the field where the player types a station name.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad een station" } }
+      }
+    },
+    "How to play" : {
+      "comment" : "Icon button that opens the game rules.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zo speel je" } }
+      }
+    },
+    "Matching stations" : {
+      "comment" : "VoiceOver label of the list of stations that match what the player typed.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden stations" } }
+      }
+    },
+    "Network: %@. Change network" : {
+      "comment" : "VoiceOver label of the network button. %@ is the network name, such as Netherlands.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Netwerk: %@. Wijzig netwerk" } }
+      }
+    },
+    "Statistics" : {
+      "comment" : "Icon button that opens the player's statistics.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Statistieken" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

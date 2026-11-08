@@ -8,6 +8,7 @@ let strictWarnings: [SwiftSetting] =
 
 let package = Package(
     name: "DesignSystem",
+    defaultLocalization: "en",
     // macOS only so CI can run the tests on the host with `swift test`.
     platforms: [.iOS("27.0"), .macOS("27.0")],
     products: [
@@ -18,6 +19,7 @@ let package = Package(
             name: "DesignSystem",
             resources: [
                 .process("Resources/Colors.xcassets"),
+                .process("Resources/Localizable.xcstrings"),
                 // Copied as a folder so the fonts and their OFL license ship together.
                 .copy("Resources/Fonts"),
             ],
