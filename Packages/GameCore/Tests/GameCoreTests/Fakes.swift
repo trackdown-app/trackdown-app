@@ -67,7 +67,21 @@ final class FakePuzzleService: PuzzleService {
 
     func stations(network: Network, locale: StationLocale) async throws -> [Station] { [] }
 
-    func puzzles(network: Network) async throws -> [ArchivedPuzzle] { [] }
+    /// Puzzle 1 up to today's, one a day from 2026-01-01.
+    func puzzles(network: Network) async throws -> [ArchivedPuzzle] {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .gmt
+        let start = calendar.date(from: DateComponents(year: 2026, month: 1, day: 1)) ?? .distantPast
+        let today = try await self.today(network: network).number
+        return (1...today).map { number in
+            let date = calendar.date(byAdding: .day, value: number - 1, to: start) ?? start
+            let day = calendar.dateComponents([.year, .month, .day], from: date)
+            return ArchivedPuzzle(
+                number: number,
+                date: PuzzleDate(year: day.year ?? 0, month: day.month ?? 0, day: day.day ?? 0)
+            )
+        }
+    }
 
     func guess(
         _ guess: StationCode,

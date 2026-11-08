@@ -51,8 +51,16 @@ public struct Game: Sendable, Hashable, Identifiable {
     /// Guesses left before the game is lost.
     public var guessesLeft: Int { max(0, maxGuesses - guesses.count) }
 
-    /// What is kept on the device for this game.
-    public var stored: StoredGame { StoredGame(guesses: guesses, archive: isArchive) }
+    /// What is kept on the device for this game, with its outcome once it is over.
+    public var stored: StoredGame {
+        let outcome: StoredGame.Outcome? =
+            switch status {
+            case .solved: .won
+            case .lost: .lost
+            case .playing, .restoring: nil
+            }
+        return StoredGame(guesses: guesses, archive: isArchive, outcome: outcome)
+    }
 }
 
 /// The trip from one guessed station to the mystery station, as the game shows it.

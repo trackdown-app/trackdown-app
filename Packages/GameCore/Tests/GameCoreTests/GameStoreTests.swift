@@ -95,7 +95,48 @@ struct GameStoreTests {
         try await store.submit("rtd", to: todaysKey)
 
         #expect(store.games[todaysKey]?.status == .lost)
+        #expect(storage.load(todaysKey) == StoredGame(guesses: ["ut", "gvc", "ht", "rtd"], outcome: .lost))
         await #expect(throws: GameError.gameOver) { try await store.submit("asd", to: todaysKey) }
+    }
+
+    @Test("Stores a solved game with its outcome")
+    func storesOutcome() async throws {
+        let store = makeStore()
+        try await store.loadToday(network: .nl)
+
+        try await store.submit("ut", to: todaysKey)
+        #expect(storage.load(todaysKey)?.outcome == nil)
+
+        try await store.submit("asd", to: todaysKey)
+        #expect(storage.load(todaysKey) == StoredGame(guesses: ["ut", "asd"], outcome: .won))
+    }
+
+    @Test("Works out the record from stored games, without replaying any")
+    func statistics() async throws {
+        let today = todaysKey.number
+        let key = { GameKey(network: .nl, number: $0) }
+        try storage.save(StoredGame(guesses: ["ut", "gvc", "rtd", "ht"], outcome: .lost), for: key(today - 3))
+        try storage.save(StoredGame(guesses: ["ut", "asd"], outcome: .won), for: key(today - 2))
+        try storage.save(StoredGame(guesses: ["asd"], archive: true, outcome: .won), for: key(today - 1))
+        try storage.save(StoredGame(guesses: ["ut", "gvc", "asd"], outcome: .won), for: key(today))
+        try storage.save(StoredGame(guesses: ["asd"], outcome: .won), for: GameKey(network: .gb, number: today))
+
+        let statistics = try await makeStore().statistics(network: .nl)
+
+        #expect(
+            statistics
+                == Statistics(
+                    played: 4,
+                    won: 3,
+                    winPercent: 75,
+                    currentStreak: 1,
+                    bestStreak: 1,
+                    distribution: [1, 1, 1, 0],
+                    missed: 1,
+                    today: .solved(guesses: 3)
+                )
+        )
+        #expect(service.guessCalls.isEmpty)
     }
 
     @Test("Refuses a guess on a solved game, a repeated station and a game not opened")
@@ -159,7 +200,7 @@ struct GameStoreTests {
 
         try await relaunched.submit("asd", to: key)
         #expect(relaunched.games[key]?.status == .solved)
-        #expect(storage.load(key) == StoredGame(guesses: ["ut", "asd"], archive: true))
+        #expect(storage.load(key) == StoredGame(guesses: ["ut", "asd"], archive: true, outcome: .won))
     }
 
     @Test("Opening today's puzzle from the archive opens today's game")

@@ -123,6 +123,25 @@ public final class GameStore {
         return result
     }
 
+    /// The player's record at `network`: fetches the archive and reads every puzzle's stored game. Needs no replay,
+    /// since each finished game is stored with its outcome.
+    public func statistics(network: Network) async throws -> Statistics {
+        let puzzles = try await service.puzzles(network: network)
+        let maxGuesses: Int
+        if let known = today[network] {
+            maxGuesses = known.maxGuesses
+        } else {
+            let puzzle = try await service.today(network: network)
+            today[network] = puzzle
+            maxGuesses = puzzle.maxGuesses
+        }
+        var games: [Int: StoredGame] = [:]
+        for puzzle in puzzles {
+            games[puzzle.number] = storage.load(GameKey(network: network, number: puzzle.number))
+        }
+        return Statistics(puzzles: puzzles, games: games, maxGuesses: maxGuesses)
+    }
+
     /// Loads today's puzzle again when its day is over: once `nextPuzzleAt` has passed, or the Amsterdam calendar
     /// says a new day has started. Call it when the app comes to the foreground.
     ///
