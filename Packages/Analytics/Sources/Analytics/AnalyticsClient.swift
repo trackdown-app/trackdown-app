@@ -7,7 +7,7 @@ public protocol AnalyticsClient: AnyObject {
     /// Sends `event` with `properties`. The super properties are added to every event.
     func capture(_ event: String, properties: [String: AnalyticsValue])
 
-    /// Updates the `consent_analytics` property on events from now on.
+    /// Updates the consent property and opts in to capture only when consent is allowed.
     func setConsent(_ consent: AnalyticsConsent)
 }
 

@@ -81,4 +81,10 @@ struct PostHogAnalyticsTests {
 
         #expect(store.current.consent == .allowed)
     }
+
+    @Test("Starts opted out unless the player allowed usage data", arguments: AnalyticsConsent.allCases)
+    func startupConsent(consent: AnalyticsConsent) throws {
+        let (config, _) = try makeConfig(consent: consent)
+        #expect(config.optOut == (consent != .allowed))
+    }
 }

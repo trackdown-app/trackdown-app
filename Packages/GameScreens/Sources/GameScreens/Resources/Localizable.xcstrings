@@ -1,6 +1,66 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Privacy" : {
+      "comment" : "Title of the privacy settings screen.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } }
+      }
+    },
+    "Privacy settings" : {
+      "comment" : "Opens Privacy from How to play.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacyinstellingen" } }
+      }
+    },
+    "Share usage data" : {
+      "comment" : "Label of the analytics consent toggle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens delen" } }
+      }
+    },
+    "Anonymous, through PostHog" : {
+      "comment" : "Subtitle of the analytics toggle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Anoniem, via PostHog" } }
+      }
+    },
+    "On. Thanks for helping improve Trackdown." : {
+      "comment" : "Status under the analytics toggle when enabled.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Aan. Bedankt dat je helpt Trackdown te verbeteren." } }
+      }
+    },
+    "Off. You can turn this on or off at any time." : {
+      "comment" : "Status under the analytics toggle when disabled.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Uit. Je kunt dit op elk moment aan- of uitzetten." } }
+      }
+    },
+    "Why ask?" : {
+      "comment" : "Heading of the explanation of usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Waarom deze vraag?" } }
+      }
+    },
+    "Trackdown is a hobby project without ads. Anonymous usage data helps me understand how people play and where they get stuck, so I can improve the game. Nothing is sold. If you turn this off, the game works exactly the same." : {
+      "comment" : "Explains why the player is asked to share anonymous usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown is een hobbyproject zonder advertenties. Anonieme gebruiksgegevens helpen me begrijpen hoe mensen spelen en waar ze vastlopen, zodat ik het spel kan verbeteren. Er wordt niets verkocht. Als je dit uitzet, werkt het spel precies hetzelfde." } }
+      }
+    },
+    "Privacy policy" : {
+      "comment" : "Opens the Trackdown privacy policy in Safari.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacybeleid" } }
+      }
+    },
+    "Terms of use" : {
+      "comment" : "Opens the Trackdown terms in Safari.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksvoorwaarden" } }
+      }
+    },
     "%@, streak %lld" : {
       "comment" : "Under a network's name: what it covers, then the current streak, such as \"All railway stations, streak 7\".",
       "localizations" : {
