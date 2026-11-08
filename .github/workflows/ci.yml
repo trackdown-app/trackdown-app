@@ -17,7 +17,7 @@ env:
   XCODE_PATH: /Applications/Xcode_27.1.app
   PROJECT: Trackdown.xcodeproj
   SCHEME: Trackdown
-  DESTINATION: platform=iOS Simulator,name=iPhone 18 Pro
+  SIMULATOR: iPhone 18 Pro
   PACKAGES_DIR: .build/SourcePackages
   DERIVED_DATA: .build/DerivedData
 
@@ -48,7 +48,29 @@ jobs:
         run: |
           sudo xcode-select --switch "$XCODE_PATH"
           xcodebuild -version
-          xcrun simctl list devices available
+
+      # Boot the simulator now so it is ready by the time the build finishes,
+      # instead of booting cold inside `xcodebuild test`. The device name can
+      # exist on several runtimes, so pin the UDID on the newest one.
+      - name: Boot simulator
+        run: |
+          udid=$(xcrun simctl list devices available --json | jq -r --arg name "$SIMULATOR" '
+            .devices
+            | to_entries
+            | map(select(.key | contains("iOS")))
+            | sort_by(.key | capture("iOS-(?<v>[0-9]+(-[0-9]+)*)").v | split("-") | map(tonumber))
+            | reverse
+            | map(.value[] | select(.name == $name))
+            | first
+            | .udid // empty')
+          if [ -z "$udid" ]; then
+            echo "::error::No available simulator named $SIMULATOR"
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Booting $SIMULATOR ($udid)"
+          xcrun simctl boot "$udid"
+          echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
 
       - name: Cache SPM dependencies
         uses: actions/cache@v4
@@ -76,7 +98,7 @@ jobs:
           xcodebuild build-for-testing \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
+            -destination "id=$SIMULATOR_UDID" \
             -derivedDataPath "$DERIVED_DATA" \
             -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
             -disableAutomaticPackageResolution \
@@ -84,15 +106,19 @@ jobs:
             SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
             GCC_TREAT_WARNINGS_AS_ERRORS=YES
 
+      # Parallel testing would clone and boot a fresh simulator per worker.
+      # Swift Testing still runs tests in parallel inside each test bundle.
       - name: Test
         run: |
           set -o pipefail
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
           xcodebuild test-without-building \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
+            -destination "id=$SIMULATOR_UDID" \
             -derivedDataPath "$DERIVED_DATA" \
             -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
+            -parallel-testing-enabled NO \
             -resultBundlePath .build/TestResults.xcresult
 
       - name: Upload test results
