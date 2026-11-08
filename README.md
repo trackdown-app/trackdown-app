@@ -52,7 +52,7 @@ Native SwiftUI app for [trackdown.nl](https://trackdown.nl). iPhone only for v1.
 `.github/workflows/ci.yml` runs on every pull request and on pushes to `main`, on the `xcode-27` runner with Xcode 27.1 selected:
 
 - **Lint**: `swift-format lint --strict`.
-- **Build and test**: builds the app and its test bundles for the iOS Simulator with warnings treated as errors in the app target and our local packages, then runs the Swift Testing suites of every package with a `Tests` folder using `swift test` on the macOS host. Running on the host skips a 3+ minute simulator boot. SPM dependencies are cached, keyed on `Package.resolved` and the local `Package.swift` files.
+- **Build and test**: builds the app and its test bundles for the iOS Simulator with warnings treated as errors in the app target and our local packages (`TRACKDOWN_WARNINGS_AS_ERRORS=YES`, read by `Config/Base.xcconfig` and each local `Package.swift`; never set `SWIFT_TREAT_WARNINGS_AS_ERRORS` on the command line, it conflicts with remote packages), then runs the Swift Testing suites of every package with a `Tests` folder using `swift test` on the macOS host. Running on the host skips a 3+ minute simulator boot. SPM dependencies are cached, keyed on `Package.resolved` and the local `Package.swift` files.
 
 A package with tests must list `.macOS("27.0")` in its `platforms`, and its tested code must build for macOS. Keep iOS-only code (UIKit, iOS-only SwiftUI) out of those packages or behind `#if os(iOS)`. Run the same tests locally with:
 
@@ -67,6 +67,7 @@ Also add new test targets to the `Trackdown` scheme's Test action, so `xcodebuil
 ```
 Trackdown/            App target: entry point and wiring only
 Config/               xcconfigs and Info.plist keys
+scripts/              Maintenance scripts (sync-openapi.sh)
 Packages/
   TrackdownAPI/       Client for trackdown.nl /api/v1
   GameCore/           Game rules, state and statistics
@@ -85,3 +86,17 @@ See [docs/ios-standards.md](docs/ios-standards.md) for concurrency, SwiftUI, tes
 `Config/Debug.xcconfig` and `Config/Release.xcconfig` include `Base.xcconfig` first and the untracked `Secrets.xcconfig` last, so local values win. `Config/Info.plist` exposes the values to the app as `TrackdownAPIBaseURL`, `TrackdownClientKey`, `PostHogHost` and `PostHogProjectToken`, read by `AppConfiguration`.
 
 In xcconfig files `//` starts a comment, so write URLs as `https:/$()/host/path`.
+
+## API client
+
+`TrackdownAPI` generates its client from `Packages/TrackdownAPI/openapi/v1.json` at build time with the [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator) build plugin. The spec comes from `trackdown-website`; never edit it by hand. Refresh it from the live site (or a local one) with:
+
+```sh
+scripts/sync-openapi.sh
+```
+
+`Sources/TrackdownAPI/openapi.json` is a symlink to the vendored spec, because the plugin only reads a file with that name in the target. Create the client with `Client(apiConfiguration:)`: it adds the `Trackdown-Client-Key` and `Trackdown-App-Version` headers to every call and strips `Origin`, which the server rejects with `403 cross_origin`.
+
+The spec has no `servers` entry and its paths already start with `/api/v1`, so `TRACKDOWN_API_BASE_URL` is the site's origin without a path.
+
+The first time Xcode builds the package it asks you to trust the `OpenAPIGenerator` plugin. Command-line builds need `-skipPackagePluginValidation`.
