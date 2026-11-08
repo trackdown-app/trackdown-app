@@ -1,0 +1,11 @@
+#include "Base.xcconfig"
+
+VALIDATE_PRODUCT = YES
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+SWIFT_COMPILATION_MODE = wholemodule
+SWIFT_OPTIMIZATION_LEVEL = -O
+
+TRACKDOWN_API_BASE_URL = https:/$()/trackdown.nl/api/v1
+
+// Last, so local values override everything above. `#include?` skips a missing file.
+#include? "Secrets.xcconfig"

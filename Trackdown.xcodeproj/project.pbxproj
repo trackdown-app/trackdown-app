@@ -1,0 +1,272 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7D0000000000000000000B01 /* TrackdownAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D01 /* TrackdownAPI */; };
+		7D0000000000000000000B02 /* GameCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D02 /* GameCore */; };
+		7D0000000000000000000B03 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D03 /* DesignSystem */; };
+		7D0000000000000000000B04 /* Analytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D04 /* Analytics */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7D0000000000000000000F01 /* Trackdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trackdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D0000000000000000000F11 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		7D0000000000000000000F12 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		7D0000000000000000000F13 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		7D0000000000000000000F14 /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
+		7D0000000000000000000F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7D0000000000000000000F21 /* TrackdownAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TrackdownAPI; sourceTree = "<group>"; };
+		7D0000000000000000000F22 /* GameCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GameCore; sourceTree = "<group>"; };
+		7D0000000000000000000F23 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = "<group>"; };
+		7D0000000000000000000F24 /* Analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Analytics; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7D0000000000000000000A10 /* Trackdown */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Trackdown;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7D0000000000000000000C02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D0000000000000000000B01 /* TrackdownAPI in Frameworks */,
+				7D0000000000000000000B02 /* GameCore in Frameworks */,
+				7D0000000000000000000B03 /* DesignSystem in Frameworks */,
+				7D0000000000000000000B04 /* Analytics in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7D0000000000000000000A01 = {
+			isa = PBXGroup;
+			children = (
+				7D0000000000000000000A10 /* Trackdown */,
+				7D0000000000000000000A03 /* Packages */,
+				7D0000000000000000000A04 /* Config */,
+				7D0000000000000000000A02 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7D0000000000000000000A02 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7D0000000000000000000F01 /* Trackdown.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7D0000000000000000000A03 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				7D0000000000000000000F24 /* Analytics */,
+				7D0000000000000000000F23 /* DesignSystem */,
+				7D0000000000000000000F22 /* GameCore */,
+				7D0000000000000000000F21 /* TrackdownAPI */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		7D0000000000000000000A04 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				7D0000000000000000000F11 /* Base.xcconfig */,
+				7D0000000000000000000F12 /* Debug.xcconfig */,
+				7D0000000000000000000F13 /* Release.xcconfig */,
+				7D0000000000000000000F14 /* Secrets.example.xcconfig */,
+				7D0000000000000000000F15 /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7D0000000000000000000E01 /* Trackdown */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D0000000000000000000202 /* Build configuration list for PBXNativeTarget "Trackdown" */;
+			buildPhases = (
+				7D0000000000000000000C01 /* Sources */,
+				7D0000000000000000000C02 /* Frameworks */,
+				7D0000000000000000000C03 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7D0000000000000000000A10 /* Trackdown */,
+			);
+			name = Trackdown;
+			packageProductDependencies = (
+				7D0000000000000000000D01 /* TrackdownAPI */,
+				7D0000000000000000000D02 /* GameCore */,
+				7D0000000000000000000D03 /* DesignSystem */,
+				7D0000000000000000000D04 /* Analytics */,
+			);
+			productName = Trackdown;
+			productReference = 7D0000000000000000000F01 /* Trackdown.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7D0000000000000000000301 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2720;
+				LastUpgradeCheck = 2720;
+				TargetAttributes = {
+					7D0000000000000000000E01 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+				};
+			};
+			buildConfigurationList = 7D0000000000000000000201 /* Build configuration list for PBXProject "Trackdown" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				nl,
+				Base,
+			);
+			mainGroup = 7D0000000000000000000A01;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7D0000000000000000000401 /* XCLocalSwiftPackageReference "Packages/TrackdownAPI" */,
+				7D0000000000000000000402 /* XCLocalSwiftPackageReference "Packages/GameCore" */,
+				7D0000000000000000000403 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */,
+				7D0000000000000000000404 /* XCLocalSwiftPackageReference "Packages/Analytics" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7D0000000000000000000A02 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7D0000000000000000000E01 /* Trackdown */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7D0000000000000000000C03 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7D0000000000000000000C01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7D0000000000000000000101 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D0000000000000000000F12 /* Debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		7D0000000000000000000102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D0000000000000000000F13 /* Release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		7D0000000000000000000111 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		7D0000000000000000000112 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7D0000000000000000000201 /* Build configuration list for PBXProject "Trackdown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D0000000000000000000101 /* Debug */,
+				7D0000000000000000000102 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D0000000000000000000202 /* Build configuration list for PBXNativeTarget "Trackdown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D0000000000000000000111 /* Debug */,
+				7D0000000000000000000112 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7D0000000000000000000401 /* XCLocalSwiftPackageReference "Packages/TrackdownAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TrackdownAPI;
+		};
+		7D0000000000000000000402 /* XCLocalSwiftPackageReference "Packages/GameCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GameCore;
+		};
+		7D0000000000000000000403 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DesignSystem;
+		};
+		7D0000000000000000000404 /* XCLocalSwiftPackageReference "Packages/Analytics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Analytics;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7D0000000000000000000D01 /* TrackdownAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TrackdownAPI;
+		};
+		7D0000000000000000000D02 /* GameCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GameCore;
+		};
+		7D0000000000000000000D03 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		7D0000000000000000000D04 /* Analytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Analytics;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 7D0000000000000000000301 /* Project object */;
+}
