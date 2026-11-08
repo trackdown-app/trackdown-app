@@ -185,13 +185,44 @@ private struct GuessList: View {
     }
 }
 
+/// One guess. Tapping a wrong guess opens its trip ride by ride under the line, as trackdown.nl does on a touch
+/// screen; tapping again closes it. The right guess has no trip to show.
 private struct GuessRowView: View {
     let row: GuessRow
     let stationName: (StationCode) -> String
 
+    @State private var isExpanded = false
     @ScaledMetric(relativeTo: .title2) private var numberWidth: CGFloat = 20
 
     var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if row.correct {
+                summary
+            } else {
+                Button {
+                    withAnimation(.smooth) { isExpanded.toggle() }
+                } label: {
+                    summary.contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint(
+                    Text(
+                        "Shows the trip ride by ride", bundle: .module,
+                        comment: "VoiceOver hint of a guess: tapping it opens its trip ride by ride."))
+            }
+            if isExpanded && !row.correct {
+                TripDetails(station: row.station, steps: row.steps, stationName: stationName)
+                    .padding(.leading, numberWidth + 8)
+                    .padding(.bottom, 12)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            } else {
+                EmptyView()
+            }
+        }
+        .clipped()
+    }
+
+    private var summary: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(row.number, format: .number)
                 .font(TrackdownFont.title3)
@@ -215,25 +246,14 @@ private struct Rule: View {
     }
 }
 
-/// "Mystery station ?", above the column of mystery-station bars.
+/// "Mystery station", above the column of mystery-station bars. A label alone, as on trackdown.nl: a "?" only ever
+/// marks a change the player has not found, never the mystery station.
 private struct MysteryStationMarker: View {
-    @ScaledMetric(relativeTo: .subheadline) private var size: CGFloat = 24
-
     var body: some View {
-        HStack(spacing: 8) {
-            Spacer(minLength: 0)
-            Text(
-                "Mystery station", bundle: .module, comment: "Label above the bars that stand for the mystery station."
-            )
+        Text("Mystery station", bundle: .module, comment: "Label above the bars that stand for the mystery station.")
             .font(TrackdownFont.subheadlineEmphasized)
-            Text(verbatim: "?")
-                .font(TrackdownFont.captionEmphasized)
-                .foregroundStyle(TrackdownColor.background)
-                .frame(width: size, height: size)
-                .background { Circle().fill(TrackdownColor.ink) }
-                .accessibilityHidden(true)
-        }
-        .foregroundStyle(TrackdownColor.ink)
+            .foregroundStyle(TrackdownColor.ink)
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
 

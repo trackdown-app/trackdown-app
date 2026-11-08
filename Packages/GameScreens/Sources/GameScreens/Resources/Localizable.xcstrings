@@ -61,6 +61,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk resultaat" } }
       }
     },
+    "Shows the trip ride by ride" : {
+      "comment" : "VoiceOver hint of a guess: tapping it opens its trip ride by ride.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Toont de reis rit voor rit" } }
+      }
+    },
     "Something went wrong" : {
       "comment" : "Title when the puzzle failed to load.",
       "localizations" : {

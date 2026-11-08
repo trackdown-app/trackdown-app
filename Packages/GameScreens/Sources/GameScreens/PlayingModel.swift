@@ -57,6 +57,8 @@ public struct GuessRow: Sendable, Hashable, Identifiable {
     public var code: StationCode
     public var station: String
     public var steps: [TripStep]
+    /// Whether this guess was the mystery station.
+    public var correct: Bool
 
     public var id: Int { number }
 }
@@ -158,7 +160,13 @@ public final class PlayingModel {
     public var rows: [GuessRow] {
         guard let trips = game?.trips else { return [] }
         return trips.enumerated().reversed().map { index, trip in
-            GuessRow(number: index + 1, code: trip.guess, station: name(of: trip.guess), steps: trip.steps)
+            GuessRow(
+                number: index + 1,
+                code: trip.guess,
+                station: name(of: trip.guess),
+                steps: trip.steps,
+                correct: trip.correct
+            )
         }
     }
 
