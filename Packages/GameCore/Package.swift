@@ -14,7 +14,8 @@ let package = Package(
         .library(name: "GameCore", targets: ["GameCore"])
     ],
     targets: [
-        .target(name: "GameCore", swiftSettings: strictWarnings)
+        .target(name: "GameCore", swiftSettings: strictWarnings),
+        .testTarget(name: "GameCoreTests", dependencies: ["GameCore"], swiftSettings: strictWarnings),
     ],
     swiftLanguageModes: [.v6]
 )

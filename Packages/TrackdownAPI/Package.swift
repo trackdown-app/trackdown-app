@@ -14,6 +14,7 @@ let package = Package(
         .library(name: "TrackdownAPI", targets: ["TrackdownAPI"])
     ],
     dependencies: [
+        .package(path: "../GameCore"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.8.0"),
         .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.14.4"),
         .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.13.4"),
@@ -23,6 +24,7 @@ let package = Package(
         .target(
             name: "TrackdownAPI",
             dependencies: [
+                .product(name: "GameCore", package: "GameCore"),
                 .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
@@ -38,6 +40,7 @@ let package = Package(
             name: "TrackdownAPITests",
             dependencies: [
                 "TrackdownAPI",
+                .product(name: "GameCore", package: "GameCore"),
                 .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
             ],
