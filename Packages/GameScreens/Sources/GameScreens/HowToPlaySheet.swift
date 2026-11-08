@@ -81,13 +81,14 @@ private struct HowToPlayRules: View {
 private struct HowToPlayRule<Content: View>: View {
     let number: Int
     @ViewBuilder let content: Content
+    @ScaledMetric(relativeTo: .headline) private var badgeSize: CGFloat = 28
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Text(number, format: .number)
                 .font(TrackdownFont.headline)
                 .foregroundStyle(TrackdownColor.onLine)
-                .frame(minWidth: 28, minHeight: 28)
+                .frame(width: badgeSize, height: badgeSize)
                 .background { Circle().fill(TrackdownColor.line1) }
             content
                 .font(TrackdownFont.body)
