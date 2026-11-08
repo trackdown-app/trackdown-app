@@ -10,4 +10,13 @@ struct AnalyticsConfigurationTests {
 
         #expect(configuration.isEnabled == expected)
     }
+
+    @Test("Sends nothing without a project token")
+    @MainActor
+    func disabledWithoutToken() throws {
+        let host = try #require(URL(string: "https://t.trackdown.nl"))
+        let client = AnalyticsConfiguration(projectToken: "", host: host).makeClient()
+
+        #expect(client is DisabledAnalytics)
+    }
 }

@@ -13,5 +13,8 @@ GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
 // Override in Secrets.xcconfig to point Debug builds at a local or preview API.
 TRACKDOWN_API_BASE_URL = https:/$()/www.trackdown.nl
 
+// Sent as the `environment` property, so dashboards can leave Debug builds out.
+POSTHOG_ENVIRONMENT = development
+
 // Last, so local values override everything above. `#include?` skips a missing file.
 #include? "Secrets.xcconfig"

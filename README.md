@@ -84,9 +84,13 @@ See [docs/ios-standards.md](docs/ios-standards.md) for concurrency, SwiftUI, tes
 
 ## Configuration
 
-`Config/Debug.xcconfig` and `Config/Release.xcconfig` include `Base.xcconfig` first and the untracked `Secrets.xcconfig` last, so local values win. `Config/Info.plist` exposes the values to the app as `TrackdownAPIBaseURL`, `TrackdownClientKey`, `PostHogHost` and `PostHogProjectToken`, read by `AppConfiguration`.
+`Config/Debug.xcconfig` and `Config/Release.xcconfig` include `Base.xcconfig` first and the untracked `Secrets.xcconfig` last, so local values win. `Config/Info.plist` exposes the values to the app as `TrackdownAPIBaseURL`, `TrackdownClientKey`, `PostHogHost`, `PostHogProjectToken` and `PostHogEnvironment`, read by `AppConfiguration`.
 
 In xcconfig files `//` starts a comment, so write URLs as `https:/$()/host/path`.
+
+## Analytics
+
+See [docs/analytics.md](docs/analytics.md) for how PostHog is set up and what every event carries.
 
 ## API client
 

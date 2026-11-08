@@ -9,5 +9,8 @@ SWIFT_OPTIMIZATION_LEVEL = -O
 // www, because trackdown.nl answers every call with a 308 to www.trackdown.nl.
 TRACKDOWN_API_BASE_URL = https:/$()/www.trackdown.nl
 
+// Sent as the `environment` property on every event.
+POSTHOG_ENVIRONMENT = production
+
 // Last, so local values override everything above. `#include?` skips a missing file.
 #include? "Secrets.xcconfig"

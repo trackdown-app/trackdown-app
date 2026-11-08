@@ -10,5 +10,7 @@
 	<string>$(POSTHOG_HOST)</string>
 	<key>PostHogProjectToken</key>
 	<string>$(POSTHOG_PROJECT_TOKEN)</string>
+	<key>PostHogEnvironment</key>
+	<string>$(POSTHOG_ENVIRONMENT)</string>
 </dict>
 </plist>
