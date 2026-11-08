@@ -12,11 +12,14 @@ struct RootView: View {
     var body: some View {
         @Bindable var model = model
         NavigationStack(path: $model.path) {
-            PlayingView(model: model.playing) { destination = $0 }
+            PlayingView(model: model.playing, onNavigate: navigate)
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .archivedPuzzle(let puzzle):
-                        ArchivedPuzzleView(model: model.playing(puzzle)) { destination = $0 }
+                        ArchivedPuzzleView(model: model.playing(puzzle), onNavigate: navigate)
+                    case .chooseNetwork:
+                        ChooseNetworkScreen(
+                            model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
                     }
                 }
         }
@@ -29,9 +32,12 @@ struct RootView: View {
                     self.destination = nil
                     model.path = []
                 }
-            case .archive, .howToPlay, .statistics, .chooseNetwork:
-                // The archive, How to play, statistics and network picker are separate tickets; until they land each
-                // destination opens an empty sheet with its title.
+            case .chooseNetwork:
+                // Pushed onto the stack by `navigate(_:)`, never a sheet.
+                EmptyView()
+            case .archive, .howToPlay, .statistics:
+                // The archive, How to play and statistics are separate tickets; until they land each destination
+                // opens an empty sheet with its title.
                 VStack(alignment: .leading, spacing: 20) {
                     GlassSheetHeader { destination.title }
                     Spacer()
@@ -52,6 +58,14 @@ struct RootView: View {
 }
 
 extension RootView {
+    /// Pushes the network picker; opens every other destination as a sheet.
+    fileprivate func navigate(_ destination: PlayingDestination) {
+        switch destination {
+        case .chooseNetwork: model.path.append(.chooseNetwork)
+        case .archive, .howToPlay, .statistics, .solved: self.destination = destination
+        }
+    }
+
     /// The Solved sheet leaves the revealed game showing above it; the others fill the screen.
     fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
         switch destination {
@@ -75,6 +89,27 @@ private struct ResultsSheet: View {
 
     var body: some View {
         ResultsView(model: model, onOlderPuzzles: onOlderPuzzles, onNextPuzzle: onNextPuzzle)
+    }
+}
+
+/// The network picker, pushed from the network pill. Owns its model for as long as it is on the stack.
+private struct ChooseNetworkScreen: View {
+    @State private var model: ChooseNetworkModel
+    private let onChoose: (Network) -> Void
+    private let onNotify: (UpcomingNetwork) -> Void
+
+    init(
+        model: ChooseNetworkModel,
+        onChoose: @escaping (Network) -> Void,
+        onNotify: @escaping (UpcomingNetwork) -> Void
+    ) {
+        self.model = model
+        self.onChoose = onChoose
+        self.onNotify = onNotify
+    }
+
+    var body: some View {
+        ChooseNetworkView(model: model, onChoose: onChoose, onNotify: onNotify)
     }
 }
 

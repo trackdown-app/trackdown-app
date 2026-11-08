@@ -15,7 +15,7 @@ struct TrackdownColorTests {
     }
 
     static let names = [
-        "Background", "Surface", "Ink", "Muted", "Rule", "Empty", "Grid", "Line1", "Line2", "Line3", "OnLine",
+        "Background", "Surface", "Soft", "Ink", "Muted", "Rule", "Empty", "Grid", "Line1", "Line2", "Line3", "OnLine",
     ]
 
     /// Every color used as text, on every color it is drawn on.
@@ -26,6 +26,10 @@ struct TrackdownColorTests {
         Pair(text: "Muted", background: "Surface"),
         Pair(text: "Background", background: "Ink"),
         Pair(text: "Surface", background: "Ink"),
+        Pair(text: "Ink", background: "Soft"),
+        // Text buttons and links, such as Notify me.
+        Pair(text: "Line1", background: "Background"),
+        Pair(text: "Line1", background: "Surface"),
         Pair(text: "OnLine", background: "Line1"),
         Pair(text: "OnLine", background: "Line2"),
         Pair(text: "OnLine", background: "Line3"),

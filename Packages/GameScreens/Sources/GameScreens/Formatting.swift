@@ -42,4 +42,21 @@ extension Network {
             String(localized: "Great Britain", bundle: .module, comment: "Rail network name in the network pill.")
         }
     }
+
+    /// What the network covers, such as "All railway stations".
+    var detail: String {
+        switch self {
+        case .nl:
+            String(
+                localized: "All railway stations", bundle: .module,
+                comment: "Under Netherlands in the network list: the stations the game covers.")
+        case .gb:
+            String(
+                localized: "All National Rail stations", bundle: .module,
+                comment: "Under Great Britain in the network list: the stations the game covers.")
+        }
+    }
+
+    /// Whether the network is new, so the list marks it with a "New" badge.
+    var isNew: Bool { self == .gb }
 }

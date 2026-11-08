@@ -1,5 +1,6 @@
 import GameCore
 import GameScreens
+import OSLog
 import Observation
 import TrackdownAPI
 
@@ -7,6 +8,8 @@ import TrackdownAPI
 enum Route: Hashable {
     /// A past puzzle, played on the playing screen.
     case archivedPuzzle(ArchivedPuzzle)
+    /// The network picker.
+    case chooseNetwork
 }
 
 /// App-wide state, injected into the view tree through the environment.
@@ -26,19 +29,25 @@ final class AppModel {
     /// The main navigation stack.
     var path: [Route] = []
 
-    /// The network being played. Only the Dutch network for now.
+    @ObservationIgnored private let networkChoice: NetworkChoice
+
+    /// The network being played, kept for the next launch.
     var network: Network {
         get { playing.network }
-        set { playing.network = newValue }
+        set {
+            playing.network = newValue
+            networkChoice.network = newValue
+        }
     }
 
-    init(configuration: AppConfiguration) {
+    init(configuration: AppConfiguration, networkChoice: NetworkChoice = NetworkChoice()) {
         self.configuration = configuration
         let service = TrackdownPuzzleService(apiConfiguration: configuration.api)
         let games = GameStore(service: service)
         self.service = service
         self.games = games
-        playing = PlayingModel(network: .nl, store: games, service: service)
+        self.networkChoice = networkChoice
+        playing = PlayingModel(network: networkChoice.network, store: games, service: service)
     }
 
     /// The Solved or Missed sheet of the finished game `key`.
@@ -50,4 +59,23 @@ final class AppModel {
     func playing(_ puzzle: ArchivedPuzzle) -> PlayingModel {
         PlayingModel(puzzle: .archive(puzzle), network: network, store: games, service: service)
     }
+
+    /// The network picker, with the current network checked.
+    func chooseNetwork() -> ChooseNetworkModel {
+        ChooseNetworkModel(current: network, store: games)
+    }
+
+    /// Switches the game to `network` and goes back to its playing screen.
+    func choose(_ network: Network) {
+        self.network = network
+        path = []
+    }
+
+    /// The player tapped Notify me on a network still to come.
+    func notify(_ network: UpcomingNetwork) {
+        // v1 only records the interest. Sent to PostHog once analytics is in (#15, #28).
+        Self.logger.info("network_notify_requested network=\(network.rawValue, privacy: .public)")
+    }
+
+    private static let logger = Logger(subsystem: "nl.trackdown", category: "analytics")
 }
