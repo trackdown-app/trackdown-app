@@ -1,3 +1,4 @@
+import Analytics
 import Foundation
 import GameCore
 import Observation
@@ -65,6 +66,7 @@ public final class ResultsModel {
     @ObservationIgnored private let store: GameStore
     @ObservationIgnored private let service: any PuzzleService
     @ObservationIgnored private let locale: StationLocale
+    @ObservationIgnored private let analytics: any AnalyticsClient
     /// Whether the game was today's puzzle when the sheet opened.
     @ObservationIgnored private let wasToday: Bool
     private var stations: [StationCode: Station] = [:]
@@ -74,11 +76,15 @@ public final class ResultsModel {
     ///   - store: Where the game is kept.
     ///   - service: Where the station list comes from.
     ///   - locale: The language of station names and of the shared text.
-    public init(key: GameKey, store: GameStore, service: any PuzzleService, locale: StationLocale = .device) {
+    public init(
+        key: GameKey, store: GameStore, service: any PuzzleService, locale: StationLocale = .device,
+        analytics: any AnalyticsClient = DisabledAnalytics()
+    ) {
         self.key = key
         self.store = store
         self.service = service
         self.locale = locale
+        self.analytics = analytics
         wasToday = store.today[key.network]?.number == key.number
     }
 
@@ -179,6 +185,16 @@ public final class ResultsModel {
     /// The text the Share button hands on, the same as the website's. `nil` until the game is over.
     public var shareText: String? {
         game.flatMap { ShareText.text(for: $0, language: locale) }
+    }
+
+    /// Records a completed share or copy, never the shared text or the revealed station.
+    public func shareCompleted(method: AnalyticsEvent.ShareMethod, completed: Bool, error: (any Error)?) {
+        guard completed, error == nil, let game, game.isOver else { return }
+        analytics.capture(
+            .resultShared(
+                PuzzleEventProperties(network: key.network, puzzleNumber: key.number, archive: game.isArchive),
+                method: method
+            ))
     }
 
     /// When the next puzzle comes out, for the countdown.

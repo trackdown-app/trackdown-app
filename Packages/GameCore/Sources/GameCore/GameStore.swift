@@ -103,8 +103,9 @@ public final class GameStore {
     ///
     /// Throws a ``GameError`` when the guess is not allowed, or the ``PuzzleServiceError`` of the call. A guess the
     /// server rejects is not stored.
+    /// `fromArchive` keeps the archive flag after an accepted guess, including for a resumed daily game.
     @discardableResult
-    public func submit(_ guess: StationCode, to key: GameKey) async throws -> GuessResult {
+    public func submit(_ guess: StationCode, to key: GameKey, fromArchive: Bool = false) async throws -> GuessResult {
         guard let game = games[key] else { throw GameError.notOpened }
         guard !game.isOver, game.guessesLeft > 0 else { throw GameError.gameOver }
         guard !game.guesses.contains(guess) else { throw GameError.alreadyGuessed }
@@ -119,6 +120,8 @@ public final class GameStore {
         )
 
         var updated = games[key] ?? game
+        // A daily game becomes an archive game only when a new archive guess succeeds.
+        updated.isArchive = game.isArchive || fromArchive
         updated.guesses = game.guesses + [guess]
         updated.trips = result.trips
         games[key] = updated

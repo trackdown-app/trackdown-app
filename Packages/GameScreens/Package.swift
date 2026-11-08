@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "GameScreens", targets: ["GameScreens"])
     ],
     dependencies: [
+        .package(path: "../Analytics"),
         .package(path: "../GameCore"),
         .package(path: "../DesignSystem"),
     ],
@@ -22,6 +23,7 @@ let package = Package(
         .target(
             name: "GameScreens",
             dependencies: [
+                .product(name: "Analytics", package: "Analytics"),
                 .product(name: "GameCore", package: "GameCore"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
             ],
@@ -34,6 +36,7 @@ let package = Package(
             name: "GameScreensTests",
             dependencies: [
                 "GameScreens",
+                .product(name: "Analytics", package: "Analytics"),
                 .product(name: "GameCore", package: "GameCore"),
             ],
             swiftSettings: strictWarnings

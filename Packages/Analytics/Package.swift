@@ -14,13 +14,15 @@ let package = Package(
         .library(name: "Analytics", targets: ["Analytics"])
     ],
     dependencies: [
-        .package(url: "https://github.com/PostHog/posthog-ios", from: "3.93.6")
+        .package(path: "../GameCore"),
+        .package(url: "https://github.com/PostHog/posthog-ios", from: "3.93.6"),
     ],
     targets: [
         .target(
             name: "Analytics",
             dependencies: [
-                .product(name: "PostHog", package: "posthog-ios")
+                .product(name: "GameCore", package: "GameCore"),
+                .product(name: "PostHog", package: "posthog-ios"),
             ],
             swiftSettings: strictWarnings
         ),
