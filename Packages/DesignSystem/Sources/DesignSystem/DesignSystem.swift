@@ -1,4 +1,8 @@
 /// Design tokens and Liquid Glass components shared by every screen.
 ///
-/// Filled in by the design tokens and component tickets.
+/// Tokens live in namespaced types so they never shadow SwiftUI names:
+/// - ``TrackdownColor``: brand colors with light and dark values.
+/// - ``TrackdownFont``: the Barlow type scale, scaled with Dynamic Type.
+///
+/// Call ``TrackdownFont/register()`` once at launch (and in previews) before using the fonts.
 public enum DesignSystem {}
