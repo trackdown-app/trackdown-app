@@ -18,6 +18,7 @@ let package = Package(
             name: "DesignSystem",
             resources: [
                 .process("Resources/Colors.xcassets"),
+                .process("Resources/Images.xcassets"),
                 // Copied as a folder so the fonts and their OFL license ship together.
                 .copy("Resources/Fonts"),
             ],
