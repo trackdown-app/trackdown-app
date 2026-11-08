@@ -74,7 +74,7 @@ struct AnalyticsSettingsTests {
 private final class ConsentClient: AnalyticsClient {
     var choices: [AnalyticsConsent] = []
 
-    func capture(_ event: String, properties: [String: AnalyticsValue]) {}
+    func capture(_ event: AnalyticsEvent) {}
 
     func setConsent(_ consent: AnalyticsConsent) {
         choices.append(consent)

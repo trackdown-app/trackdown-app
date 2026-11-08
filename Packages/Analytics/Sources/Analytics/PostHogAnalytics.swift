@@ -24,8 +24,8 @@ public final class PostHogAnalytics: AnalyticsClient {
         setConsent(consent)
     }
 
-    public func capture(_ event: String, properties: [String: AnalyticsValue]) {
-        sdk.capture(event, properties: properties.mapValues(\.sdkValue))
+    public func capture(_ event: AnalyticsEvent) {
+        sdk.capture(event.name, properties: event.properties.mapValues(\.sdkValue))
     }
 
     public func setConsent(_ consent: AnalyticsConsent) {
@@ -50,7 +50,7 @@ public final class PostHogAnalytics: AnalyticsClient {
         config.personProfiles = .never
         config.setDefaultPersonProperties = false
 
-        // The app sends its own screen events (#28). Swizzled UIKit screen names say nothing in
+        // The app sends its own screen events. Swizzled UIKit screen names say nothing in
         // a SwiftUI app.
         config.captureScreenViews = false
 

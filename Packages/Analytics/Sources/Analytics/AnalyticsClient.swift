@@ -4,17 +4,11 @@
 /// `Analytics.X` ambiguous everywhere the module is imported.
 @MainActor
 public protocol AnalyticsClient: AnyObject {
-    /// Sends `event` with `properties`. The super properties are added to every event.
-    func capture(_ event: String, properties: [String: AnalyticsValue])
+    /// Sends a typed event. The super properties are added to every event.
+    func capture(_ event: AnalyticsEvent)
 
     /// Updates the consent property and opts in to capture only when consent is allowed.
     func setConsent(_ consent: AnalyticsConsent)
-}
-
-extension AnalyticsClient {
-    public func capture(_ event: String) {
-        capture(event, properties: [:])
-    }
 }
 
 extension AnalyticsConfiguration {
@@ -30,7 +24,7 @@ extension AnalyticsConfiguration {
 public final class DisabledAnalytics: AnalyticsClient {
     public init() {}
 
-    public func capture(_ event: String, properties: [String: AnalyticsValue]) {}
+    public func capture(_ event: AnalyticsEvent) {}
 
     public func setConsent(_ consent: AnalyticsConsent) {}
 }

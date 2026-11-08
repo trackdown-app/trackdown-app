@@ -1,3 +1,4 @@
+import Analytics
 import DesignSystem
 import Foundation
 import GameCore
@@ -106,6 +107,7 @@ public final class PlayingModel {
     @ObservationIgnored private let store: GameStore
     @ObservationIgnored private let service: any PuzzleService
     @ObservationIgnored private let locale: StationLocale
+    @ObservationIgnored private let analytics: any AnalyticsClient
     private var stations: [StationCode: Station] = [:]
     private var search: StationSearch?
     private var stationsNetwork: Network?
@@ -121,13 +123,15 @@ public final class PlayingModel {
         network: Network,
         store: GameStore,
         service: any PuzzleService,
-        locale: StationLocale = .device
+        locale: StationLocale = .device,
+        analytics: any AnalyticsClient = DisabledAnalytics()
     ) {
         self.puzzle = puzzle
         self.network = network
         self.store = store
         self.service = service
         self.locale = locale
+        self.analytics = analytics
     }
 
     // MARK: Game
@@ -290,11 +294,29 @@ public final class PlayingModel {
 
         isSubmitting = true
         defer { isSubmitting = false }
+        let fromArchive: Bool
+        switch puzzle {
+        case .today: fromArchive = false
+        case .archive: fromArchive = true
+        }
         do {
-            let result = try await store.submit(station.code, to: key)
+            let result = try await store.submit(station.code, to: key, fromArchive: fromArchive)
+            let properties = PuzzleEventProperties(
+                network: key.network, puzzleNumber: key.number, archive: game.isArchive || fromArchive)
+            let count = game.guesses.count + 1
+            if game.guesses.isEmpty { analytics.capture(.puzzleStarted(properties)) }
+            if fromArchive && (!game.isArchive || game.guesses.isEmpty) {
+                analytics.capture(.archivePuzzlePlayed(properties))
+            }
+            analytics.capture(.guessMade(properties, guessNumber: count))
+            if result.correct {
+                analytics.capture(.puzzleSolved(properties, guessesUsed: count))
+            } else if count >= game.maxGuesses {
+                analytics.capture(.puzzleMissed(properties, guessesUsed: count))
+            }
             lastGuess = SubmittedGuess(sequence: (lastGuess?.sequence ?? 0) + 1, solved: result.correct)
             query = ""
-            return self.game?.isOver ?? false
+            return result.correct || count >= game.maxGuesses
         } catch GameError.alreadyGuessed {
             message = .alreadyGuessed(station.name)
         } catch GameError.gameOver {

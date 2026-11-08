@@ -1,3 +1,4 @@
+import Analytics
 import DesignSystem
 import GameCore
 import GameScreens
@@ -43,7 +44,7 @@ struct RootView: View {
                 // Pushed onto the stack by `navigate(_:)`, never a sheet.
                 EmptyView()
             case .howToPlay:
-                HowToPlaySheet(settings: model.analyticsSettings)
+                HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
             case .statistics:
                 // Statistics is a separate ticket; until it lands, show its title.
                 VStack(alignment: .leading, spacing: 20) {
@@ -61,6 +62,30 @@ struct RootView: View {
             guard phase == .active else { return }
             // A suspended app misses the rollover; catch up when it comes back.
             Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
+        }
+        .onChange(of: screenEvent, initial: true) { _, event in
+            model.analytics.capture(event)
+            if case .screenViewed(.howToPlay, let network) = event {
+                model.analytics.capture(.howToPlayOpened(network: network))
+            }
+        }
+    }
+
+    /// Tracks the topmost destination, including system back navigation and sheet dismissal.
+    private var screenEvent: AnalyticsEvent {
+        if let destination {
+            switch destination {
+            case .solved(let key): return .screenViewed(.results, network: key.network)
+            case .howToPlay: return .screenViewed(.howToPlay, network: model.network)
+            case .statistics: return .screenViewed(.statistics, network: model.network)
+            case .archive, .chooseNetwork, .privacy: break
+            }
+        }
+        switch model.path.last {
+        case .archive: return .screenViewed(.archive, network: model.network)
+        case .chooseNetwork: return .screenViewed(.chooseNetwork, network: model.network)
+        case .privacy: return .screenViewed(.privacy, network: model.network)
+        case .archivedPuzzle, nil: return .screenViewed(.playing, network: model.network)
         }
     }
 }

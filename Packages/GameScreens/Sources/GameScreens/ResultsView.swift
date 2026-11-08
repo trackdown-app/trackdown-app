@@ -335,6 +335,10 @@ private struct ResultsActions: View {
     let model: ResultsModel
     let onOlderPuzzles: () -> Void
 
+    #if os(iOS)
+        @State private var share: ResultShare?
+    #endif
+
     var body: some View {
         VStack(spacing: 12) {
             GlassEffectContainer(spacing: 10) {
@@ -369,19 +373,20 @@ private struct ResultsActions: View {
 
     @ViewBuilder
     private var shareButton: some View {
-        let text = model.shareText ?? ""
-        ShareLink(item: text) {
-            Label {
-                if model.outcome == .missed {
-                    Text("Share", bundle: .module, comment: "Missed sheet button that shares the result.")
-                } else {
-                    Text("Share result", bundle: .module, comment: "Solved sheet button that shares the result.")
+        Group {
+            #if os(iOS)
+                Button {
+                    if let text = model.shareText { share = ResultShare(text: text) }
+                } label: {
+                    shareLabel
                 }
-            } icon: {
-                Image(systemName: "square.and.arrow.up")
-            }
-            .font(TrackdownFont.headline)
-            .frame(maxWidth: .infinity, minHeight: 44)
+                .sheet(item: $share) { share in
+                    ResultShareSheet(text: share.text, onComplete: model.shareCompleted)
+                }
+            #else
+                // The macOS build exists only for host tests; the app uses the completion-aware iOS sheet.
+                ShareLink(item: model.shareText ?? "") { shareLabel }
+            #endif
         }
         .buttonStyle(.glassProminent)
         .buttonBorderShape(.capsule)
@@ -389,6 +394,20 @@ private struct ResultsActions: View {
         .tint(TrackdownColor.ink)
         .foregroundStyle(TrackdownColor.background)
         .disabled(model.shareText == nil)
+    }
+
+    private var shareLabel: some View {
+        Label {
+            if model.outcome == .missed {
+                Text("Share", bundle: .module, comment: "Missed sheet button that shares the result.")
+            } else {
+                Text("Share result", bundle: .module, comment: "Solved sheet button that shares the result.")
+            }
+        } icon: {
+            Image(systemName: "square.and.arrow.up")
+        }
+        .font(TrackdownFont.headline)
+        .frame(maxWidth: .infinity, minHeight: 44)
     }
 }
 

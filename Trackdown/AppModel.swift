@@ -1,7 +1,6 @@
 import Analytics
 import GameCore
 import GameScreens
-import OSLog
 import Observation
 import TrackdownAPI
 
@@ -46,25 +45,29 @@ final class AppModel {
     var network: Network {
         get { playing.network }
         set {
+            let previous = playing.network
             playing.network = newValue
             networkChoice.network = newValue
+            if previous != newValue { analytics.capture(.networkChanged(from: previous, to: newValue)) }
         }
     }
 
     init(configuration: AppConfiguration, networkChoice: NetworkChoice = NetworkChoice()) {
         self.configuration = configuration
-        analyticsSettings = AnalyticsSettings(configuration: configuration.analytics)
+        let analyticsSettings = AnalyticsSettings(configuration: configuration.analytics)
+        self.analyticsSettings = analyticsSettings
         let service = TrackdownPuzzleService(apiConfiguration: configuration.api)
         let games = GameStore(service: service)
         self.service = service
         self.games = games
         self.networkChoice = networkChoice
-        playing = PlayingModel(network: networkChoice.network, store: games, service: service)
+        playing = PlayingModel(
+            network: networkChoice.network, store: games, service: service, analytics: analyticsSettings.client)
     }
 
     /// The Solved or Missed sheet of the finished game `key`.
     func results(_ key: GameKey) -> ResultsModel {
-        ResultsModel(key: key, store: games, service: service)
+        ResultsModel(key: key, store: games, service: service, analytics: analytics)
     }
 
     /// The archive of the current network.
@@ -84,7 +87,7 @@ final class AppModel {
 
     /// A playing screen for a past puzzle of the current network.
     func playing(_ puzzle: ArchivedPuzzle) -> PlayingModel {
-        PlayingModel(puzzle: .archive(puzzle), network: network, store: games, service: service)
+        PlayingModel(puzzle: .archive(puzzle), network: network, store: games, service: service, analytics: analytics)
     }
 
     /// The network picker, with the current network checked.
@@ -100,9 +103,6 @@ final class AppModel {
 
     /// The player tapped Notify me on a network still to come.
     func notify(_ network: UpcomingNetwork) {
-        // v1 only records the interest. Sent to PostHog with the typed events (#28).
-        Self.logger.info("network_notify_requested network=\(network.rawValue, privacy: .public)")
+        analytics.capture(.networkNotifyRequested(network))
     }
-
-    private static let logger = Logger(subsystem: "nl.trackdown", category: "analytics")
 }

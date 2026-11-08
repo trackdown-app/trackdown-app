@@ -15,17 +15,17 @@ let package = Package(
         .library(name: "GameScreens", targets: ["GameScreens"])
     ],
     dependencies: [
+        .package(path: "../Analytics"),
         .package(path: "../GameCore"),
         .package(path: "../DesignSystem"),
-        .package(path: "../Analytics"),
     ],
     targets: [
         .target(
             name: "GameScreens",
             dependencies: [
+                .product(name: "Analytics", package: "Analytics"),
                 .product(name: "GameCore", package: "GameCore"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
-                .product(name: "Analytics", package: "Analytics"),
             ],
             resources: [
                 .process("Resources/Localizable.xcstrings")
@@ -36,6 +36,7 @@ let package = Package(
             name: "GameScreensTests",
             dependencies: [
                 "GameScreens",
+                .product(name: "Analytics", package: "Analytics"),
                 .product(name: "GameCore", package: "GameCore"),
             ],
             swiftSettings: strictWarnings
