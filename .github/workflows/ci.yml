@@ -49,10 +49,9 @@ jobs:
           sudo xcode-select --switch "$XCODE_PATH"
           xcodebuild -version
 
-      # Boot the simulator now so it is ready by the time the build finishes,
-      # instead of booting cold inside `xcodebuild test`. The device name can
-      # exist on several runtimes, so pin the UDID on the newest one.
-      - name: Boot simulator
+      # The device name can exist on several runtimes, so pin the UDID of the
+      # one on the newest runtime and use it for both build and test.
+      - name: Pick simulator
         run: |
           udid=$(xcrun simctl list devices available --json | jq -r --arg name "$SIMULATOR" '
             .devices
@@ -68,8 +67,7 @@ jobs:
             xcrun simctl list devices available
             exit 1
           fi
-          echo "Booting $SIMULATOR ($udid)"
-          xcrun simctl boot "$udid"
+          echo "Using $SIMULATOR ($udid)"
           echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
 
       - name: Cache SPM dependencies
@@ -106,6 +104,8 @@ jobs:
             SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
             GCC_TREAT_WARNINGS_AS_ERRORS=YES
 
+      # Boot after the build: the first boot saturates the runner, and running
+      # it alongside resolve and build made those steps several times slower.
       # Parallel testing would clone and boot a fresh simulator per worker.
       # Swift Testing still runs tests in parallel inside each test bundle.
       - name: Test
