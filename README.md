@@ -39,6 +39,23 @@ Native SwiftUI app for [trackdown.nl](https://trackdown.nl). iPhone only for v1.
      -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test
    ```
 
+4. Lint with `swift-format` (ships with Xcode; config in `.swift-format`):
+
+   ```sh
+   xcrun swift-format lint --strict --recursive --parallel Trackdown Packages
+   ```
+
+   Fix formatting in place with `xcrun swift-format format --in-place --recursive --parallel Trackdown Packages`.
+
+## CI
+
+`.github/workflows/ci.yml` runs on every pull request and on pushes to `main`, on the `xcode-27` runner with Xcode 27.1 selected:
+
+- **Lint**: `swift-format lint --strict`.
+- **Build and test**: builds the app for the iOS Simulator with warnings treated as errors in the app target and our local packages, then runs all Swift Testing suites in the `Trackdown` scheme. SPM dependencies are cached, keyed on `Package.resolved` and the local `Package.swift` files.
+
+New test targets must be added to the `Trackdown` scheme's Test action to run in CI.
+
 ## Layout
 
 ```
