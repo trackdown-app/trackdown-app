@@ -1,3 +1,4 @@
+import Analytics
 import GameCore
 import GameScreens
 import OSLog
@@ -18,6 +19,9 @@ enum Route: Hashable {
 @Observable
 final class AppModel {
     let configuration: AppConfiguration
+
+    /// Where analytics events go. PostHog, or nothing without a project token.
+    let analytics: any AnalyticsClient
 
     /// Where puzzles, stations and trips come from.
     let service: TrackdownPuzzleService
@@ -44,6 +48,7 @@ final class AppModel {
 
     init(configuration: AppConfiguration, networkChoice: NetworkChoice = NetworkChoice()) {
         self.configuration = configuration
+        analytics = configuration.analytics.makeClient()
         let service = TrackdownPuzzleService(apiConfiguration: configuration.api)
         let games = GameStore(service: service)
         self.service = service
@@ -90,7 +95,7 @@ final class AppModel {
 
     /// The player tapped Notify me on a network still to come.
     func notify(_ network: UpcomingNetwork) {
-        // v1 only records the interest. Sent to PostHog once analytics is in (#15, #28).
+        // v1 only records the interest. Sent to PostHog with the typed events (#28).
         Self.logger.info("network_notify_requested network=\(network.rawValue, privacy: .public)")
     }
 

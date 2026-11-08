@@ -12,17 +12,31 @@ struct AppConfiguration: Equatable {
     }
 
     static func fromInfoDictionary(_ info: [String: Any]) -> AppConfiguration {
-        AppConfiguration(
+        let appVersion = info["CFBundleShortVersionString"] as? String ?? ""
+        return AppConfiguration(
             api: APIConfiguration(
                 baseURL: url(for: "TrackdownAPIBaseURL", in: info),
                 clientKey: info["TrackdownClientKey"] as? String ?? "",
-                appVersion: info["CFBundleShortVersionString"] as? String ?? ""
+                appVersion: appVersion
             ),
             analytics: AnalyticsConfiguration(
                 projectToken: info["PostHogProjectToken"] as? String ?? "",
-                host: url(for: "PostHogHost", in: info)
+                host: url(for: "PostHogHost", in: info),
+                environment: analyticsEnvironment(in: info),
+                appVersion: appVersion
             )
         )
+    }
+
+    private static func analyticsEnvironment(in info: [String: Any]) -> AnalyticsEnvironment {
+        guard let value = info["PostHogEnvironment"] as? String,
+            let environment = AnalyticsEnvironment(rawValue: value)
+        else {
+            preconditionFailure(
+                "Info.plist key PostHogEnvironment must be development or production. Check Config/*.xcconfig."
+            )
+        }
+        return environment
     }
 
     private static func url(for key: String, in info: [String: Any]) -> URL {

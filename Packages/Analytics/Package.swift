@@ -13,9 +13,25 @@ let package = Package(
     products: [
         .library(name: "Analytics", targets: ["Analytics"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/PostHog/posthog-ios", from: "3.93.6")
+    ],
     targets: [
-        .target(name: "Analytics", swiftSettings: strictWarnings),
-        .testTarget(name: "AnalyticsTests", dependencies: ["Analytics"], swiftSettings: strictWarnings),
+        .target(
+            name: "Analytics",
+            dependencies: [
+                .product(name: "PostHog", package: "posthog-ios")
+            ],
+            swiftSettings: strictWarnings
+        ),
+        .testTarget(
+            name: "AnalyticsTests",
+            dependencies: [
+                "Analytics",
+                .product(name: "PostHog", package: "posthog-ios"),
+            ],
+            swiftSettings: strictWarnings
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
