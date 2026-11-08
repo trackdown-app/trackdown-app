@@ -17,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(path: "../GameCore"),
         .package(path: "../DesignSystem"),
+        .package(path: "../Analytics"),
     ],
     targets: [
         .target(
@@ -24,6 +25,7 @@ let package = Package(
             dependencies: [
                 .product(name: "GameCore", package: "GameCore"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
+                .product(name: "Analytics", package: "Analytics"),
             ],
             resources: [
                 .process("Resources/Localizable.xcstrings")
