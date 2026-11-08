@@ -50,27 +50,11 @@ struct StatisticsTests {
 
     @Test("Leaves a game still on out of the record")
     func gameStillOn() {
-        let key = { GameKey(network: .nl, number: $0) }
-        let solved = Game(
-            key: key(1),
-            maxGuesses: 6,
-            guesses: ["ut", "asd"],
-            trips: [
-                GuessTrip(guess: "ut", correct: false, steps: [.ride(train: "IC", minutes: 17)]),
-                GuessTrip(guess: "asd", correct: true, steps: []),
-            ]
+        let statistics = Statistics(
+            puzzles: puzzles(2),
+            games: [1: StoredGame(guesses: ["ut", "asd"], outcome: .won), 2: StoredGame(guesses: ["ut", "gvc"])],
+            maxGuesses: 6
         )
-        let playing = Game(
-            key: key(2),
-            maxGuesses: 6,
-            guesses: ["ut", "gvc"],
-            trips: [
-                GuessTrip(guess: "ut", correct: false, steps: [.ride(train: "IC", minutes: 17)]),
-                GuessTrip(guess: "gvc", correct: false, steps: [.ride(train: "IC", minutes: 40)]),
-            ]
-        )
-
-        let statistics = Statistics(puzzles: puzzles(2), games: [1: solved, 2: playing], maxGuesses: 6)
 
         #expect(statistics.played == 1)
         #expect(statistics.today == nil)
@@ -95,9 +79,9 @@ struct StatisticsTests {
         let onItsWay = Statistics(
             puzzles: puzzles(3),
             games: [
-                1: Game(key: GameKey(network: .nl, number: 1), maxGuesses: 6, guesses: ["asd"], trips: [solvedTrip]),
-                2: Game(key: GameKey(network: .nl, number: 2), maxGuesses: 6, guesses: ["asd"], trips: [solvedTrip]),
-                3: Game(key: GameKey(network: .nl, number: 3), maxGuesses: 6, guesses: ["ut"], trips: [missTrip]),
+                1: StoredGame(guesses: ["ut", "gvc", "ht", "asd"], outcome: .won),
+                2: StoredGame(guesses: ["ut", "asd"], outcome: .won),
+                3: StoredGame(guesses: ["ut"]),
             ],
             maxGuesses: 6
         )
@@ -165,38 +149,20 @@ struct StatisticsTests {
         #expect(statistics.today == .solved(guesses: 3))
     }
 
-    // Not in the website's suite: the app keeps no `correct` per guess, so it reads finished games from `Game`.
+    // Not in the website's suite: the app keeps each game's outcome, not each guess's `correct`.
 
-    @Test("Counts a game whose trips are not rebuilt yet as not played")
-    func restoring() {
-        let restoring = Game(key: GameKey(network: .nl, number: 1), maxGuesses: 6, guesses: ["asd"], trips: nil)
-
-        #expect(Statistics.FinishedGame(restoring) == nil)
-        #expect(Statistics(puzzles: puzzles(1), games: [1: restoring], maxGuesses: 6).played == 0)
-    }
-
-    @Test("Reads a finished game's result and archive mark from the game")
-    func finishedFromGame() {
-        let solved = Game(
-            key: GameKey(network: .nl, number: 1),
-            maxGuesses: 6,
-            isArchive: true,
-            guesses: ["ut", "asd"],
-            trips: [missTrip, solvedTrip]
+    @Test("Reads a stored game's outcome, guesses and archive mark")
+    func finishedFromStoredGame() {
+        #expect(
+            Statistics.FinishedGame(StoredGame(guesses: ["ut", "asd"], archive: true, outcome: .won))
+                == Statistics.FinishedGame(solved: true, guessCount: 2, archive: true)
         )
-        let lost = Game(
-            key: GameKey(network: .nl, number: 2),
-            maxGuesses: 2,
-            guesses: ["ut", "gvc"],
-            trips: [missTrip, missTrip]
+        #expect(
+            Statistics.FinishedGame(StoredGame(guesses: ["ut", "gvc"], outcome: .lost))
+                == Statistics.FinishedGame(solved: false, guessCount: 2, archive: false)
         )
-
-        #expect(Statistics.FinishedGame(solved) == Statistics.FinishedGame(solved: true, guessCount: 2, archive: true))
-        #expect(Statistics.FinishedGame(lost) == Statistics.FinishedGame(solved: false, guessCount: 2, archive: false))
+        #expect(Statistics.FinishedGame(StoredGame(guesses: ["ut"])) == nil)
     }
-
-    private let missTrip = GuessTrip(guess: "ut", correct: false, steps: [.ride(train: "IC", minutes: 17)])
-    private let solvedTrip = GuessTrip(guess: "asd", correct: true, steps: [])
 }
 
 struct ClosestGuessTests {

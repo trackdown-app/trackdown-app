@@ -16,40 +16,56 @@ public struct GameKey: Sendable, Hashable, Codable, CustomStringConvertible {
     public var description: String { storageKey }
 }
 
-/// What is kept on the device for one game, in the same shape as the website's `localStorage` value:
-/// `{"guesses": [...], "archive": true}`.
+/// What is kept on the device for one game, after the website's `localStorage` value:
+/// `{"guesses": [...], "archive": true, "outcome": "won"}`.
 ///
-/// Only the guesses are kept. Trips are rebuilt by replaying them through the guess endpoint, since the server
-/// stores nothing.
+/// Only the guesses are kept, not their trips. Trips are rebuilt by replaying them through the guess endpoint,
+/// since the server stores nothing. The website keeps each guess's `correct` instead; the app keeps `outcome`, so
+/// the statistics can tell won from lost without replaying every past game.
 public struct StoredGame: Sendable, Hashable, Codable {
+    /// How a finished game ended. Spelled like the website's `GameStatus`.
+    public enum Outcome: String, Sendable, Hashable, Codable {
+        /// The last guess was the mystery station.
+        case won
+        /// Every guess was used and none was right.
+        case lost
+    }
+
     /// Every guess so far, in order.
     public var guesses: [StationCode]
     /// Whether the game was started from the archive rather than on its own day.
     public var archive: Bool
+    /// How the game ended, or `nil` while it is still on.
+    public var outcome: Outcome?
 
-    public init(guesses: [StationCode], archive: Bool = false) {
+    public init(guesses: [StationCode], archive: Bool = false, outcome: Outcome? = nil) {
         self.guesses = guesses
         self.archive = archive
+        self.outcome = outcome
     }
 
     private enum CodingKeys: String, CodingKey {
         case guesses
         case archive
+        case outcome
     }
 
+    /// Reads `outcome` as `nil` when it is missing or a value this version does not know.
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         guesses = try container.decode([StationCode].self, forKey: .guesses)
         archive = try container.decodeIfPresent(Bool.self, forKey: .archive) ?? false
+        outcome = (try? container.decodeIfPresent(String.self, forKey: .outcome)).flatMap(Outcome.init(rawValue:))
     }
 
-    /// Leaves `archive` out unless it is `true`, as the website does.
+    /// Leaves `archive` out unless it is `true`, as the website does, and `outcome` out while the game is on.
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(guesses, forKey: .guesses)
         if archive {
             try container.encode(true, forKey: .archive)
         }
+        try container.encodeIfPresent(outcome, forKey: .outcome)
     }
 }
 

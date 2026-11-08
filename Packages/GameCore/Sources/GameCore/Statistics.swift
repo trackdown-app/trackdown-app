@@ -27,13 +27,10 @@ public struct Statistics: Sendable, Hashable {
             self.archive = archive
         }
 
-        /// `game` once it is over; `nil` while it is still on or its trips are not rebuilt yet.
-        public init?(_ game: Game) {
-            switch game.status {
-            case .solved: self.init(solved: true, guessCount: game.guesses.count, archive: game.isArchive)
-            case .lost: self.init(solved: false, guessCount: game.guesses.count, archive: game.isArchive)
-            case .playing, .restoring: return nil
-            }
+        /// `game` once it is over; `nil` while it is still on.
+        public init?(_ game: StoredGame) {
+            guard let outcome = game.outcome else { return nil }
+            self.init(solved: outcome == .won, guessCount: game.guesses.count, archive: game.archive)
         }
     }
 
@@ -133,9 +130,9 @@ public struct Statistics: Sendable, Hashable {
         )
     }
 
-    /// The record over `puzzles` from `games`, the game at each puzzle number. Games still on, or whose trips are
-    /// not rebuilt yet, count as not played.
-    public init(puzzles: [ArchivedPuzzle], games: [Int: Game], maxGuesses: Int) {
+    /// The record over `puzzles` from `games`, the stored game at each puzzle number. Games still on count as not
+    /// played.
+    public init(puzzles: [ArchivedPuzzle], games: [Int: StoredGame], maxGuesses: Int) {
         self.init(puzzles: puzzles, games: games.compactMapValues(FinishedGame.init), maxGuesses: maxGuesses)
     }
 }

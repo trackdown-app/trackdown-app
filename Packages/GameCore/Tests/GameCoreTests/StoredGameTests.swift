@@ -25,12 +25,24 @@ struct StoredGameTests {
         #expect(String(decoding: data, as: UTF8.self) == #"{"archive":true,"guesses":["ut"]}"#)
     }
 
+    @Test("Encodes a finished game's outcome")
+    func encodesOutcome() throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let data = try encoder.encode(StoredGame(guesses: ["asd"], outcome: .won))
+
+        #expect(String(decoding: data, as: UTF8.self) == #"{"guesses":["asd"],"outcome":"won"}"#)
+    }
+
     @Test(
-        "Decodes the website's value, with or without archive",
+        "Decodes the website's value, with or without archive and outcome",
         arguments: [
             (#"{"guesses":["ut"]}"#, StoredGame(guesses: ["ut"])),
             (#"{"guesses":["ut"],"archive":false}"#, StoredGame(guesses: ["ut"])),
             (#"{"guesses":[],"archive":true}"#, StoredGame(guesses: [], archive: true)),
+            (#"{"guesses":["asd"],"outcome":"won"}"#, StoredGame(guesses: ["asd"], outcome: .won)),
+            (#"{"guesses":["ut"],"outcome":"lost"}"#, StoredGame(guesses: ["ut"], outcome: .lost)),
+            (#"{"guesses":["ut"],"outcome":"draw"}"#, StoredGame(guesses: ["ut"])),
         ])
     func decodes(json: String, expected: StoredGame) throws {
         #expect(try JSONDecoder().decode(StoredGame.self, from: Data(json.utf8)) == expected)
