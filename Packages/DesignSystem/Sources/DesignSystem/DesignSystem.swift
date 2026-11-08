@@ -3,6 +3,7 @@
 /// Tokens live in namespaced types so they never shadow SwiftUI names:
 /// - ``TrackdownColor``: brand colors with light and dark values.
 /// - ``TrackdownFont``: the Barlow type scale, scaled with Dynamic Type.
+/// - ``TrackdownImage``: the logo and track mark as vector images.
 ///
 /// Liquid Glass components, drawn with system glass:
 /// - ``GlassIconButton`` and ``GlassIconButtonGroup``: 44 pt circular icon buttons.
