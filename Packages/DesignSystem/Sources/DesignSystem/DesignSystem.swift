@@ -14,6 +14,7 @@
 ///
 /// Content components:
 /// - ``TripLine``: one guess drawn as its train trip to the mystery station.
+/// - ``NetworkBadge`` and ``NewBadge``: a network row's country badge and its "New" capsule.
 ///
 /// Call ``TrackdownFont/register()`` once at launch (and in previews) before using the fonts.
 public enum DesignSystem {}

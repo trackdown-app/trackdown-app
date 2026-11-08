@@ -14,6 +14,8 @@ public enum TrackdownColor {
     public static let ink = Color("Ink", bundle: .module)
     /// Secondary text.
     public static let muted = Color("Muted", bundle: .module)
+    /// Badges that are not inked, such as a network that is not the chosen one. Takes ``ink`` text.
+    public static let soft = Color("Soft", bundle: .module)
     /// Hairlines between rows and sections.
     public static let rule = Color("Rule", bundle: .module)
     /// Guesses not used yet in the progress track. Not for text.

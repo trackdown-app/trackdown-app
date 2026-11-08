@@ -55,6 +55,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Netwerk: %@. Wijzig netwerk" } }
       }
     },
+    "New" : {
+      "comment" : "Badge next to a rail network that was added recently.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nieuw" } }
+      }
+    },
     "Statistics" : {
       "comment" : "Icon button that opens the player's statistics.",
       "localizations" : {

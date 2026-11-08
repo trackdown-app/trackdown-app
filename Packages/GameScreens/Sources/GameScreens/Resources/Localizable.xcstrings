@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@, streak %lld" : {
+      "comment" : "Under a network's name: what it covers, then the current streak, such as \"All railway stations, streak 7\".",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, reeks %2$lld" } }
+      }
+    },
     "%lld guesses" : {
       "comment" : "VoiceOver label of a chart row of games solved in this many guesses, more than one.",
       "localizations" : {
@@ -17,6 +23,24 @@
       "comment" : "VoiceOver label of the chart row of games solved in one guess.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "1 gok" } }
+      }
+    },
+    "All National Rail stations" : {
+      "comment" : "Under Great Britain in the network list: the stations the game covers.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle National Rail-stations" } }
+      }
+    },
+    "All railway stations" : {
+      "comment" : "Under Netherlands in the network list: the stations the game covers.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle treinstations" } }
+      }
+    },
+    "Belgium" : {
+      "comment" : "Rail network still to come.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "België" } }
       }
     },
     "Best" : {
@@ -43,6 +67,24 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dichtstbijzijnde gok: **%1$@**, op %2$@ afstand." } }
       }
     },
+    "Coming next" : {
+      "comment" : "Header above the rail networks still to come.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Binnenkort" } }
+      }
+    },
+    "Each network has its own daily station and its own streak." : {
+      "comment" : "Introduction under the title of the network picker.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elk netwerk heeft zijn eigen station van de dag en zijn eigen reeks." } }
+      }
+    },
+    "Germany" : {
+      "comment" : "Rail network still to come.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Duitsland" } }
+      }
+    },
     "Great Britain" : {
       "comment" : "Rail network name in the network pill.",
       "localizations" : {
@@ -65,6 +107,18 @@
       "comment" : "Link at the end of a shared result: the network's game in the app's language. Dutch drops the /en. The argument is the network, such as nl.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/%@" } }
+      }
+    },
+    "Japan" : {
+      "comment" : "Rail network still to come.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Japan" } }
+      }
+    },
+    "JR and private lines" : {
+      "comment" : "Under Japan in Coming next: the trains it will cover.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "JR en particuliere lijnen" } }
       }
     },
     "Loading puzzle" : {
@@ -97,10 +151,22 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Mysteriestation" } }
       }
     },
+    "National rail" : {
+      "comment" : "Under a rail network still to come: the trains it will cover.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nationaal spoor" } }
+      }
+    },
     "Netherlands" : {
       "comment" : "Rail network name in the network pill.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nederland" } }
+      }
+    },
+    "Networks" : {
+      "comment" : "Title of the network picker.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Netwerken" } }
       }
     },
     "Next station in %@" : {
@@ -109,10 +175,40 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Volgend station over %@" } }
       }
     },
+    "No networks match “%@”." : {
+      "comment" : "Shown when the network search matches nothing. The argument is what was typed.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen netwerken gevonden voor “%@”." } }
+      }
+    },
     "Not tracked down" : {
       "comment" : "Shared result of a game that ran out of guesses.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Niet gevonden" } }
+      }
+    },
+    "Noted" : {
+      "comment" : "Notify me button once tapped.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Genoteerd" } }
+      }
+    },
+    "Noted: %@" : {
+      "comment" : "VoiceOver label of a tapped Notify me button. The argument is a country, such as Belgium.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Genoteerd: %@" } }
+      }
+    },
+    "Notify me" : {
+      "comment" : "Button to hear when a rail network comes out.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Laat weten" } }
+      }
+    },
+    "Notify me about %@" : {
+      "comment" : "VoiceOver label of Notify me. The argument is a country, such as Belgium.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Laat weten wanneer %@ er is" } }
       }
     },
     "Older puzzles" : {
@@ -143,6 +239,18 @@
       "comment" : "Title of the sheet with a finished game's results.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Resultaat" } }
+      }
+    },
+    "Regional and long distance" : {
+      "comment" : "Under Germany in Coming next: the trains it will cover.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Regionaal en lange afstand" } }
+      }
+    },
+    "Search countries" : {
+      "comment" : "Placeholder of the network search field.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zoek landen" } }
       }
     },
     "See results" : {
@@ -179,6 +287,18 @@
       "comment" : "Statistic: puzzles solved on their day in a row.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Reeks" } }
+      }
+    },
+    "Suggest a network, like a metro system" : {
+      "comment" : "Link that opens an email to suggest a new rail network.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Stel een netwerk voor, zoals een metro" } }
+      }
+    },
+    "Switzerland" : {
+      "comment" : "Rail network still to come.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zwitserland" } }
       }
     },
     "That's not a station on this network." : {
