@@ -26,6 +26,9 @@ public final class GameStore {
     /// Every game opened since launch.
     public private(set) var games: [GameKey: Game] = [:]
 
+    /// The answer of every finished game revealed since launch. See ``reveal(_:)``.
+    public private(set) var reveals: [GameKey: Reveal] = [:]
+
     /// How long ``followRollover(network:)`` waits before asking again when the server has no new puzzle yet,
     /// or could not be reached.
     public var retryDelay: Duration = .seconds(30)
@@ -121,6 +124,23 @@ public final class GameStore {
         games[key] = updated
         persist(updated)
         return result
+    }
+
+    /// The mystery station of the finished game `key` and every guess's whole trip, with every change named.
+    ///
+    /// Asks the server once per game and keeps the answer in ``reveals`` for the rest of the launch. Throws
+    /// ``GameError/notOpened`` for a game not opened, ``PuzzleServiceError/gameNotOver`` for a game still on, or the
+    /// ``PuzzleServiceError`` of the call.
+    @discardableResult
+    public func reveal(_ key: GameKey) async throws -> Reveal {
+        if let known = reveals[key] { return known }
+        guard let game = games[key] else { throw GameError.notOpened }
+        guard game.isOver else { throw PuzzleServiceError.gameNotOver }
+
+        let reveal = try await service.reveal(guesses: game.guesses, puzzle: key.number, network: key.network)
+        // The answer belongs to these guesses; a finished game takes no more, so they cannot have changed.
+        reveals[key] = reveal
+        return reveal
     }
 
     /// The player's record at `network`: fetches the archive and reads every puzzle's stored game. Needs no replay,
@@ -224,6 +244,10 @@ public final class GameStore {
         guard var current = games[key], current.guesses == game.guesses else { return games[key] ?? game }
         current.trips = result.trips
         games[key] = current
+        // A game stored without its outcome (finished before outcomes were kept) gets it now, so the statistics count it.
+        if storage.load(key)?.outcome != current.stored.outcome {
+            persist(current)
+        }
         return current
     }
 

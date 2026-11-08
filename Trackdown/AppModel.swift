@@ -41,6 +41,11 @@ final class AppModel {
         playing = PlayingModel(network: .nl, store: games, service: service)
     }
 
+    /// The Solved or Missed sheet of the finished game `key`.
+    func results(_ key: GameKey) -> ResultsModel {
+        ResultsModel(key: key, store: games, service: service)
+    }
+
     /// A playing screen for a past puzzle of the current network.
     func playing(_ puzzle: ArchivedPuzzle) -> PlayingModel {
         PlayingModel(puzzle: .archive(puzzle), network: network, store: games, service: service)

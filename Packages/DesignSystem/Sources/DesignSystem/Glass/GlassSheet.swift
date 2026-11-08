@@ -10,9 +10,19 @@ extension View {
         detents: Set<PresentationDetent> = [.large],
         @ViewBuilder content: @escaping (Item) -> Content
     ) -> some View {
+        glassSheet(item: item, detents: { _ in detents }, content: content)
+    }
+
+    /// Presents a glass sheet whose detents depend on the item, such as a Solved sheet that leaves the game showing
+    /// above it.
+    public func glassSheet<Item: Identifiable, Content: View>(
+        item: Binding<Item?>,
+        detents: @escaping (Item) -> Set<PresentationDetent>,
+        @ViewBuilder content: @escaping (Item) -> Content
+    ) -> some View {
         sheet(item: item) { item in
             content(item)
-                .presentationDetents(detents)
+                .presentationDetents(detents(item))
                 .presentationDragIndicator(.visible)
         }
     }

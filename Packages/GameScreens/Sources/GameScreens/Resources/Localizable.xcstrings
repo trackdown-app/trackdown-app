@@ -1,6 +1,30 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld guesses" : {
+      "comment" : "VoiceOver label of a chart row of games solved in this many guesses, more than one.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lld gokken" } }
+      }
+    },
+    "%lldh%@" : {
+      "comment" : "A trip time in a shared result, such as 2h25. The arguments are hours and the minutes, padded to two digits.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldu%2$@" } }
+      }
+    },
+    "1 guess" : {
+      "comment" : "VoiceOver label of the chart row of games solved in one guess.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "1 gok" } }
+      }
+    },
+    "Best" : {
+      "comment" : "Statistic: the longest streak so far.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Beste" } }
+      }
+    },
     "Check your connection and try again." : {
       "comment" : "Description when the puzzle cannot load without a connection.",
       "localizations" : {
@@ -11,6 +35,12 @@
       "comment" : "Title of the network picker.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Kies een netwerk" } }
+      }
+    },
+    "Closest guess: **%@**, %@ away." : {
+      "comment" : "On the Missed sheet. The arguments are the guessed station closest to the answer and its trip time, such as \"17 minutes\".",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dichtstbijzijnde gok: **%1$@**, op %2$@ afstand." } }
       }
     },
     "Great Britain" : {
@@ -25,10 +55,40 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gok %lld" } }
       }
     },
+    "Guesses needed" : {
+      "comment" : "Heading of the chart of how many guesses each game took.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Benodigde gokken" } }
+      }
+    },
+    "https://trackdown.nl/en/%@" : {
+      "comment" : "Link at the end of a shared result: the network's game in the app's language. Dutch drops the /en. The argument is the network, such as nl.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/%@" } }
+      }
+    },
     "Loading puzzle" : {
       "comment" : "Shown while today's puzzle loads.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel laden" } }
+      }
+    },
+    "Loading the answer" : {
+      "comment" : "VoiceOver label while the mystery station loads.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het antwoord wordt geladen" } }
+      }
+    },
+    "Loading your record" : {
+      "comment" : "VoiceOver label while the statistics load.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record wordt geladen" } }
+      }
+    },
+    "Missed" : {
+      "comment" : "Chart row of the games that ran out of guesses.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gemist" } }
       }
     },
     "Mystery station" : {
@@ -41,6 +101,36 @@
       "comment" : "Rail network name in the network pill.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nederland" } }
+      }
+    },
+    "Next station in %@" : {
+      "comment" : "Under the Share button: the time until the next puzzle, such as 13:42:08.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Volgend station over %@" } }
+      }
+    },
+    "Not tracked down" : {
+      "comment" : "Shared result of a game that ran out of guesses.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Niet gevonden" } }
+      }
+    },
+    "Older puzzles" : {
+      "comment" : "Missed sheet button that opens the archive.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Eerdere puzzels" } }
+      }
+    },
+    "Out of guesses. The station was" : {
+      "comment" : "Above the mystery station on the Missed sheet. The station's name follows on its own line.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen gokken meer. Het station was" } }
+      }
+    },
+    "Played" : {
+      "comment" : "Statistic: games finished.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gespeeld" } }
       }
     },
     "Puzzle %lld, guess %lld of %lld" : {
@@ -61,6 +151,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk resultaat" } }
       }
     },
+    "Share" : {
+      "comment" : "Missed sheet button that shares the result.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Delen" } }
+      }
+    },
+    "Share result" : {
+      "comment" : "Solved sheet button that shares the result.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Deel je resultaat" } }
+      }
+    },
     "Shows the trip ride by ride" : {
       "comment" : "VoiceOver hint of a guess: tapping it opens its trip ride by ride.",
       "localizations" : {
@@ -73,10 +175,22 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Er ging iets mis" } }
       }
     },
+    "Streak" : {
+      "comment" : "Statistic: puzzles solved on their day in a row.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Reeks" } }
+      }
+    },
     "That's not a station on this network." : {
       "comment" : "A guess for an unknown station.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dat is geen station op dit netwerk." } }
+      }
+    },
+    "The answer didn't load." : {
+      "comment" : "On the results sheet when the mystery station could not be loaded.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het antwoord kwam niet door." } }
       }
     },
     "The puzzle couldn't be loaded. Try again in a moment." : {
@@ -103,6 +217,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel verzoeken" } }
       }
     },
+    "Tracked down in %lld of %lld" : {
+      "comment" : "Above the mystery station on the Solved sheet: how many guesses it took, of how many.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden in %1$lld van %2$lld" } }
+      }
+    },
+    "Tracked down in %lld" : {
+      "comment" : "Shared result of a solved game. The argument is how many guesses it took.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden in %lld" } }
+      }
+    },
     "Try again" : {
       "comment" : "Retries loading the puzzle.",
       "localizations" : {
@@ -127,6 +253,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Werk Trackdown bij om verder te spelen." } }
       }
     },
+    "Won" : {
+      "comment" : "Statistic: the share of games solved.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gewonnen" } }
+      }
+    },
     "You already guessed %@." : {
       "comment" : "A guess for a station guessed before. The argument is the station's name.",
       "localizations" : {
@@ -149,6 +281,12 @@
       "comment" : "A guess that failed on the server.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je gok kon niet worden verstuurd. Probeer het opnieuw." } }
+      }
+    },
+    "Your record didn't load." : {
+      "comment" : "On the results sheet when the statistics could not be loaded.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record kwam niet door." } }
       }
     }
   },
