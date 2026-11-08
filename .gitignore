@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcresult
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/*/Package.resolved
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/configuration/
+
+# Local secrets (see Config/Secrets.example.xcconfig)
+Config/Secrets.xcconfig

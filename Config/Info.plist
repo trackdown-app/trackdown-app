@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TrackdownAPIBaseURL</key>
+	<string>$(TRACKDOWN_API_BASE_URL)</string>
+	<key>TrackdownClientKey</key>
+	<string>$(TRACKDOWN_CLIENT_KEY)</string>
+	<key>PostHogHost</key>
+	<string>$(POSTHOG_HOST)</string>
+	<key>PostHogProjectToken</key>
+	<string>$(POSTHOG_PROJECT_TOKEN)</string>
+</dict>
+</plist>

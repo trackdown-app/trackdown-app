@@ -1,0 +1,54 @@
+// Shared build settings for every configuration.
+// Debug.xcconfig and Release.xcconfig include this file, then Secrets.xcconfig.
+
+// MARK: Platform
+
+SDKROOT = iphoneos
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+TARGETED_DEVICE_FAMILY = 1
+IPHONEOS_DEPLOYMENT_TARGET = 27.0
+SUPPORTS_MACCATALYST = NO
+SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO
+SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO
+
+// MARK: Swift
+
+SWIFT_VERSION = 6.0
+SWIFT_STRICT_CONCURRENCY = complete
+SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor
+SWIFT_APPROACHABLE_CONCURRENCY = YES
+SWIFT_EMIT_LOC_STRINGS = YES
+STRING_CATALOG_GENERATE_SYMBOLS = YES
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+ALWAYS_SEARCH_USER_PATHS = NO
+ENABLE_PREVIEWS = YES
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+
+// MARK: Product
+
+PRODUCT_NAME = Trackdown
+PRODUCT_BUNDLE_IDENTIFIER = nl.trackdown.Trackdown
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+CODE_SIGN_STYLE = Automatic
+
+// MARK: Info.plist
+
+INFOPLIST_FILE = Config/Info.plist
+GENERATE_INFOPLIST_FILE = YES
+INFOPLIST_KEY_CFBundleDisplayName = Trackdown
+INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.puzzle-games
+INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES
+INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES
+INFOPLIST_KEY_UILaunchScreen_Generation = YES
+INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+
+// MARK: App configuration
+// `//` starts a comment in xcconfig files, so URLs use `/$()/` to keep the double slash.
+
+POSTHOG_HOST = https:/$()/t.trackdown.nl
+
+// Real values live in Secrets.xcconfig (untracked). See Secrets.example.xcconfig.
+TRACKDOWN_CLIENT_KEY =
+POSTHOG_PROJECT_TOKEN =
+DEVELOPMENT_TEAM =
