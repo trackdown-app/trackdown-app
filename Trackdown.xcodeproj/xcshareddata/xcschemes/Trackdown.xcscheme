@@ -70,6 +70,16 @@
                ReferencedContainer = "container:Packages/DesignSystem">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "GameScreensTests"
+               BuildableName = "GameScreensTests"
+               BlueprintName = "GameScreensTests"
+               ReferencedContainer = "container:Packages/GameScreens">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

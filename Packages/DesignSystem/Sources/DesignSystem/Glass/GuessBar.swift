@@ -27,8 +27,10 @@ public struct GuessBar: View {
     /// - Parameters:
     ///   - text: What the player has typed.
     ///   - suggestions: The matches for `text`, best first. The list is hidden while this is empty.
-    ///   - selection: The highlighted suggestion. Guess is enabled only while one is selected.
-    ///   - onGuess: Guesses the selected suggestion. Called from the button and from the keyboard's return key.
+    ///   - selection: The highlighted suggestion.
+    ///   - onGuess: Guesses the selected suggestion, or what was typed. Called from the button and from the keyboard's
+    ///     return key whenever something is typed, so the screen can refuse an unknown or already guessed station with
+    ///     a message instead of the button silently doing nothing.
     public init(
         text: Binding<String>,
         suggestions: [GuessSuggestion],
@@ -43,6 +45,7 @@ public struct GuessBar: View {
 
     private var canGuess: Bool {
         suggestions.contains { $0.id == selection && !$0.isDisabled }
+            || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     public var body: some View {

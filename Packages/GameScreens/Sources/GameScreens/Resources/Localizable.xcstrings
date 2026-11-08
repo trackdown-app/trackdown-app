@@ -1,0 +1,150 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Check your connection and try again." : {
+      "comment" : "Description when the puzzle cannot load without a connection.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Controleer je verbinding en probeer het opnieuw." } }
+      }
+    },
+    "Choose network" : {
+      "comment" : "Title of the network picker.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Kies een netwerk" } }
+      }
+    },
+    "Great Britain" : {
+      "comment" : "Rail network name in the network pill.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Groot-Brittannië" } }
+      }
+    },
+    "Guess %lld" : {
+      "comment" : "VoiceOver label of a guess's number.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gok %lld" } }
+      }
+    },
+    "Loading puzzle" : {
+      "comment" : "Shown while today's puzzle loads.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel laden" } }
+      }
+    },
+    "Mystery station" : {
+      "comment" : "Label above the bars that stand for the mystery station.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Mysteriestation" } }
+      }
+    },
+    "Netherlands" : {
+      "comment" : "Rail network name in the network pill.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nederland" } }
+      }
+    },
+    "Puzzle %lld, guess %lld of %lld" : {
+      "comment" : "Under the day on the playing screen: the puzzle number and which guess is being made.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %1$lld, gok %2$lld van %3$lld" } }
+      }
+    },
+    "Results" : {
+      "comment" : "Title of the sheet with a finished game's results.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Resultaat" } }
+      }
+    },
+    "See results" : {
+      "comment" : "Button under a finished game that opens its results.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk resultaat" } }
+      }
+    },
+    "Something went wrong" : {
+      "comment" : "Title when the puzzle failed to load.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Er ging iets mis" } }
+      }
+    },
+    "That's not a station on this network." : {
+      "comment" : "A guess for an unknown station.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dat is geen station op dit netwerk." } }
+      }
+    },
+    "The puzzle couldn't be loaded. Try again in a moment." : {
+      "comment" : "Description when the puzzle failed to load.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "De puzzel kon niet worden geladen. Probeer het zo opnieuw." } }
+      }
+    },
+    "This version of the app is no longer supported. Update it from the App Store." : {
+      "comment" : "Description when the app version is no longer supported.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Deze versie van de app wordt niet meer ondersteund. Werk hem bij via de App Store." } }
+      }
+    },
+    "Too many guesses. Try again in %@." : {
+      "comment" : "Rate-limited guess. The argument is a wait such as \"30 seconds\".",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel gokken. Probeer het over %@ opnieuw." } }
+      }
+    },
+    "Too many requests" : {
+      "comment" : "Title when the server asks the app to wait.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel verzoeken" } }
+      }
+    },
+    "Try again" : {
+      "comment" : "Retries loading the puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Probeer opnieuw" } }
+      }
+    },
+    "Try again in %@." : {
+      "comment" : "Description when rate limited. The argument is a wait such as \"30 seconds\".",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Probeer het over %@ opnieuw." } }
+      }
+    },
+    "Update Trackdown" : {
+      "comment" : "Title when the app version is no longer supported.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Werk Trackdown bij" } }
+      }
+    },
+    "Update Trackdown to keep playing." : {
+      "comment" : "The server no longer accepts this version of the app.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Werk Trackdown bij om verder te spelen." } }
+      }
+    },
+    "You already guessed %@." : {
+      "comment" : "A guess for a station guessed before. The argument is the station's name.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je hebt %@ al geraden." } }
+      }
+    },
+    "You're offline" : {
+      "comment" : "Title when the puzzle cannot load without a connection.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je bent offline" } }
+      }
+    },
+    "You're offline. Your guess wasn't sent." : {
+      "comment" : "A guess that could not reach the server.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je bent offline. Je gok is niet verstuurd." } }
+      }
+    },
+    "Your guess couldn't be sent. Try again." : {
+      "comment" : "A guess that failed on the server.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je gok kon niet worden verstuurd. Probeer het opnieuw." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
