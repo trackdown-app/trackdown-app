@@ -8,8 +8,10 @@ SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG $(inherited)
 GCC_OPTIMIZATION_LEVEL = 0
 GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
 
+// Origin of the API, without a path: the spec's paths already start with /api/v1.
+// www, because trackdown.nl answers every call with a 308 to www.trackdown.nl.
 // Override in Secrets.xcconfig to point Debug builds at a local or preview API.
-TRACKDOWN_API_BASE_URL = https:/$()/trackdown.nl/api/v1
+TRACKDOWN_API_BASE_URL = https:/$()/www.trackdown.nl
 
 // Last, so local values override everything above. `#include?` skips a missing file.
 #include? "Secrets.xcconfig"

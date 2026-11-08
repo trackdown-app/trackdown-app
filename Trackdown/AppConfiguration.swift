@@ -15,7 +15,8 @@ struct AppConfiguration: Equatable {
         AppConfiguration(
             api: APIConfiguration(
                 baseURL: url(for: "TrackdownAPIBaseURL", in: info),
-                clientKey: info["TrackdownClientKey"] as? String ?? ""
+                clientKey: info["TrackdownClientKey"] as? String ?? "",
+                appVersion: info["CFBundleShortVersionString"] as? String ?? ""
             ),
             analytics: AnalyticsConfiguration(
                 projectToken: info["PostHogProjectToken"] as? String ?? "",

@@ -1,0 +1,987 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Trackdown API",
+    "version": "1",
+    "description": "The API the Trackdown iOS app plays the daily puzzle through. Every call but this document's names the app's client key and version in two headers (`ClientKey`, `AppVersion`), else it answers `unknown_client` (401). Every error answers `ApiError` with the status of its code. See docs/api.md in trackdown-website."
+  },
+  "security": [
+    {
+      "ClientKey": [],
+      "AppVersion": []
+    }
+  ],
+  "paths": {
+    "/api/v1/meta": {
+      "get": {
+        "operationId": "getMeta",
+        "summary": "The network's data: its source, service dates and counts",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "nl",
+              "type": "string",
+              "enum": [
+                "nl",
+                "gb"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The answer. Never kept (`Cache-Control: no-store`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/{network}/puzzles/today": {
+      "get": {
+        "operationId": "getTodayPuzzle",
+        "summary": "Today's puzzle, without its answer",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NetworkId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The answer. Kept by clients and the CDN until `nextPuzzleAt` (`Cache-Control: public, max-age=<seconds left>`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodayPuzzle"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/{network}/puzzles": {
+      "get": {
+        "operationId": "getPuzzleArchive",
+        "summary": "Every puzzle up to today's, oldest first, without answers",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NetworkId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The answer. Never kept (`Cache-Control: no-store`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PuzzleArchive"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/{network}/puzzles/{number}/guesses": {
+      "post": {
+        "operationId": "submitGuess",
+        "summary": "One guess: the trip from the guessed station to the mystery station",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NetworkId"
+            }
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuessRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The answer. Never kept (`Cache-Control: no-store`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GuessResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/{network}/puzzles/{number}/reveal": {
+      "post": {
+        "operationId": "revealAnswer",
+        "summary": "Once the game is over: the mystery station and every guess's whole trip",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NetworkId"
+            }
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevealRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The answer. Never kept (`Cache-Control: no-store`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reveal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/{network}/stations": {
+      "get": {
+        "operationId": "getStations",
+        "summary": "Every station a player can guess, sorted by name",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NetworkId"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "nl",
+              "type": "string",
+              "enum": [
+                "nl",
+                "en"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The answer. Kept by clients for a day and by the CDN until the next deploy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stations"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/openapi.json": {
+      "get": {
+        "operationId": "getOpenApiDocument",
+        "summary": "This document",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The OpenAPI document of `/api/v1`. Kept by clients for a day and by the CDN until the next deploy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "$ref": "#/components/schemas/ApiErrorCode"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "ApiErrorCode": {
+        "type": "string",
+        "enum": [
+          "invalid_input",
+          "unknown_client",
+          "game_not_over",
+          "cross_origin",
+          "not_found",
+          "method_not_allowed",
+          "rate_limited",
+          "internal_error"
+        ]
+      },
+      "ArchivedPuzzle": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "number",
+          "date"
+        ]
+      },
+      "Change": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "change"
+          },
+          "station": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "minutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "kind",
+          "station",
+          "minutes"
+        ]
+      },
+      "EarlierTrip": {
+        "type": "object",
+        "properties": {
+          "guess": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Ride"
+                },
+                {
+                  "$ref": "#/components/schemas/HiddenChange"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "ride": "#/components/schemas/Ride",
+                  "change": "#/components/schemas/HiddenChange"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "guess",
+          "steps"
+        ]
+      },
+      "GuessRequest": {
+        "type": "object",
+        "properties": {
+          "guess": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "earlierGuesses": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+$"
+            }
+          }
+        },
+        "required": [
+          "guess"
+        ]
+      },
+      "GuessResult": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "number": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "guess": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Ride"
+                },
+                {
+                  "$ref": "#/components/schemas/HiddenChange"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "ride": "#/components/schemas/Ride",
+                  "change": "#/components/schemas/HiddenChange"
+                }
+              }
+            }
+          },
+          "totalMinutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "earlierTrips": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EarlierTrip"
+            }
+          }
+        },
+        "required": [
+          "network",
+          "number",
+          "guess",
+          "correct",
+          "steps",
+          "totalMinutes",
+          "earlierTrips"
+        ]
+      },
+      "HiddenChange": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "change"
+          },
+          "station": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-z0-9]+$"
+          },
+          "minutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "kind",
+          "station",
+          "minutes"
+        ]
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "feed": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serviceDates": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^\\d{8}$"
+            }
+          },
+          "departureWindow": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minChangeMinutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "changePenaltyMinutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stations": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "mysteryStations": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "builtAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "dataRef": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "source",
+          "feed",
+          "serviceDates",
+          "departureWindow",
+          "minChangeMinutes",
+          "changePenaltyMinutes",
+          "stations",
+          "mysteryStations",
+          "builtAt",
+          "network",
+          "dataRef"
+        ]
+      },
+      "NetworkId": {
+        "type": "string",
+        "enum": [
+          "nl",
+          "gb"
+        ]
+      },
+      "PuzzleArchive": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "puzzles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArchivedPuzzle"
+            }
+          }
+        },
+        "required": [
+          "network",
+          "puzzles"
+        ]
+      },
+      "Reveal": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "number": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "station": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "solved": {
+            "type": "boolean"
+          },
+          "guesses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RevealedGuess"
+            }
+          }
+        },
+        "required": [
+          "network",
+          "number",
+          "station",
+          "solved",
+          "guesses"
+        ]
+      },
+      "RevealedGuess": {
+        "type": "object",
+        "properties": {
+          "guess": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Ride"
+                },
+                {
+                  "$ref": "#/components/schemas/Change"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "ride": "#/components/schemas/Ride",
+                  "change": "#/components/schemas/Change"
+                }
+              }
+            }
+          },
+          "totalMinutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "guess",
+          "correct",
+          "steps",
+          "totalMinutes"
+        ]
+      },
+      "RevealRequest": {
+        "type": "object",
+        "properties": {
+          "guesses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+$"
+            }
+          }
+        },
+        "required": [
+          "guesses"
+        ]
+      },
+      "Ride": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "ride"
+          },
+          "train": {
+            "$ref": "#/components/schemas/TrainType"
+          },
+          "minutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "kind",
+          "train",
+          "minutes"
+        ]
+      },
+      "Station": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "province": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "province"
+        ]
+      },
+      "Stations": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "nl",
+              "en"
+            ]
+          },
+          "stations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Station"
+            }
+          }
+        },
+        "required": [
+          "network",
+          "locale",
+          "stations"
+        ]
+      },
+      "TodayPuzzle": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "number": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "maxGuesses": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "nextPuzzleAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "network",
+          "number",
+          "date",
+          "maxGuesses",
+          "nextPuzzleAt"
+        ]
+      },
+      "TrainType": {
+        "type": "string",
+        "enum": [
+          "IC",
+          "ICD",
+          "SPR",
+          "ST",
+          "SNT",
+          "ICE",
+          "EC",
+          "AW",
+          "CC",
+          "CH",
+          "EM",
+          "GC",
+          "GN",
+          "GR",
+          "GW",
+          "GX",
+          "HT",
+          "HX",
+          "IL",
+          "LD",
+          "LE",
+          "LF",
+          "LM",
+          "LO",
+          "ME",
+          "NT",
+          "SE",
+          "SN",
+          "SR",
+          "SW",
+          "TL",
+          "TP",
+          "VT",
+          "XC",
+          "XR"
+        ]
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "`invalid_input`: the input does not match the operation's schema.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "`unknown_client`: a call without an accepted `Trackdown-Client-Key` or a valid `Trackdown-App-Version`.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "`game_not_over`: a reveal before the game is over. `cross_origin`: a browser call from another origin.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "`not_found`: a puzzle that does not exist, or one after today's.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "`method_not_allowed`: a method other than the operation's.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "`rate_limited`: past the rate limit of a guess and the reveal; `Retry-After` says in how many seconds to call again.",
+        "headers": {
+          "Retry-After": {
+            "description": "Seconds until the IP may call again.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "`internal_error`: something went wrong on the server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ClientKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Trackdown-Client-Key",
+        "description": "The app's client key, one the server accepts. It names the client, it is not a secret: a key is rotated or cut off on the server (docs/api.md#client-identification)."
+      },
+      "AppVersion": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Trackdown-App-Version",
+        "description": "The app's version, `major.minor` or `major.minor.patch`, such as `1.4.2`."
+      }
+    }
+  }
+}

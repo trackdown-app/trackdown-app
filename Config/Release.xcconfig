@@ -5,7 +5,9 @@ DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 SWIFT_COMPILATION_MODE = wholemodule
 SWIFT_OPTIMIZATION_LEVEL = -O
 
-TRACKDOWN_API_BASE_URL = https:/$()/trackdown.nl/api/v1
+// Origin of the API, without a path: the spec's paths already start with /api/v1.
+// www, because trackdown.nl answers every call with a 308 to www.trackdown.nl.
+TRACKDOWN_API_BASE_URL = https:/$()/www.trackdown.nl
 
 // Last, so local values override everything above. `#include?` skips a missing file.
 #include? "Secrets.xcconfig"

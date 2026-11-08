@@ -19,6 +19,10 @@ env:
   SCHEME: Trackdown
   PACKAGES_DIR: .build/SourcePackages
   DERIVED_DATA: .build/DerivedData
+  # Read by Config/Base.xcconfig (app target) and the local Package.swift
+  # manifests (package targets) to treat warnings as errors. Remote packages
+  # never see it, so third-party warnings never fail the build.
+  TRACKDOWN_WARNINGS_AS_ERRORS: "YES"
 
 jobs:
   lint:
@@ -68,9 +72,12 @@ jobs:
       # Builds the app and the scheme's test bundles for the iOS Simulator, so
       # iOS-only compile errors still fail CI. A generic destination needs no
       # booted simulator.
-      # Warnings are errors for the app target and our local packages. Xcode
-      # builds remote package dependencies with warnings suppressed, so these
-      # settings never fail the build on third-party code.
+      # Warnings are errors for the app target and our local packages through
+      # TRACKDOWN_WARNINGS_AS_ERRORS. Do not pass SWIFT_TREAT_WARNINGS_AS_ERRORS
+      # here: a command-line setting reaches remote packages too, and conflicts
+      # with the -suppress-warnings Xcode builds them with.
+      # -skipPackagePluginValidation trusts the Swift OpenAPI Generator build
+      # plugin, which Xcode otherwise asks a person to enable.
       - name: Build for iOS Simulator
         run: |
           set -o pipefail
@@ -81,9 +88,9 @@ jobs:
             -derivedDataPath "$DERIVED_DATA" \
             -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
             -disableAutomaticPackageResolution \
+            -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO \
-            SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
-            GCC_TREAT_WARNINGS_AS_ERRORS=YES
+            TRACKDOWN_WARNINGS_AS_ERRORS=YES
 
       # Runs the Swift Testing suites on the macOS host instead of a simulator.
       # A cold simulator boot took over 3 minutes on this runner; the tests
