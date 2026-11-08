@@ -60,6 +60,84 @@
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Statistieken" } }
       }
+    },
+    "tripLine.accessibilityLabel" : {
+      "comment" : "VoiceOver label of a guess: station name, trip time, how the trip changes trains. Example: \"Maastricht, 2 hours, 25 minutes, change at a hidden station\".",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, %2$@, %3$@" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, %2$@, %3$@" } }
+      }
+    },
+    "tripSummary.changeAt" : {
+      "comment" : "Trip summary under a guess: the trip changes trains once, at this station.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Change at %@" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Overstap in %@" } }
+      }
+    },
+    "tripSummary.changeAt.spoken" : {
+      "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at this station.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "change at %@" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "overstap in %@" } }
+      }
+    },
+    "tripSummary.changes" : {
+      "comment" : "Trip summary under a guess: the trip changes trains this many times (2 or more).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "%lld change" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "%lld changes" } }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "%lld overstap" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "%lld overstappen" } }
+            }
+          }
+        }
+      }
+    },
+    "tripSummary.direct" : {
+      "comment" : "Trip summary under a guess: the trip needs no change of trains.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Direct" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Rechtstreeks" } }
+      }
+    },
+    "tripSummary.direct.spoken" : {
+      "comment" : "VoiceOver, after the station and trip time: the trip needs no change of trains.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "direct" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "rechtstreeks" } }
+      }
+    },
+    "tripSummary.hiddenChange" : {
+      "comment" : "Trip summary under a guess: the trip changes trains once, at a station the player has not guessed yet.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Change at a hidden station" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Overstap op een verborgen station" } }
+      }
+    },
+    "tripSummary.hiddenChange.spoken" : {
+      "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at a station not guessed yet.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "change at a hidden station" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "overstap op een verborgen station" } }
+      }
     }
   },
   "version" : "1.0"
