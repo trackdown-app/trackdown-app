@@ -8,12 +8,22 @@ let strictWarnings: [SwiftSetting] =
 
 let package = Package(
     name: "DesignSystem",
-    platforms: [.iOS("27.0")],
+    // macOS only so CI can run the tests on the host with `swift test`.
+    platforms: [.iOS("27.0"), .macOS("27.0")],
     products: [
         .library(name: "DesignSystem", targets: ["DesignSystem"])
     ],
     targets: [
-        .target(name: "DesignSystem", swiftSettings: strictWarnings)
+        .target(
+            name: "DesignSystem",
+            resources: [
+                .process("Resources/Colors.xcassets"),
+                // Copied as a folder so the fonts and their OFL license ship together.
+                .copy("Resources/Fonts"),
+            ],
+            swiftSettings: strictWarnings
+        ),
+        .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"], swiftSettings: strictWarnings),
     ],
     swiftLanguageModes: [.v6]
 )
