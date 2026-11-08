@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  XCODE_PATH: /Applications/Xcode_27.1.app
+  PROJECT: Trackdown.xcodeproj
+  SCHEME: Trackdown
+  PACKAGES_DIR: .build/SourcePackages
+  DERIVED_DATA: .build/DerivedData
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: xcode-27
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode 27.1
+        run: sudo xcode-select --switch "$XCODE_PATH"
+
+      - name: swift-format lint
+        run: |
+          xcrun swift-format --version
+          xcrun swift-format lint --strict --recursive --parallel Trackdown Packages
+
+  build-and-test:
+    name: Build and test
+    runs-on: xcode-27
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode 27.1
+        run: |
+          sudo xcode-select --switch "$XCODE_PATH"
+          xcodebuild -version
+
+      - name: Cache SPM dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.PACKAGES_DIR }}
+            ~/Library/Caches/org.swift.swiftpm
+          key: spm-${{ runner.os }}-xcode-27.1-${{ hashFiles('**/Package.resolved', 'Packages/*/Package.swift') }}
+          restore-keys: |
+            spm-${{ runner.os }}-xcode-27.1-
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -clonedSourcePackagesDirPath "$PACKAGES_DIR"
+
+      # Builds the app and the scheme's test bundles for the iOS Simulator, so
+      # iOS-only compile errors still fail CI. A generic destination needs no
+      # booted simulator.
+      # Warnings are errors for the app target and our local packages. Xcode
+      # builds remote package dependencies with warnings suppressed, so these
+      # settings never fail the build on third-party code.
+      - name: Build for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath "$DERIVED_DATA" \
+            -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
+            -disableAutomaticPackageResolution \
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
+            GCC_TREAT_WARNINGS_AS_ERRORS=YES
+
+      # Runs the Swift Testing suites on the macOS host instead of a simulator.
+      # A cold simulator boot took over 3 minutes on this runner; the tests
+      # themselves take seconds. Every package with a Tests folder must list
+      # macOS in its platforms.
+      - name: Test packages
+        run: |
+          set -euo pipefail
+          for package in Packages/*/; do
+            if [ -d "${package}Tests" ]; then
+              echo "::group::swift test ${package}"
+              swift test --package-path "$package"
+              echo "::endgroup::"
+            fi
+          done
