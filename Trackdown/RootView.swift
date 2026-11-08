@@ -15,6 +15,10 @@ struct RootView: View {
             PlayingView(model: model.playing, onNavigate: navigate)
                 .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .archive:
+                        ArchiveScreen(model: model.archive(), onSelect: select) {
+                            model.path.append(.chooseNetwork)
+                        }
                     case .archivedPuzzle(let puzzle):
                         ArchivedPuzzleView(model: model.playing(puzzle), onNavigate: navigate)
                     case .chooseNetwork:
@@ -27,17 +31,18 @@ struct RootView: View {
             switch destination {
             case .solved(let key):
                 ResultsSheet(model: model.results(key)) {
-                    self.destination = .archive
+                    self.destination = nil
+                    model.openArchive()
                 } onNextPuzzle: {
                     self.destination = nil
                     model.path = []
                 }
-            case .chooseNetwork:
+            case .archive, .chooseNetwork:
                 // Pushed onto the stack by `navigate(_:)`, never a sheet.
                 EmptyView()
-            case .archive, .howToPlay, .statistics:
-                // The archive, How to play and statistics are separate tickets; until they land each destination
-                // opens an empty sheet with its title.
+            case .howToPlay, .statistics:
+                // How to play and statistics are separate tickets; until they land each destination opens an empty
+                // sheet with its title.
                 VStack(alignment: .leading, spacing: 20) {
                     GlassSheetHeader { destination.title }
                     Spacer()
@@ -58,11 +63,21 @@ struct RootView: View {
 }
 
 extension RootView {
-    /// Pushes the network picker; opens every other destination as a sheet.
+    /// Pushes the archive and the network picker; opens every other destination as a sheet.
     fileprivate func navigate(_ destination: PlayingDestination) {
         switch destination {
+        case .archive: model.openArchive()
         case .chooseNetwork: model.path.append(.chooseNetwork)
-        case .archive, .howToPlay, .statistics, .solved: self.destination = destination
+        case .howToPlay, .statistics, .solved: self.destination = destination
+        }
+    }
+
+    /// An archive row was tapped: back to today's puzzle, a past puzzle to play, or a finished game's sheet.
+    fileprivate func select(_ action: ArchiveRow.Action) {
+        switch action {
+        case .continueToday: model.path = []
+        case .play(let puzzle): model.path.append(.archivedPuzzle(puzzle))
+        case .results(let key): destination = .solved(key)
         }
     }
 
@@ -110,6 +125,27 @@ private struct ChooseNetworkScreen: View {
 
     var body: some View {
         ChooseNetworkView(model: model, onChoose: onChoose, onNotify: onNotify)
+    }
+}
+
+/// The archive, pushed from the playing screen or the Missed sheet. Owns its model for as long as it is on the stack.
+private struct ArchiveScreen: View {
+    @State private var model: ArchiveModel
+    private let onSelect: (ArchiveRow.Action) -> Void
+    private let onChooseNetwork: () -> Void
+
+    init(
+        model: ArchiveModel,
+        onSelect: @escaping (ArchiveRow.Action) -> Void,
+        onChooseNetwork: @escaping () -> Void
+    ) {
+        self.model = model
+        self.onSelect = onSelect
+        self.onChooseNetwork = onChooseNetwork
+    }
+
+    var body: some View {
+        ArchiveView(model: model, onSelect: onSelect, onChooseNetwork: onChooseNetwork)
     }
 }
 

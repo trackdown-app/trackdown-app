@@ -140,7 +140,43 @@ public final class GameStore {
         let reveal = try await service.reveal(guesses: game.guesses, puzzle: key.number, network: key.network)
         // The answer belongs to these guesses; a finished game takes no more, so they cannot have changed.
         reveals[key] = reveal
+        keepStation(reveal.station, for: key)
         return reveal
+    }
+
+    /// Every puzzle of `network` up to today's, newest first, each with the game stored for it.
+    ///
+    /// Loads today's puzzle too when it is not known yet, so ``today`` says which entry is today's and how many
+    /// guesses a game allows.
+    public func archive(network: Network) async throws -> [ArchiveEntry] {
+        async let puzzles = service.puzzles(network: network)
+        if today[network] == nil {
+            today[network] = try await service.today(network: network)
+        }
+        let list = try await puzzles
+        return list.reversed().map { puzzle in
+            ArchiveEntry(puzzle: puzzle, game: storage.load(GameKey(network: network, number: puzzle.number)))
+        }
+    }
+
+    /// The mystery station of the finished game `key`, opened or only stored, or `nil` while the game is on or
+    /// was never played.
+    ///
+    /// Reads the station kept with the game when there is one. Otherwise asks the server with the stored guesses,
+    /// without replaying them, and keeps the answer in ``reveals`` and with the stored game. Throws the
+    /// ``PuzzleServiceError`` of the call.
+    public func mysteryStation(_ key: GameKey) async throws -> StationCode? {
+        if let known = reveals[key] { return known.station }
+        if let game = games[key], game.status != .restoring {
+            return game.isOver ? try await reveal(key).station : nil
+        }
+        guard let stored = storage.load(key), stored.outcome != nil else { return nil }
+        if let station = stored.station { return station }
+
+        let reveal = try await service.reveal(guesses: stored.guesses, puzzle: key.number, network: key.network)
+        reveals[key] = reveal
+        keepStation(reveal.station, for: key)
+        return reveal.station
     }
 
     /// The player's record at `network`: fetches the archive and reads every puzzle's stored game. Needs no replay,
@@ -252,8 +288,30 @@ public final class GameStore {
     }
 
     private func persist(_ game: Game) {
+        var stored = game.stored
+        stored.station = reveals[game.key]?.station ?? storage.load(game.key)?.station
         // Best effort: a failed write keeps the game in memory for this launch. Storage errors are rare (a full
         // disk) and there is nothing better to do mid-game.
-        try? storage.save(game.stored, for: game.key)
+        try? storage.save(stored, for: game.key)
+    }
+
+    /// Stores the revealed `station` with the game `key`, so the archive can name it after a relaunch.
+    private func keepStation(_ station: StationCode, for key: GameKey) {
+        guard var stored = storage.load(key) ?? games[key]?.stored, stored.station != station else { return }
+        stored.station = station
+        // Best effort, as in `persist(_:)`: without it the archive asks the server again.
+        try? storage.save(stored, for: key)
+    }
+}
+
+/// One puzzle in the archive, with what the device has stored for it.
+public struct ArchiveEntry: Sendable, Hashable {
+    public var puzzle: ArchivedPuzzle
+    /// The game stored for the puzzle, or `nil` when it was never played on this device.
+    public var game: StoredGame?
+
+    public init(puzzle: ArchivedPuzzle, game: StoredGame?) {
+        self.puzzle = puzzle
+        self.game = game
     }
 }

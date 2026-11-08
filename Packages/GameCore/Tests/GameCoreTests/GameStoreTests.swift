@@ -254,6 +254,58 @@ struct GameStoreTests {
         #expect(service.revealCalls == 0)
     }
 
+    @Test("Keeps the revealed station with the stored game")
+    func storesStation() async throws {
+        let store = makeStore()
+        try await store.loadToday(network: .nl)
+        try await store.submit("asd", to: todaysKey)
+
+        try await store.reveal(todaysKey)
+
+        #expect(storage.load(todaysKey) == StoredGame(guesses: ["asd"], outcome: .won, station: "asd"))
+    }
+
+    @Test("Lists every puzzle newest first, with its stored game")
+    func archiveEntries() async throws {
+        let played = GameKey(network: .nl, number: 2)
+        try storage.save(StoredGame(guesses: ["ut"], archive: true), for: played)
+        let store = makeStore()
+
+        let entries = try await store.archive(network: .nl)
+
+        #expect(entries.map(\.puzzle.number) == Array((1...todaysKey.number).reversed()))
+        #expect(entries.first?.puzzle.date == PuzzleCalendar.day(at: clock.now))
+        #expect(entries.first { $0.puzzle.number == 2 }?.game == StoredGame(guesses: ["ut"], archive: true))
+        #expect(entries.filter { $0.game != nil }.count == 1)
+        #expect(store.today[.nl]?.number == todaysKey.number)
+    }
+
+    @Test("Names a stored finished game's station without replaying it, and asks only once")
+    func mysteryStationOfStoredGame() async throws {
+        let key = GameKey(network: .nl, number: 2)
+        try storage.save(StoredGame(guesses: ["ut", "asd"], archive: true, outcome: .won), for: key)
+
+        let store = makeStore()
+        #expect(try await store.mysteryStation(key) == "asd")
+        #expect(service.guessCalls.isEmpty)
+        #expect(storage.load(key)?.station == "asd")
+
+        let relaunched = makeStore()
+        #expect(try await relaunched.mysteryStation(key) == "asd")
+        #expect(service.revealCalls == 1)
+    }
+
+    @Test("Has no station for a game still on or never played")
+    func noMysteryStation() async throws {
+        let started = GameKey(network: .nl, number: 2)
+        try storage.save(StoredGame(guesses: ["ut"], archive: true), for: started)
+        let store = makeStore()
+
+        #expect(try await store.mysteryStation(started) == nil)
+        #expect(try await store.mysteryStation(GameKey(network: .nl, number: 1)) == nil)
+        #expect(service.revealCalls == 0)
+    }
+
     @Test("Picks up the new puzzle on foreground only once its day is over")
     func rolloverIfNeeded() async throws {
         let store = makeStore()

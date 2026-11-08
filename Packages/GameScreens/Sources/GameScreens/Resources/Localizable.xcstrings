@@ -13,6 +13,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lld gokken" } }
       }
     },
+    "%lld of %lld guesses" : {
+      "comment" : "VoiceOver label of an archive row's result, such as \"4 of 6 guesses\".",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld van %2$lld gokken" } }
+      }
+    },
+    "%lld/%lld" : {
+      "comment" : "Result at the end of an archive row: guesses used of the guesses allowed, such as 4/6.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld/%2$lld" } }
+      }
+    },
     "%lldh%@" : {
       "comment" : "A trip time in a shared result, such as 2h25. The arguments are hours and the minutes, padded to two digits.",
       "localizations" : {
@@ -73,10 +85,22 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Binnenkort" } }
       }
     },
+    "Continue" : {
+      "comment" : "Archive row button that goes back to today's puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Verder" } }
+      }
+    },
     "Each network has its own daily station and its own streak." : {
       "comment" : "Introduction under the title of the network picker.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elk netwerk heeft zijn eigen station van de dag en zijn eigen reeks." } }
+      }
+    },
+    "Every past %@ station. Play the ones you missed, or look back at how you did." : {
+      "comment" : "Introduction under the Archive title. The argument is a network, such as Netherlands.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle eerdere stations van %@. Speel de puzzels die je hebt gemist, of kijk terug hoe het ging." } }
       }
     },
     "Germany" : {
@@ -119,6 +143,12 @@
       "comment" : "Under Japan in Coming next: the trains it will cover.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "JR en particuliere lijnen" } }
+      }
+    },
+    "Loading archive" : {
+      "comment" : "Shown while the list of past puzzles loads.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Archief laden" } }
       }
     },
     "Loading puzzle" : {
@@ -181,6 +211,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen netwerken gevonden voor “%@”." } }
       }
     },
+    "Not finished yet" : {
+      "comment" : "Archive row of a past puzzle started but not finished.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog niet af" } }
+      }
+    },
+    "Not played yet" : {
+      "comment" : "Archive row of a past puzzle never played.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog niet gespeeld" } }
+      }
+    },
     "Not tracked down" : {
       "comment" : "Shared result of a game that ran out of guesses.",
       "localizations" : {
@@ -217,10 +259,22 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Eerdere puzzels" } }
       }
     },
+    "Out of guesses" : {
+      "comment" : "Archive row of a missed puzzle while its station's name has not loaded.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen gokken meer" } }
+      }
+    },
     "Out of guesses. The station was" : {
       "comment" : "Above the mystery station on the Missed sheet. The station's name follows on its own line.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen gokken meer. Het station was" } }
+      }
+    },
+    "Play" : {
+      "comment" : "Archive row button that plays a past puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Spelen" } }
       }
     },
     "Played" : {
@@ -229,10 +283,22 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gespeeld" } }
       }
     },
+    "Puzzle %lld" : {
+      "comment" : "Under an archive row's station: the puzzle number.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %lld" } }
+      }
+    },
     "Puzzle %lld, guess %lld of %lld" : {
       "comment" : "Under the day on the playing screen: the puzzle number and which guess is being made.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %1$lld, gok %2$lld van %3$lld" } }
+      }
+    },
+    "Puzzle %lld, solved in %lld" : {
+      "comment" : "Under an archive row's station: the puzzle number and how many guesses it took.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %1$lld, opgelost in %2$lld" } }
       }
     },
     "Results" : {
@@ -313,6 +379,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het antwoord kwam niet door." } }
       }
     },
+    "The archive couldn't be loaded. Try again in a moment." : {
+      "comment" : "Description when the list of past puzzles failed to load.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het archief kon niet worden geladen. Probeer het zo opnieuw." } }
+      }
+    },
     "The puzzle couldn't be loaded. Try again in a moment." : {
       "comment" : "Description when the puzzle failed to load.",
       "localizations" : {
@@ -325,6 +397,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Deze versie van de app wordt niet meer ondersteund. Werk hem bij via de App Store." } }
       }
     },
+    "Today's station" : {
+      "comment" : "Archive row of today's unfinished puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Station van vandaag" } }
+      }
+    },
     "Too many guesses. Try again in %@." : {
       "comment" : "Rate-limited guess. The argument is a wait such as \"30 seconds\".",
       "localizations" : {
@@ -335,6 +413,12 @@
       "comment" : "Title when the server asks the app to wait.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel verzoeken" } }
+      }
+    },
+    "Tracked down" : {
+      "comment" : "Archive row of a solved puzzle while its station's name has not loaded.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden" } }
       }
     },
     "Tracked down in %lld of %lld" : {
