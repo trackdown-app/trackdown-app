@@ -52,9 +52,15 @@ Native SwiftUI app for [trackdown.nl](https://trackdown.nl). iPhone only for v1.
 `.github/workflows/ci.yml` runs on every pull request and on pushes to `main`, on the `xcode-27` runner with Xcode 27.1 selected:
 
 - **Lint**: `swift-format lint --strict`.
-- **Build and test**: builds the app for the iOS Simulator with warnings treated as errors in the app target and our local packages, then runs all Swift Testing suites in the `Trackdown` scheme. SPM dependencies are cached, keyed on `Package.resolved` and the local `Package.swift` files.
+- **Build and test**: builds the app and its test bundles for the iOS Simulator with warnings treated as errors in the app target and our local packages, then runs the Swift Testing suites of every package with a `Tests` folder using `swift test` on the macOS host. Running on the host skips a 3+ minute simulator boot. SPM dependencies are cached, keyed on `Package.resolved` and the local `Package.swift` files.
 
-New test targets must be added to the `Trackdown` scheme's Test action to run in CI.
+A package with tests must list `.macOS("27.0")` in its `platforms`, and its tested code must build for macOS. Keep iOS-only code (UIKit, iOS-only SwiftUI) out of those packages or behind `#if os(iOS)`. Run the same tests locally with:
+
+```sh
+swift test --package-path Packages/TrackdownAPI
+```
+
+Also add new test targets to the `Trackdown` scheme's Test action, so `xcodebuild test` keeps running them on the simulator.
 
 ## Layout
 

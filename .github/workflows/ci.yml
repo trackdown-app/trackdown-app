@@ -17,7 +17,6 @@ env:
   XCODE_PATH: /Applications/Xcode_27.1.app
   PROJECT: Trackdown.xcodeproj
   SCHEME: Trackdown
-  SIMULATOR: iPhone 18 Pro
   PACKAGES_DIR: .build/SourcePackages
   DERIVED_DATA: .build/DerivedData
 
@@ -40,7 +39,7 @@ jobs:
   build-and-test:
     name: Build and test
     runs-on: xcode-27
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
 
@@ -48,27 +47,6 @@ jobs:
         run: |
           sudo xcode-select --switch "$XCODE_PATH"
           xcodebuild -version
-
-      # The device name can exist on several runtimes, so pin the UDID of the
-      # one on the newest runtime and use it for both build and test.
-      - name: Pick simulator
-        run: |
-          udid=$(xcrun simctl list devices available --json | jq -r --arg name "$SIMULATOR" '
-            .devices
-            | to_entries
-            | map(select(.key | contains("iOS")))
-            | sort_by(.key | capture("iOS-(?<v>[0-9]+(-[0-9]+)*)").v | split("-") | map(tonumber))
-            | reverse
-            | map(.value[] | select(.name == $name))
-            | first
-            | .udid // empty')
-          if [ -z "$udid" ]; then
-            echo "::error::No available simulator named $SIMULATOR"
-            xcrun simctl list devices available
-            exit 1
-          fi
-          echo "Using $SIMULATOR ($udid)"
-          echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
 
       - name: Cache SPM dependencies
         uses: actions/cache@v4
@@ -87,16 +65,19 @@ jobs:
             -scheme "$SCHEME" \
             -clonedSourcePackagesDirPath "$PACKAGES_DIR"
 
+      # Builds the app and the scheme's test bundles for the iOS Simulator, so
+      # iOS-only compile errors still fail CI. A generic destination needs no
+      # booted simulator.
       # Warnings are errors for the app target and our local packages. Xcode
       # builds remote package dependencies with warnings suppressed, so these
       # settings never fail the build on third-party code.
-      - name: Build
+      - name: Build for iOS Simulator
         run: |
           set -o pipefail
           xcodebuild build-for-testing \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "id=$SIMULATOR_UDID" \
+            -destination "generic/platform=iOS Simulator" \
             -derivedDataPath "$DERIVED_DATA" \
             -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
             -disableAutomaticPackageResolution \
@@ -104,27 +85,17 @@ jobs:
             SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
             GCC_TREAT_WARNINGS_AS_ERRORS=YES
 
-      # Boot after the build: the first boot saturates the runner, and running
-      # it alongside resolve and build made those steps several times slower.
-      # Parallel testing would clone and boot a fresh simulator per worker.
-      # Swift Testing still runs tests in parallel inside each test bundle.
-      - name: Test
+      # Runs the Swift Testing suites on the macOS host instead of a simulator.
+      # A cold simulator boot took over 3 minutes on this runner; the tests
+      # themselves take seconds. Every package with a Tests folder must list
+      # macOS in its platforms.
+      - name: Test packages
         run: |
-          set -o pipefail
-          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
-          xcodebuild test-without-building \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -destination "id=$SIMULATOR_UDID" \
-            -derivedDataPath "$DERIVED_DATA" \
-            -clonedSourcePackagesDirPath "$PACKAGES_DIR" \
-            -parallel-testing-enabled NO \
-            -resultBundlePath .build/TestResults.xcresult
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: TestResults
-          path: .build/TestResults.xcresult
-          if-no-files-found: ignore
+          set -euo pipefail
+          for package in Packages/*/; do
+            if [ -d "${package}Tests" ]; then
+              echo "::group::swift test ${package}"
+              swift test --package-path "$package"
+              echo "::endgroup::"
+            fi
+          done
