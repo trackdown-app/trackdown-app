@@ -12,6 +12,8 @@ public enum PlayingDestination: Sendable, Hashable, Identifiable {
     case statistics
     /// The network picker.
     case chooseNetwork
+    /// Usage data preferences, also opened by the consent status toast.
+    case privacy
     /// The Solved (or Missed) sheet of a finished game.
     case solved(GameKey)
 
@@ -24,6 +26,7 @@ public enum PlayingDestination: Sendable, Hashable, Identifiable {
         case .howToPlay: TrackdownIcon.howToPlay.title
         case .statistics: TrackdownIcon.statistics.title
         case .chooseNetwork: Text("Choose network", bundle: .module, comment: "Title of the network picker.")
+        case .privacy: Text("Privacy", bundle: .module, comment: "Title of the privacy settings screen.")
         case .solved: Text("Results", bundle: .module, comment: "Title of the sheet with a finished game's results.")
         }
     }

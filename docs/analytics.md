@@ -9,7 +9,7 @@ The app sends usage data to PostHog the same privacy-first way as the website (`
 - `PostHogAnalytics` when a project token is configured. It runs its own `PostHogSDK` instance, not `PostHogSDK.shared`.
 - `DisabledAnalytics`, which sends nothing, when `POSTHOG_PROJECT_TOKEN` is empty.
 
-`AppModel` creates the client once at launch and holds it as `analytics`, passing the same client to gameplay and results models. `AnalyticsClient.capture(_:)` accepts only `AnalyticsEvent`, a Swift enum whose cases define every allowed property. No call site can supply an arbitrary event name or property dictionary.
+`AppModel` owns `AnalyticsSettings`, which restores the saved choice before creating the client once at launch. It exposes that client as `analytics` and passes the same client to gameplay and results models. `AnalyticsClient.capture(_:)` accepts only `AnalyticsEvent`, a Swift enum whose cases define every allowed property. No call site can supply an arbitrary event name or property dictionary.
 
 ## Explicit events
 
@@ -34,7 +34,7 @@ App-only events:
 | `network_notify_requested` | `network` | Notify me is tapped for an upcoming network |
 | `how_to_play_opened` | `network` | How to play becomes the topmost screen |
 
-Screen names are `playing`, `archive`, `choose_network`, `results`, `how_to_play` and `statistics`. Network and screen values are enums, so free-form text cannot enter these events. The How to play and Statistics screens remain placeholders until their own tickets land.
+Screen names are `playing`, `archive`, `choose_network`, `results`, `how_to_play`, `statistics` and `privacy`. Network and screen values are enums, so free-form text cannot enter these events. Full How to play content and Statistics remain separate tickets.
 
 The iOS result button uses `UIActivityViewController` because `ShareLink` has no completion callback. Only a successful completion sends `result_shared`; the Copy activity maps to `copied`, other activities to `shared`.
 
@@ -58,10 +58,12 @@ Debug builds send to the same project tagged `environment: development`, as the 
 - Automatic screen views are off; the app sends its own typed `$screen` events.
 - Feature flags are not preloaded and no `$feature_flag_called` events are sent.
 - Crash autocapture stays off (the SDK default).
-- Application lifecycle events (`Application Installed`, `Application Opened`, `Application Backgrounded`) stay on, the app's equivalent of the website's pageviews.
+- Application lifecycle events (`Application Installed`, `Application Opened`, `Application Backgrounded`) are enabled only while opted in.
 - `$ip` is set to `null` on every event, as on the website. The project setting that discards IP data still applies.
 
-The anonymous-until-allowed mode (no persisted distinct id before the player says yes) and the consent prompt are #19. Until then every event goes out with `consent_analytics: null`.
+`AnalyticsSettings` stores the choice and `AnalyticsConsent.textVersion` together under `analyticsConsent` in `UserDefaults`. Missing, incomplete or older-version choices are unanswered. Only `.allowed` enables capture. Privacy's system toggle stores and applies each change immediately through `setConsent(_:)`, calling PostHog's `optIn()` or `optOut()`. The client starts with the saved choice and reconciles the SDK's own persisted opt-out state. A `beforeSend` guard also drops setup events unless the current choice is allowed.
+
+Privacy is reached from How to play. `PlayingDestination.privacy` also routes to it from the playing flow, ready for the consent toast. The first-launch prompt, toast, anonymous-until-allowed identifiers and privacy manifest remain #19; full How to play content remains #25.
 
 ## Super properties
 
@@ -76,8 +78,8 @@ A `beforeSend` hook adds these to every event, including the SDK's own lifecycle
 | `consent_marketing` | Always `false`, as on the website |
 | `consent_version` | `AnalyticsConsent.textVersion`, currently `1`, matching the website's `CONSENT_TEXT_VERSION` |
 
-`setConsent(_:)` changes `consent_analytics` for every later event.
+`setConsent(_:)` changes `consent_analytics` for every later event and enables capture only for `.allowed`.
 
 ## Tests
 
-`Packages/Analytics/Tests` checks exact event names and property dictionaries, the super properties, the SDK configuration and the `beforeSend` properties. `Packages/GameScreens/Tests` checks accepted guesses, silent restoration and failures, archive promotion and deduplication across reopening, and share completion. Tests send nothing to PostHog. Run them with `swift test --package-path Packages/Analytics` and `swift test --package-path Packages/GameScreens`.
+`Packages/Analytics/Tests` checks exact event names and property dictionaries, persistence, consent version changes, startup consent, immediate client updates, super properties and SDK configuration. `Packages/GameScreens/Tests` checks accepted guesses, silent restoration and failures, archive promotion and deduplication across reopening, and share completion. Tests send nothing to PostHog. Run them with `swift test --package-path Packages/Analytics` and `swift test --package-path Packages/GameScreens`.

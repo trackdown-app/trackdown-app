@@ -31,6 +31,7 @@ public enum AnalyticsEvent: Sendable, Hashable {
         case results
         case howToPlay = "how_to_play"
         case statistics
+        case privacy
     }
 
     case puzzleStarted(PuzzleEventProperties)

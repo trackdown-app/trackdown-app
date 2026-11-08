@@ -12,6 +12,8 @@ enum Route: Hashable {
     case archivedPuzzle(ArchivedPuzzle)
     /// The network picker.
     case chooseNetwork
+    /// Usage data preferences and legal links.
+    case privacy
 }
 
 /// App-wide state, injected into the view tree through the environment.
@@ -20,7 +22,10 @@ final class AppModel {
     let configuration: AppConfiguration
 
     /// Where analytics events go. PostHog, or nothing without a project token.
-    let analytics: any AnalyticsClient
+    var analytics: any AnalyticsClient { analyticsSettings.client }
+
+    /// The persisted analytics choice, shared by every entry point to Privacy.
+    let analyticsSettings: AnalyticsSettings
 
     /// Where puzzles, stations and trips come from.
     let service: TrackdownPuzzleService
@@ -49,13 +54,15 @@ final class AppModel {
 
     init(configuration: AppConfiguration, networkChoice: NetworkChoice = NetworkChoice()) {
         self.configuration = configuration
-        analytics = configuration.analytics.makeClient()
+        let analyticsSettings = AnalyticsSettings(configuration: configuration.analytics)
+        self.analyticsSettings = analyticsSettings
         let service = TrackdownPuzzleService(apiConfiguration: configuration.api)
         let games = GameStore(service: service)
         self.service = service
         self.games = games
         self.networkChoice = networkChoice
-        playing = PlayingModel(network: networkChoice.network, store: games, service: service, analytics: analytics)
+        playing = PlayingModel(
+            network: networkChoice.network, store: games, service: service, analytics: analyticsSettings.client)
     }
 
     /// The Solved or Missed sheet of the finished game `key`.

@@ -25,6 +25,8 @@ struct RootView: View {
                     case .chooseNetwork:
                         ChooseNetworkScreen(
                             model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
+                    case .privacy:
+                        PrivacyView(settings: model.analyticsSettings)
                     }
                 }
         }
@@ -38,12 +40,13 @@ struct RootView: View {
                     self.destination = nil
                     model.path = []
                 }
-            case .archive, .chooseNetwork:
+            case .archive, .chooseNetwork, .privacy:
                 // Pushed onto the stack by `navigate(_:)`, never a sheet.
                 EmptyView()
-            case .howToPlay, .statistics:
-                // How to play and statistics are separate tickets; until they land each destination opens an empty
-                // sheet with its title.
+            case .howToPlay:
+                HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
+            case .statistics:
+                // Statistics is a separate ticket; until it lands, show its title.
                 VStack(alignment: .leading, spacing: 20) {
                     GlassSheetHeader { destination.title }
                     Spacer()
@@ -75,12 +78,13 @@ struct RootView: View {
             case .solved(let key): return .screenViewed(.results, network: key.network)
             case .howToPlay: return .screenViewed(.howToPlay, network: model.network)
             case .statistics: return .screenViewed(.statistics, network: model.network)
-            case .archive, .chooseNetwork: break
+            case .archive, .chooseNetwork, .privacy: break
             }
         }
         switch model.path.last {
         case .archive: return .screenViewed(.archive, network: model.network)
         case .chooseNetwork: return .screenViewed(.chooseNetwork, network: model.network)
+        case .privacy: return .screenViewed(.privacy, network: model.network)
         case .archivedPuzzle, nil: return .screenViewed(.playing, network: model.network)
         }
     }
@@ -92,6 +96,7 @@ extension RootView {
         switch destination {
         case .archive: model.openArchive()
         case .chooseNetwork: model.path.append(.chooseNetwork)
+        case .privacy: model.path.append(.privacy)
         case .howToPlay, .statistics, .solved: self.destination = destination
         }
     }
@@ -109,7 +114,7 @@ extension RootView {
     fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
         switch destination {
         case .solved: [.fraction(0.75), .large]
-        case .archive, .howToPlay, .statistics, .chooseNetwork: [.large]
+        case .archive, .howToPlay, .statistics, .chooseNetwork, .privacy: [.large]
         }
     }
 }

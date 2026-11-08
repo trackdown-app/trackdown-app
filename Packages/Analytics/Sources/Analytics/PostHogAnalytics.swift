@@ -20,6 +20,8 @@ public final class PostHogAnalytics: AnalyticsClient {
         superProperties = store
         // Our own instance rather than `PostHogSDK.shared`, so nothing else can reach it.
         sdk = PostHogSDK.with(Self.sdkConfiguration(for: configuration, superProperties: store))
+        // A PostHog choice from an earlier run must not override the app's versioned choice.
+        setConsent(consent)
     }
 
     public func capture(_ event: AnalyticsEvent) {
@@ -28,6 +30,11 @@ public final class PostHogAnalytics: AnalyticsClient {
 
     public func setConsent(_ consent: AnalyticsConsent) {
         superProperties.update { $0.consent = consent }
+        if consent == .allowed {
+            sdk.optIn()
+        } else {
+            sdk.optOut()
+        }
     }
 
     static func sdkConfiguration(
@@ -35,6 +42,9 @@ public final class PostHogAnalytics: AnalyticsClient {
         superProperties: SuperPropertiesStore
     ) -> PostHogConfig {
         let config = PostHogConfig(projectToken: configuration.projectToken, host: configuration.host.absoluteString)
+
+        // The app's versioned choice is the only source of truth, including before setup emits events.
+        config.optOut = superProperties.current.consent != .allowed
 
         // Anonymous only: events never create or update a person.
         config.personProfiles = .never
@@ -57,7 +67,10 @@ public final class PostHogAnalytics: AnalyticsClient {
         #endif
 
         config.setBeforeSend { event in
-            event.properties = Self.addingSuperProperties(superProperties.current, to: event.properties)
+            let current = superProperties.current
+            // Also blocks setup events if the SDK restores an older opt-in before we reconcile it.
+            guard current.consent == .allowed else { return nil }
+            event.properties = Self.addingSuperProperties(current, to: event.properties)
             return event
         }
         return config
