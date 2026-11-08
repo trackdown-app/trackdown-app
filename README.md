@@ -76,6 +76,10 @@ Packages/
 
 Feature code goes in a package. The app target only builds the configuration and passes it to the packages.
 
+## Coding standards
+
+See [docs/ios-standards.md](docs/ios-standards.md) for concurrency, SwiftUI, testing, localization, layout and Liquid Glass rules.
+
 ## Configuration
 
 `Config/Debug.xcconfig` and `Config/Release.xcconfig` include `Base.xcconfig` first and the untracked `Secrets.xcconfig` last, so local values win. `Config/Info.plist` exposes the values to the app as `TrackdownAPIBaseURL`, `TrackdownClientKey`, `PostHogHost` and `PostHogProjectToken`, read by `AppConfiguration`.
