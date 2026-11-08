@@ -72,6 +72,7 @@ Packages/
   TrackdownAPI/       Client for trackdown.nl /api/v1
   GameCore/           Game rules, state and statistics
   DesignSystem/       Design tokens and Liquid Glass components
+  GameScreens/        Game screens and their models (Playing)
   Analytics/          Analytics protocol on top of PostHog
 ```
 

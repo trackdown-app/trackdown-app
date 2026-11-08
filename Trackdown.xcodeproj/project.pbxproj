@@ -11,6 +11,7 @@
 		7D0000000000000000000B02 /* GameCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D02 /* GameCore */; };
 		7D0000000000000000000B03 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D03 /* DesignSystem */; };
 		7D0000000000000000000B04 /* Analytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D04 /* Analytics */; };
+		7D0000000000000000000B05 /* GameScreens in Frameworks */ = {isa = PBXBuildFile; productRef = 7D0000000000000000000D05 /* GameScreens */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		7D0000000000000000000F22 /* GameCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GameCore; sourceTree = "<group>"; };
 		7D0000000000000000000F23 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = "<group>"; };
 		7D0000000000000000000F24 /* Analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Analytics; sourceTree = "<group>"; };
+		7D0000000000000000000F25 /* GameScreens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GameScreens; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +45,7 @@
 				7D0000000000000000000B02 /* GameCore in Frameworks */,
 				7D0000000000000000000B03 /* DesignSystem in Frameworks */,
 				7D0000000000000000000B04 /* Analytics in Frameworks */,
+				7D0000000000000000000B05 /* GameScreens in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +76,7 @@
 				7D0000000000000000000F24 /* Analytics */,
 				7D0000000000000000000F23 /* DesignSystem */,
 				7D0000000000000000000F22 /* GameCore */,
+				7D0000000000000000000F25 /* GameScreens */,
 				7D0000000000000000000F21 /* TrackdownAPI */,
 			);
 			path = Packages;
@@ -114,6 +118,7 @@
 				7D0000000000000000000D02 /* GameCore */,
 				7D0000000000000000000D03 /* DesignSystem */,
 				7D0000000000000000000D04 /* Analytics */,
+				7D0000000000000000000D05 /* GameScreens */,
 			);
 			productName = Trackdown;
 			productReference = 7D0000000000000000000F01 /* Trackdown.app */;
@@ -149,6 +154,7 @@
 				7D0000000000000000000402 /* XCLocalSwiftPackageReference "Packages/GameCore" */,
 				7D0000000000000000000403 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */,
 				7D0000000000000000000404 /* XCLocalSwiftPackageReference "Packages/Analytics" */,
+				7D0000000000000000000405 /* XCLocalSwiftPackageReference "Packages/GameScreens" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7D0000000000000000000A02 /* Products */;
@@ -247,6 +253,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Analytics;
 		};
+		7D0000000000000000000405 /* XCLocalSwiftPackageReference "Packages/GameScreens" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GameScreens;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -265,6 +275,10 @@
 		7D0000000000000000000D04 /* Analytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Analytics;
+		};
+		7D0000000000000000000D05 /* GameScreens */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GameScreens;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

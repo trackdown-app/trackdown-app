@@ -36,6 +36,19 @@ struct TrackdownPuzzleServiceTests {
         #expect(sent.request.headerFields[.trackdownClientKey] == "test-key")
     }
 
+    @Test("today(network:) reads nextPuzzleAt with milliseconds, as the server sends it")
+    func todayFractionalSeconds() async throws {
+        let transport = MockTransport(
+            .json(
+                #"{"network":"nl","number":144,"date":"2026-11-08","maxGuesses":6,"nextPuzzleAt":"2026-11-08T23:00:00.000Z"}"#
+            )
+        )
+
+        let puzzle = try await TrackdownPuzzleService.test(transport).today(network: .nl)
+
+        #expect(puzzle.nextPuzzleAt == Date(timeIntervalSince1970: 1_794_178_800))
+    }
+
     @Test("today(network:) uses the network in the path")
     func todayNetwork() async throws {
         let transport = MockTransport(
