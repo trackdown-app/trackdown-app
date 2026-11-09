@@ -1,6 +1,48 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Guess the mystery station." : {
+      "comment" : "First rule of Trackdown.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad het geheime station." } }
+      }
+    },
+    "Each guess shows the fastest train journey from your station to the mystery station." : {
+      "comment" : "Second rule: guesses produce route clues.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elke gok toont de snelste treinreis van jouw station naar het geheime station." } }
+      }
+    },
+    "Use the travel times and changes to narrow it down. A new station every day!" : {
+      "comment" : "Third rule: use the clues to solve the daily puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruik de reistijden en overstappen om dichterbij te komen. Elke dag een nieuw station!" } }
+      }
+    },
+    "For example" : {
+      "comment" : "Heading above the example train journey clue.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bijvoorbeeld" } }
+      }
+    },
+    "From Maastricht, ride an Intercity for 2 hours and 2 minutes, change at a hidden station with a 6-minute wait, then ride another Intercity for 17 minutes. The mystery station is at the end of the line." : {
+      "comment" : "Explains the Maastricht example clue, including the hidden change and destination.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Reis vanuit Maastricht 2 uur en 2 minuten met een Intercity, stap over op een verborgen station met 6 minuten wachttijd en reis daarna nog 17 minuten met een Intercity. Het geheime station staat aan het einde van de lijn." } }
+      }
+    },
+    "Guess a change station to reveal its name in earlier clues." : {
+      "comment" : "Explains how guessing a hidden change station updates earlier clues.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad een overstapstation om de naam in eerdere aanwijzingen te onthullen." } }
+      }
+    },
+    "Play today's station" : {
+      "comment" : "Dismisses How to play so the player can start the daily puzzle.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Speel het station van vandaag" } }
+      }
+    },
     "Privacy" : {
       "comment" : "Title of the privacy settings screen.",
       "localizations" : {

@@ -9,6 +9,7 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var destination: PlayingDestination?
+    @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
 
     var body: some View {
         @Bindable var model = model
@@ -53,6 +54,11 @@ struct RootView: View {
                 }
                 .padding(24)
             }
+        }
+        .onAppear {
+            guard !hasSeenHowToPlay else { return }
+            destination = .howToPlay
+            hasSeenHowToPlay = true
         }
         // Loads and restores today's game, then picks up the next puzzle at `nextPuzzleAt` while the app is open.
         .task(id: model.network) {
@@ -114,7 +120,8 @@ extension RootView {
     fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
         switch destination {
         case .solved: [.fraction(0.75), .large]
-        case .archive, .howToPlay, .statistics, .chooseNetwork, .privacy: [.large]
+        case .howToPlay: [.medium, .large]
+        case .archive, .statistics, .chooseNetwork, .privacy: [.large]
         }
     }
 }
