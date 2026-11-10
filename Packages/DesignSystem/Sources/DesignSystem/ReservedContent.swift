@@ -37,24 +37,27 @@ private struct ReservedContent: ViewModifier {
     }
 
     private func regions(in geometry: GeometryProxy) -> (exposed: TrackdownReservedRegions, obstacles: [CGRect]) {
-        if #available(iOS 27.1, macOS 27.1, *) {
-            let folds = geometry.reservedRegions(
-                kind: .division, options: .includeInactive, layoutDirectionBehavior: .fixed)
-            let cameras = geometry.reservedRegions(
-                kind: .occlusion, options: .includeInactive, layoutDirectionBehavior: .fixed)
-            let obstacles = (folds + cameras).filter(\.isActive).map { region in
-                let frame = region.frame
-                let margins = region.margins
-                return CGRect(
-                    x: frame.minX - (layoutDirection == .rightToLeft ? margins.trailing : margins.leading),
-                    y: frame.minY - margins.top,
-                    width: frame.width + margins.leading + margins.trailing,
-                    height: frame.height + margins.top + margins.bottom)
+        // The macOS target only supports host tests. Xcode 27.1 ships a macOS 27.0 SDK without this API.
+        #if os(iOS)
+            if #available(iOS 27.1, *) {
+                let folds = geometry.reservedRegions(
+                    kind: .division, options: .includeInactive, layoutDirectionBehavior: .fixed)
+                let cameras = geometry.reservedRegions(
+                    kind: .occlusion, options: .includeInactive, layoutDirectionBehavior: .fixed)
+                let obstacles = (folds + cameras).filter(\.isActive).map { region in
+                    let frame = region.frame
+                    let margins = region.margins
+                    return CGRect(
+                        x: frame.minX - (layoutDirection == .rightToLeft ? margins.trailing : margins.leading),
+                        y: frame.minY - margins.top,
+                        width: frame.width + margins.leading + margins.trailing,
+                        height: frame.height + margins.top + margins.bottom)
+                }
+                return (
+                    TrackdownReservedRegions(folds: folds.map(\.frame), cameras: cameras.map(\.frame)), obstacles
+                )
             }
-            return (
-                TrackdownReservedRegions(folds: folds.map(\.frame), cameras: cameras.map(\.frame)), obstacles
-            )
-        }
+        #endif
         return (TrackdownReservedRegions(), [])
     }
 }
