@@ -44,12 +44,17 @@ struct StationLocaleTests {
     }
 
     @Test(
-        "English for any other first language, even when Dutch comes later",
+        "English when preferred over Dutch or no supported language matches",
         arguments: [
-            ["en-GB"], ["de-DE", "nl-NL"], ["fy-NL"], [],
+            ["en-GB"], ["en", "nl-NL"], ["de-DE", "en", "nl"], ["fy-NL"], [],
         ])
     func english(languages: [String]) {
         #expect(StationLocale.preferred(languages: languages) == .en)
+    }
+
+    @Test("Skips unsupported languages like app localization selection")
+    func supportedFallback() {
+        #expect(StationLocale.preferred(languages: ["de-DE", "nl-NL", "en"]) == .nl)
     }
 }
 

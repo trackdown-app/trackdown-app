@@ -1,6 +1,20 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lldm" : {
+      "comment" : "Compact trip duration in minutes, under one hour.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } }
+      }
+    },
+    "%lldh %@m" : {
+      "comment" : "Compact trip duration: hours, then minutes padded to two digits.",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldh %2$@m" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldu %2$@m" } }
+      }
+    },
     "Already guessed" : {
       "comment" : "VoiceOver value of a suggestion the player already guessed in this game.",
       "localizations" : {

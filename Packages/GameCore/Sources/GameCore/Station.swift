@@ -21,14 +21,20 @@ public enum StationLocale: String, Sendable, Hashable, Codable, CaseIterable {
     case nl
     case en
 
-    /// Dutch when the device's first preferred language is Dutch, English otherwise.
+    /// The first supported language in the app's language preferences, falling back to English.
     public static var device: StationLocale {
         preferred(languages: Locale.preferredLanguages)
     }
 
-    /// Dutch when the first of `languages` (BCP 47 identifiers, such as `nl-BE`) is Dutch, English otherwise.
+    /// Matches the app's supported languages in preference order, including regional identifiers.
     public static func preferred(languages: [String]) -> StationLocale {
-        guard let first = languages.first else { return .en }
-        return Locale.Language(identifier: first).languageCode == .dutch ? .nl : .en
+        for language in languages {
+            switch Locale.Language(identifier: language).languageCode {
+            case .dutch: return .nl
+            case .english: return .en
+            default: continue
+            }
+        }
+        return .en
     }
 }
