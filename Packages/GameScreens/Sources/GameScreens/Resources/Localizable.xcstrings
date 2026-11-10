@@ -631,8 +631,14 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je gok kon niet worden verstuurd. Probeer het opnieuw." } }
       }
     },
+    "Your %@ record" : {
+      "comment" : "Title of the Statistics sheet. The argument is the rail network's name, such as Netherlands.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Jouw record in %@" } }
+      }
+    },
     "Your record didn't load." : {
-      "comment" : "On the results sheet when the statistics could not be loaded.",
+      "comment" : "On the results and statistics sheets when the statistics could not be loaded.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record kwam niet door." } }
       }

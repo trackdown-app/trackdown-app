@@ -70,6 +70,11 @@ final class AppModel {
         ResultsModel(key: key, store: games, service: service, analytics: analytics)
     }
 
+    /// The player's record at the current network, for the Statistics sheet.
+    func statistics() -> StatisticsModel {
+        StatisticsModel(network: network, store: games)
+    }
+
     /// The archive of the current network.
     func archive() -> ArchiveModel {
         ArchiveModel(network: network, store: games, service: service)
