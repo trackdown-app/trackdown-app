@@ -90,7 +90,7 @@ In xcconfig files `//` starts a comment, so write URLs as `https:/$()/host/path`
 
 ## Analytics
 
-See [docs/analytics.md](docs/analytics.md) for how PostHog is set up and what every event carries.
+See [docs/analytics.md](docs/analytics.md) for how PostHog is set up and what every event carries, and [docs/privacy.md](docs/privacy.md) for the consent prompt, the privacy manifest and the App Store privacy answers.
 
 ## API client
 

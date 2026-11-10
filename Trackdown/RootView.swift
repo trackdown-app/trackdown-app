@@ -10,6 +10,8 @@ struct RootView: View {
 
     @State private var destination: PlayingDestination?
     @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
+    /// The answer just given in the consent prompt, while its toast shows.
+    @State private var consentToast: AnalyticsConsent?
 
     var body: some View {
         @Bindable var model = model
@@ -55,6 +57,11 @@ struct RootView: View {
                 .padding(24)
             }
         }
+        .consentToast($consentToast) {
+            consentToast = nil
+            navigate(.privacy)
+        }
+        .consentPrompt(isPresented: needsConsent, onChoose: choose)
         .onAppear {
             guard !hasSeenHowToPlay else { return }
             destination = .howToPlay
@@ -75,6 +82,12 @@ struct RootView: View {
                 model.analytics.capture(.howToPlayOpened(network: network))
             }
         }
+    }
+
+    /// Whether to ask about usage data now: no answer yet, and no other sheet up. On first launch How to play
+    /// comes first, so the prompt and its toast land on the playing screen.
+    private var needsConsent: Bool {
+        model.analyticsSettings.consent == .unanswered && destination == nil && hasSeenHowToPlay
     }
 
     /// Tracks the topmost destination, including system back navigation and sheet dismissal.
@@ -105,6 +118,14 @@ extension RootView {
         case .privacy: model.path.append(.privacy)
         case .howToPlay, .statistics, .solved: self.destination = destination
         }
+    }
+
+    /// The player answered the consent prompt.
+    fileprivate func choose(_ consent: AnalyticsConsent) {
+        model.analyticsSettings.setConsent(consent)
+        // Nothing was sent before the answer, so the screen the player is on has not been counted yet.
+        if consent == .allowed { model.analytics.capture(screenEvent) }
+        consentToast = consent
     }
 
     /// An archive row was tapped: back to today's puzzle, a past puzzle to play, or a finished game's sheet.

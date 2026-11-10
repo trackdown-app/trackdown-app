@@ -38,7 +38,8 @@ public final class AnalyticsSettings {
         set { setConsent(newValue ? .allowed : .declined) }
     }
 
-    /// Stores the choice and applies it immediately, without waiting for navigation or a relaunch.
+    /// Stores the choice and applies it immediately, without waiting for navigation or a relaunch. An answer keeps
+    /// the first-launch prompt from showing again.
     public func setConsent(_ consent: AnalyticsConsent) {
         self.consent = consent
         switch consent {

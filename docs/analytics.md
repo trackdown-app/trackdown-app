@@ -58,12 +58,22 @@ Debug builds send to the same project tagged `environment: development`, as the 
 - Automatic screen views are off; the app sends its own typed `$screen` events.
 - Feature flags are not preloaded and no `$feature_flag_called` events are sent.
 - Crash autocapture stays off (the SDK default).
-- Application lifecycle events (`Application Installed`, `Application Opened`, `Application Backgrounded`) are enabled only while opted in.
+- Application lifecycle events (`Application Installed`, `Application Opened`, `Application Backgrounded`) are sent only while usage data is allowed.
 - `$ip` is set to `null` on every event, as on the website. The project setting that discards IP data still applies.
 
-`AnalyticsSettings` stores the choice and `AnalyticsConsent.textVersion` together under `analyticsConsent` in `UserDefaults`. Missing, incomplete or older-version choices are unanswered. Only `.allowed` enables capture. Privacy's system toggle stores and applies each change immediately through `setConsent(_:)`, calling PostHog's `optIn()` or `optOut()`. The client starts with the saved choice and reconciles the SDK's own persisted opt-out state. A `beforeSend` guard also drops setup events unless the current choice is allowed.
+## Consent
 
-Privacy is reached from How to play. `PlayingDestination.privacy` also routes to it from the playing flow, ready for the consent toast. The first-launch prompt, toast, anonymous-until-allowed identifiers and privacy manifest remain #19; full How to play content remains #25.
+`AnalyticsSettings` stores the choice and `AnalyticsConsent.textVersion` together under `analyticsConsent` in `UserDefaults`. Missing, incomplete or older-version choices are unanswered.
+
+The SDK writes an anonymous id and a device id to disk as soon as it is set up, so `PostHogAnalytics` only sets it up while the choice is `.allowed`:
+
+- **Unanswered or declined:** there is no SDK instance. `capture(_:)` does nothing, no request is made and nothing is stored. At launch and on every refusal the SDK's directory (`Application Support/<bundle id>/<project token>`) is removed, which also clears what an earlier run left behind.
+- **Allowed:** `setConsent(.allowed)` sets up the SDK, which creates the persistent anonymous id. A saved Allow does the same at launch.
+- **Withdrawn:** `setConsent(.declined)` calls `reset()` and `close()` on the SDK and removes its directory, including unsent events.
+
+A `beforeSend` guard still drops any event unless the current choice is allowed. The website instead counts cookieless events before an answer and after a refusal; posthog-ios has no cookieless mode, and the prompt says the app shares data "with your OK", so the app sends nothing. See [privacy.md](privacy.md).
+
+The first-launch prompt (`consentPrompt(isPresented:onChoose:)` in `GameScreens`) shows while the choice is unanswered and no other sheet is up; on first launch that is after How to play. It closes only on an answer. `RootView` stores the answer, re-sends the current `$screen` after Allow (the earlier one was never sent), and shows the toast (`consentToast(_:onSettings:)`), whose Settings link pushes Privacy. Privacy's system toggle stores and applies each change immediately through the same `setConsent(_:)`. Privacy is also reached from How to play.
 
 ## Super properties
 
@@ -78,8 +88,8 @@ A `beforeSend` hook adds these to every event, including the SDK's own lifecycle
 | `consent_marketing` | Always `false`, as on the website |
 | `consent_version` | `AnalyticsConsent.textVersion`, currently `1`, matching the website's `CONSENT_TEXT_VERSION` |
 
-`setConsent(_:)` changes `consent_analytics` for every later event and enables capture only for `.allowed`.
+`setConsent(_:)` changes `consent_analytics` for every later event and enables capture only for `.allowed`, so events that reach PostHog from the app always carry `consent_analytics: true`.
 
 ## Tests
 
-`Packages/Analytics/Tests` checks exact event names and property dictionaries, persistence, consent version changes, startup consent, immediate client updates, super properties and SDK configuration. `Packages/GameScreens/Tests` checks accepted guesses, silent restoration and failures, archive promotion and deduplication across reopening, and share completion. Tests send nothing to PostHog. Run them with `swift test --package-path Packages/Analytics` and `swift test --package-path Packages/GameScreens`.
+`Packages/Analytics/Tests` checks exact event names and property dictionaries, persistence, consent version changes, startup consent, immediate client updates, that the SDK and its stored identifier exist only while allowed, super properties and SDK configuration. `Packages/GameScreens/Tests` checks accepted guesses, silent restoration and failures, archive promotion and deduplication across reopening, and share completion. Tests send nothing to PostHog. Run them with `swift test --package-path Packages/Analytics` and `swift test --package-path Packages/GameScreens`.
