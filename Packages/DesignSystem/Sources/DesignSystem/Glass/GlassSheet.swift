@@ -22,6 +22,8 @@ extension View {
     ) -> some View {
         sheet(item: item) { item in
             content(item)
+                .reservedContent()
+                .clipShape(ConcentricRectangle())
                 .presentationDetents(detents(item))
                 .presentationDragIndicator(.visible)
         }

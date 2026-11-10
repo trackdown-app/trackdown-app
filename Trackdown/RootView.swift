@@ -17,20 +17,26 @@ struct RootView: View {
         @Bindable var model = model
         NavigationStack(path: $model.path) {
             PlayingView(model: model.playing, onNavigate: navigate)
+                .reservedContent()
+                .background { TrackdownColor.background.ignoresSafeArea() }
                 .navigationDestination(for: Route.self) { route in
-                    switch route {
-                    case .archive:
-                        ArchiveScreen(model: model.archive(), onSelect: select) {
-                            model.path.append(.chooseNetwork)
+                    Group {
+                        switch route {
+                        case .archive:
+                            ArchiveScreen(model: model.archive(), onSelect: select) {
+                                model.path.append(.chooseNetwork)
+                            }
+                        case .archivedPuzzle(let puzzle):
+                            ArchivedPuzzleView(model: model.playing(puzzle), onNavigate: navigate)
+                        case .chooseNetwork:
+                            ChooseNetworkScreen(
+                                model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
+                        case .privacy:
+                            PrivacyView(settings: model.analyticsSettings)
                         }
-                    case .archivedPuzzle(let puzzle):
-                        ArchivedPuzzleView(model: model.playing(puzzle), onNavigate: navigate)
-                    case .chooseNetwork:
-                        ChooseNetworkScreen(
-                            model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
-                    case .privacy:
-                        PrivacyView(settings: model.analyticsSettings)
                     }
+                    .reservedContent()
+                    .background { TrackdownColor.background.ignoresSafeArea() }
                 }
         }
         .glassSheet(item: $destination, detents: Self.detents(for:)) { destination in

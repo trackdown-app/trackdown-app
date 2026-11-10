@@ -9,6 +9,8 @@ extension View {
         // An answer changes `isPresented`; nothing else dismisses the sheet, so the binding never writes back.
         sheet(isPresented: .constant(isPresented)) {
             ConsentPrompt(onChoose: onChoose)
+                .reservedContent()
+                .clipShape(ConcentricRectangle())
         }
     }
 
@@ -17,16 +19,20 @@ extension View {
     public func consentToast(_ consent: Binding<AnalyticsConsent?>, onSettings: @escaping () -> Void) -> some View {
         overlay(alignment: .bottom) {
             if let choice = consent.wrappedValue {
-                ConsentToast(consent: choice, onSettings: onSettings)
-                    .padding(.horizontal, 16)
-                    // Clears the guess bar, as on the design canvas.
-                    .padding(.bottom, 72)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .task {
-                        try? await Task.sleep(for: .seconds(8))
-                        guard !Task.isCancelled else { return }
-                        consent.wrappedValue = nil
-                    }
+                VStack {
+                    Spacer(minLength: 0)
+                    ConsentToast(consent: choice, onSettings: onSettings)
+                }
+                .padding(.horizontal, 16)
+                // Clears the guess bar, as on the design canvas.
+                .padding(.bottom, 72)
+                .reservedContent()
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                .task {
+                    try? await Task.sleep(for: .seconds(8))
+                    guard !Task.isCancelled else { return }
+                    consent.wrappedValue = nil
+                }
             } else {
                 EmptyView()
             }
@@ -149,7 +155,7 @@ struct ConsentToast: View {
         .foregroundStyle(TrackdownColor.ink)
         .padding(.leading, 18)
         .padding([.vertical, .trailing], 10)
-        .glassEffect(.regular, in: .rect(cornerRadius: 26))
+        .glassEffect(.regular, in: ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
         .onAppear {
             AccessibilityNotification.Announcement(String(localized: status)).post()
         }

@@ -57,7 +57,7 @@ public struct PrivacyView: View {
             .toggleStyle(.switch)
             .tint(TrackdownColor.line1)
             .padding(20)
-            .background { RoundedRectangle(cornerRadius: 26).fill(TrackdownColor.surface) }
+            .background { ConcentricRectangle(corners: .concentric(minimum: .fixed(26))).fill(TrackdownColor.surface) }
             Group {
                 if settings.sharesUsageData {
                     Text(
@@ -113,7 +113,7 @@ private struct PrivacyExplanation: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background { RoundedRectangle(cornerRadius: 26).fill(TrackdownColor.surface) }
+        .background { ConcentricRectangle(corners: .concentric(minimum: .fixed(26))).fill(TrackdownColor.surface) }
     }
 }
 
