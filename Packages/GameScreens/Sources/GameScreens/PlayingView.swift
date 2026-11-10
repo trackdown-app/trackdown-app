@@ -98,6 +98,7 @@ extension ToolbarItemPlacement {
 private struct PlayingBoard: View {
     @Bindable var model: PlayingModel
     let onNavigate: (PlayingDestination) -> Void
+    @State private var scrollPosition = ScrollPosition(edge: .top)
 
     var body: some View {
         ScrollView {
@@ -124,6 +125,7 @@ private struct PlayingBoard: View {
             .readableWidth()
         }
         .scrollDismissesKeyboard(.interactively)
+        .scrollPosition($scrollPosition)
         .trackdownScrollEdges()
         .safeAreaBar(edge: .bottom) {
             bottomBar

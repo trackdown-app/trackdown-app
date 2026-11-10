@@ -63,7 +63,7 @@ public struct GuessBar: View {
             VStack(spacing: 12) {
                 if !suggestions.isEmpty {
                     SuggestionList(suggestions: suggestions, selection: $selection)
-                        .glassEffect(.regular, in: .rect(cornerRadius: 26))
+                        .glassEffect(.regular, in: ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
                         .glassEffectID("suggestions", in: glass)
                 }
                 barLayout {

@@ -10,6 +10,7 @@ public struct ArchiveView: View {
     private let model: ArchiveModel
     private let onSelect: (ArchiveRow.Action) -> Void
     private let onChooseNetwork: () -> Void
+    @State private var scrollPosition = ScrollPosition(edge: .top)
 
     /// - Parameters:
     ///   - model: The puzzles to list.
@@ -66,6 +67,7 @@ public struct ArchiveView: View {
                 .readableWidth()
             }
             .trackdownScrollEdges()
+            .scrollPosition($scrollPosition)
         }
     }
 
@@ -111,8 +113,8 @@ private struct MonthSection: View {
                     ArchiveRowView(row: row) { onSelect(row.action) }
                 }
             }
-            .background { RoundedRectangle(cornerRadius: 26).fill(TrackdownColor.surface) }
-            .clipShape(.rect(cornerRadius: 26))
+            .background { ConcentricRectangle(corners: .concentric(minimum: .fixed(26))).fill(TrackdownColor.surface) }
+            .clipShape(ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
         }
     }
 }

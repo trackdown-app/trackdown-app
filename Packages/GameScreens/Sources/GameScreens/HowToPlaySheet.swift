@@ -137,7 +137,7 @@ private struct HowToPlayExample: View {
             .foregroundStyle(TrackdownColor.muted)
         }
         .padding(20)
-        .background { RoundedRectangle(cornerRadius: 26).fill(TrackdownColor.surface) }
+        .background { ConcentricRectangle(corners: .concentric(minimum: .fixed(26))).fill(TrackdownColor.surface) }
         .backgroundStyle(TrackdownColor.surface)
     }
 }

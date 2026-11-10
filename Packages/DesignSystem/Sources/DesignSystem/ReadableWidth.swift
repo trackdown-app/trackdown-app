@@ -15,11 +15,12 @@ extension View {
 }
 
 private struct ReadableWidth: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ScaledMetric(relativeTo: .body) private var maxWidth: CGFloat = 640
 
     func body(content: Content) -> some View {
         content
-            .frame(maxWidth: maxWidth)
+            .frame(maxWidth: horizontalSizeClass == .compact ? .infinity : maxWidth)
             .frame(maxWidth: .infinity)
     }
 }

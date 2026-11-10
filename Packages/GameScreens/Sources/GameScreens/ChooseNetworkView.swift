@@ -146,8 +146,8 @@ private struct NetworkGroup<Content: View>: View {
                 }
             }
         }
-        .background { RoundedRectangle(cornerRadius: 26).fill(TrackdownColor.surface) }
-        .clipShape(.rect(cornerRadius: 26))
+        .background { ConcentricRectangle(corners: .concentric(minimum: .fixed(26))).fill(TrackdownColor.surface) }
+        .clipShape(ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
     }
 }
 
