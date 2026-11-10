@@ -63,6 +63,7 @@ public struct GuessBar: View {
             VStack(spacing: 12) {
                 if !suggestions.isEmpty {
                     SuggestionList(suggestions: suggestions, selection: $selection)
+                        .frame(height: 180)
                         .glassEffect(.regular, in: ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
                         .glassEffectID("suggestions", in: glass)
                 }
@@ -73,13 +74,13 @@ public struct GuessBar: View {
                 .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .animation(.smooth, value: suggestions.isEmpty)
+        .trackdownAnimation(value: suggestions.isEmpty)
     }
 
     private var field: some View {
         HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
-                .font(.body.weight(.semibold))
+                .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(TrackdownColor.muted)
                 .accessibilityHidden(true)
             TextField(text: $text, prompt: Text("Guess a station", bundle: .module)) {
@@ -129,14 +130,17 @@ struct SuggestionList: View {
     @Binding var selection: GuessSuggestion.ID?
 
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(suggestions) { suggestion in
-                SuggestionRow(suggestion: suggestion, isSelected: suggestion.id == selection) {
-                    selection = suggestion.id
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(suggestions) { suggestion in
+                    SuggestionRow(suggestion: suggestion, isSelected: suggestion.id == selection) {
+                        selection = suggestion.id
+                    }
                 }
             }
+            .padding(8)
         }
-        .padding(8)
+        .scrollBounceBehavior(.basedOnSize)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("Matching stations", bundle: .module))
     }
@@ -148,32 +152,37 @@ private struct SuggestionRow: View {
     let action: () -> Void
 
     @Environment(\.colorSchemeContrast) private var contrast
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .body) private var minHeight: CGFloat = 50
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
-                Text(suggestion.attributedName)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                if let detail = suggestion.detail {
-                    Text(verbatim: detail)
-                        .font(TrackdownFont.footnote)
-                        .foregroundStyle(TrackdownColor.muted)
+            (dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+                : AnyLayout(HStackLayout(spacing: 12))) {
+                    Text(suggestion.attributedName)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if let detail = suggestion.detail {
+                        Text(verbatim: detail)
+                            .font(TrackdownFont.footnote)
+                            .foregroundStyle(TrackdownColor.muted)
+                    }
                 }
-            }
-            .multilineTextAlignment(.leading)
-            .padding(.horizontal, 14)
-            .frame(minHeight: minHeight)
-            .contentShape(.rect(cornerRadius: 18))
-            .background {
-                if isSelected {
-                    // A highlight on the row, not glass: rows are content inside the list's glass.
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(TrackdownColor.ink.opacity(contrast == .increased ? 0.16 : 0.08))
-                } else {
-                    EmptyView()
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
+                .padding(.horizontal, 14)
+                .frame(minHeight: minHeight)
+                .contentShape(.rect(cornerRadius: 18))
+                .background {
+                    if isSelected {
+                        // A highlight on the row, not glass: rows are content inside the list's glass.
+                        RoundedRectangle(cornerRadius: 18)
+                            .fill(TrackdownColor.ink.opacity(contrast == .increased ? 0.16 : 0.08))
+                    } else {
+                        EmptyView()
+                    }
                 }
-            }
         }
         .buttonStyle(.plain)
         .foregroundStyle(TrackdownColor.ink)

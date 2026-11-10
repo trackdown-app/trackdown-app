@@ -37,7 +37,7 @@ extension View {
                 EmptyView()
             }
         }
-        .animation(.smooth, value: consent.wrappedValue)
+        .trackdownAnimation(value: consent.wrappedValue)
     }
 }
 
@@ -60,7 +60,9 @@ struct ConsentPrompt: View {
                 Text(
                     "Help improve Trackdown?", bundle: .module, comment: "Title of the first-launch usage data prompt."
                 )
-                .font(TrackdownFont.title)
+                .font(TrackdownFont.title2)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(2)
                 .foregroundStyle(TrackdownColor.ink)
                 .accessibilityAddTraits(.isHeader)
                 Text(

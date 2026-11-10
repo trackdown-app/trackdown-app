@@ -30,6 +30,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
       <Testables>
+         <TestableReference skipped = "NO">
+            <BuildableReference BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7D0000000000000000000E30"
+               BuildableName = "TrackdownUITests.xctest"
+               BlueprintName = "TrackdownUITests"
+               ReferencedContainer = "container:Trackdown.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference

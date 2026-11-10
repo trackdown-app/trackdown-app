@@ -9,6 +9,7 @@ import SwiftUI
 public struct PlayingView: View {
     private let model: PlayingModel
     private let onNavigate: (PlayingDestination) -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// - Parameters:
     ///   - model: The game to play.
@@ -53,7 +54,9 @@ public struct PlayingView: View {
         // A past puzzle belongs to its network; the back button takes the pill's place.
         if model.puzzle == .today {
             ToolbarItem(placement: .leadingBar) {
-                NetworkPill(code: model.network.code, name: model.network.name) {
+                NetworkPill(
+                    code: model.network.code, name: model.network.name, compact: dynamicTypeSize.isAccessibilitySize
+                ) {
                     onNavigate(.chooseNetwork)
                 }
                 // The bar proposes an icon-sized width; the pill needs room for the network's name.
@@ -101,33 +104,35 @@ private struct PlayingBoard: View {
     @State private var scrollPosition = ScrollPosition(edge: .top)
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                if let game = model.game {
-                    PlayingHeader(
-                        title: model.date?.title(),
-                        puzzle: game.key.number,
-                        currentGuess: model.currentGuess,
-                        maxGuesses: game.maxGuesses,
-                        used: game.guesses.count,
-                        isPlaying: game.status == .playing
-                    )
-                } else {
-                    EmptyView()
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    if let game = model.game {
+                        PlayingHeader(
+                            title: model.date?.title(),
+                            puzzle: game.key.number,
+                            currentGuess: model.currentGuess,
+                            maxGuesses: game.maxGuesses,
+                            used: game.guesses.count,
+                            isPlaying: game.status == .playing
+                        )
+                    } else {
+                        EmptyView()
+                    }
+                    MysteryStationMarker(station: model.revealedStation)
+                        .padding(.top, 24)
+                        .padding(.bottom, 8)
+                    GuessList(rows: model.rows, stationName: model.name(of:))
                 }
-                MysteryStationMarker(station: model.revealedStation)
-                    .padding(.top, 24)
-                    .padding(.bottom, 8)
-                GuessList(rows: model.rows, stationName: model.name(of:))
+                .padding(.horizontal, 16)
+                .padding(.bottom, 24)
+                .readableWidth()
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 24)
-            .readableWidth()
-        }
-        .scrollDismissesKeyboard(.interactively)
-        .scrollPosition($scrollPosition)
-        .trackdownScrollEdges()
-        .safeAreaBar(edge: .bottom) {
+            .scrollDismissesKeyboard(.interactively)
+            .scrollPosition($scrollPosition)
+            .trackdownScrollEdges()
+            .frame(minHeight: 0)
+            .clipped()
             bottomBar
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
@@ -166,7 +171,7 @@ private struct PlayingBoard: View {
                 }
                 .disabled(!model.canGuess || model.isSubmitting)
             }
-            .animation(.smooth, value: model.message)
+            .trackdownAnimation(value: model.message)
         }
     }
 }
@@ -196,6 +201,7 @@ private struct GuessRowView: View {
     let stationName: (StationCode) -> String
 
     @State private var isExpanded = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ScaledMetric(relativeTo: .title2) private var numberWidth: CGFloat = 20
 
     var body: some View {
@@ -204,7 +210,7 @@ private struct GuessRowView: View {
                 summary
             } else {
                 Button {
-                    withAnimation(.smooth) { isExpanded.toggle() }
+                    withAnimation(reduceMotion ? nil : .smooth) { isExpanded.toggle() }
                 } label: {
                     summary.contentShape(.rect)
                 }

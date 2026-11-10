@@ -45,25 +45,24 @@ struct RecordView: View {
     private static let placeholderBars = DistributionBar.bars(for: placeholder, highlighted: nil)
 }
 
-/// Played, Won, Streak and Best, between two hairlines. Two rows of two at large text sizes.
+/// Played, Won, Streak and Best, between two hairlines. One column at accessibility text sizes.
 private struct StatisticsRow: View {
     let statistics: Statistics
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .top, spacing: 8) {
-                ForEach(items, id: \.id) { item in
-                    StatisticView(item: item)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(items, id: \.id) { item in
+                        StatisticView(item: item)
+                    }
                 }
-            }
-            Grid(alignment: .leading, horizontalSpacing: 8, verticalSpacing: 12) {
-                GridRow {
-                    StatisticView(item: items[0])
-                    StatisticView(item: items[1])
-                }
-                GridRow {
-                    StatisticView(item: items[2])
-                    StatisticView(item: items[3])
+            } else {
+                HStack(alignment: .top, spacing: 8) {
+                    ForEach(items, id: \.id) { item in
+                        StatisticView(item: item)
+                    }
                 }
             }
         }
@@ -110,7 +109,7 @@ private struct StatisticView: View {
                 .font(TrackdownFont.statistic)
                 .foregroundStyle(TrackdownColor.ink)
         }
-        .lineLimit(1)
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
     }
@@ -140,8 +139,6 @@ private struct DistributionRow: View {
     let bar: DistributionBar
     let labelWidth: CGFloat
 
-    @State private var width: CGFloat = 0
-
     var body: some View {
         HStack(spacing: 10) {
             label
@@ -149,21 +146,19 @@ private struct DistributionRow: View {
                 .foregroundStyle(TrackdownColor.muted)
                 .frame(minWidth: labelWidth, alignment: .leading)
             HStack(spacing: 8) {
-                Capsule()
-                    .fill(bar.isHighlighted ? TrackdownColor.line1 : TrackdownColor.empty)
-                    // The fullest bar takes 80 % of the row, leaving room for its count; an empty one keeps a stub.
-                    .frame(width: max(width * 0.8 * bar.fraction, width * 0.02), height: 8)
+                GeometryReader { geometry in
+                    Capsule()
+                        .fill(bar.isHighlighted ? TrackdownColor.line1 : TrackdownColor.empty)
+                        .frame(width: max(geometry.size.width * bar.fraction, geometry.size.width * 0.02))
+                }
+                .frame(height: 8)
                 Text(bar.count, format: .number)
                     .font(TrackdownFont.captionEmphasized)
                     .monospacedDigit()
                     .foregroundStyle(TrackdownColor.ink)
+                    .fixedSize()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .onGeometryChange(for: CGFloat.self) {
-                $0.size.width
-            } action: {
-                width = $0
-            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
@@ -211,6 +206,7 @@ struct RetryRow: View {
             Button(action: retry) {
                 Text("Try again", bundle: .module, comment: "Retries loading the puzzle.")
                     .font(TrackdownFont.headline)
+                    .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.glass)
             .buttonBorderShape(.capsule)

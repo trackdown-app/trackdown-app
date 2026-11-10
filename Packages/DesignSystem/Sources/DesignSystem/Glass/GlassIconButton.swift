@@ -51,7 +51,7 @@ public struct GlassIconButton: View {
     private let action: () -> Void
 
     @Environment(\.isInGlassIconButtonGroup) private var isGrouped
-    @ScaledMetric(relativeTo: .body) private var size: CGFloat = 44
+    private let size: CGFloat = 44
 
     public init(_ icon: TrackdownIcon, action: @escaping () -> Void) {
         self.icon = icon
@@ -62,7 +62,7 @@ public struct GlassIconButton: View {
         Button(action: action) {
             icon.label
                 .labelStyle(.iconOnly)
-                .font(.body.weight(.semibold))
+                .font(.system(size: 17, weight: .semibold))
                 .frame(width: size, height: size)
                 .contentShape(.circle)
         }

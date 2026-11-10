@@ -27,37 +27,38 @@ public struct ResultsView: View {
     }
 
     public var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                GlassSheetHeader {
-                    ResultsHeadline(outcome: model.outcome, station: model.stationName, isFailed: isRevealFailed)
-                }
-                if case .failed = model.reveal {
-                    RetryRow(
-                        message: Text(
-                            "The answer didn't load.", bundle: .module,
-                            comment: "On the results sheet when the mystery station could not be loaded.")
-                    ) {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    GlassSheetHeader {
+                        ResultsHeadline(outcome: model.outcome, station: model.stationName, isFailed: isRevealFailed)
+                    }
+                    if case .failed = model.reveal {
+                        RetryRow(
+                            message: Text(
+                                "The answer didn't load.", bundle: .module,
+                                comment: "On the results sheet when the mystery station could not be loaded.")
+                        ) {
+                            Task { await model.load() }
+                        }
+                    } else {
+                        EmptyView()
+                    }
+                    if let closest = model.closestGuess {
+                        ClosestGuessText(closest: closest)
+                    } else {
+                        EmptyView()
+                    }
+                    RecordView(statistics: model.statistics, bars: model.distribution) {
                         Task { await model.load() }
                     }
-                } else {
-                    EmptyView()
                 }
-                if let closest = model.closestGuess {
-                    ClosestGuessText(closest: closest)
-                } else {
-                    EmptyView()
-                }
-                RecordView(statistics: model.statistics, bars: model.distribution) {
-                    Task { await model.load() }
-                }
+                .padding(.horizontal, 24)
+                .padding(.top, 20)
+                .padding(.bottom, 16)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 20)
-            .padding(.bottom, 16)
-        }
-        .scrollBounceBehavior(.basedOnSize)
-        .safeAreaBar(edge: .bottom) {
+            .scrollBounceBehavior(.basedOnSize)
+            .clipped()
             ResultsActions(model: model, onOlderPuzzles: onOlderPuzzles)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 8)
@@ -143,6 +144,12 @@ private struct ClosestGuessText: View {
 private struct ResultsActions: View {
     let model: ResultsModel
     let onOlderPuzzles: () -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var layout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
+    }
 
     #if os(iOS)
         @State private var share: ResultShare?
@@ -151,7 +158,7 @@ private struct ResultsActions: View {
     var body: some View {
         VStack(spacing: 12) {
             GlassEffectContainer(spacing: 10) {
-                HStack(spacing: 10) {
+                layout {
                     shareButton
                     if model.outcome == .missed {
                         Button(action: onOlderPuzzles) {
