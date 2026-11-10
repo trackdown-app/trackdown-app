@@ -116,7 +116,8 @@ private struct PrivacyExplanation: View {
     }
 }
 
-private enum PrivacyDocument: String, Identifiable {
+/// A legal page on trackdown.nl, in the player's language.
+enum PrivacyDocument: String, Identifiable {
     case privacyPolicy
     case termsOfUse
 
@@ -132,7 +133,7 @@ private enum PrivacyDocument: String, Identifiable {
 }
 
 #if os(iOS)
-    private struct PrivacySafariView: UIViewControllerRepresentable {
+    struct PrivacySafariView: UIViewControllerRepresentable {
         let url: URL
 
         func makeUIViewController(context: Context) -> SFSafariViewController {

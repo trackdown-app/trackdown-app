@@ -91,6 +91,48 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown is een hobbyproject zonder advertenties. Anonieme gebruiksgegevens helpen me begrijpen hoe mensen spelen en waar ze vastlopen, zodat ik het spel kan verbeteren. Er wordt niets verkocht. Als je dit uitzet, werkt het spel precies hetzelfde." } }
       }
     },
+    "Help improve Trackdown?" : {
+      "comment" : "Title of the first-launch usage data prompt.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown helpen verbeteren?" } }
+      }
+    },
+    "Trackdown is a hobby project without ads. With your OK, the app shares anonymous usage data with PostHog, like how many guesses a puzzle takes. Nothing is sold. Say no and the game works exactly the same." : {
+      "comment" : "Body of the first-launch usage data prompt.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown is een hobbyproject zonder advertenties. Als jij het goed vindt, deelt de app anonieme gebruiksgegevens met PostHog, zoals hoeveel gokken een puzzel kost. Er wordt niets verkocht. Zeg je nee, dan werkt het spel precies hetzelfde." } }
+      }
+    },
+    "Allow" : {
+      "comment" : "Allows sharing anonymous usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Toestaan" } }
+      }
+    },
+    "Don't allow" : {
+      "comment" : "Declines sharing anonymous usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Niet toestaan" } }
+      }
+    },
+    "Usage data on. Thanks for helping." : {
+      "comment" : "Toast after the player allows usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens aan. Bedankt voor je hulp." } }
+      }
+    },
+    "Usage data off." : {
+      "comment" : "Toast after the player declines usage data.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens uit." } }
+      }
+    },
+    "Settings" : {
+      "comment" : "Link in the usage data toast that opens Privacy settings.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Instellingen" } }
+      }
+    },
     "Privacy policy" : {
       "comment" : "Opens the Trackdown privacy policy in Safari.",
       "localizations" : {

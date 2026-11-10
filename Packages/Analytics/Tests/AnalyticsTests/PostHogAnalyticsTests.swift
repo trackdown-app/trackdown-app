@@ -82,9 +82,117 @@ struct PostHogAnalyticsTests {
         #expect(store.current.consent == .allowed)
     }
 
+    @Test(
+        "Runs no SDK and keeps no identifier until the player allows",
+        arguments: [AnalyticsConsent.unanswered, .declined])
+    func anonymousUntilAllowed(consent: AnalyticsConsent) throws {
+        let harness = try Harness(consent: consent, leftover: true)
+
+        harness.analytics.capture(.networkNotifyRequested(.be))
+
+        #expect(!harness.analytics.isRunning)
+        #expect(harness.engines.isEmpty)
+        #expect(!harness.hasStoredIdentity)
+    }
+
+    @Test("Allowing starts the SDK once and sends later events through it")
+    func allowStarts() throws {
+        let harness = try Harness(consent: .unanswered)
+
+        harness.analytics.setConsent(.allowed)
+        harness.analytics.setConsent(.allowed)
+        harness.analytics.capture(.networkNotifyRequested(.be))
+
+        #expect(harness.engines.count == 1)
+        #expect(harness.engines.first?.events == ["network_notify_requested"])
+        #expect(harness.consentSeenAtStart == [.allowed])
+    }
+
+    @Test("A saved Allow starts the SDK at launch and keeps its identifier")
+    func allowedAtLaunch() throws {
+        let harness = try Harness(consent: .allowed, leftover: true)
+
+        #expect(harness.analytics.isRunning)
+        #expect(harness.hasStoredIdentity)
+    }
+
+    @Test("Withdrawing stops the SDK and removes its identifier")
+    func withdraw() throws {
+        let harness = try Harness(consent: .allowed, leftover: true)
+
+        harness.analytics.setConsent(.declined)
+        harness.analytics.capture(.networkNotifyRequested(.be))
+
+        #expect(!harness.analytics.isRunning)
+        #expect(harness.engines.first?.isStopped == true)
+        #expect(harness.engines.first?.events.isEmpty == true)
+        #expect(!harness.hasStoredIdentity)
+    }
+
+    @Test("The SDK's files live under Application Support, by bundle id and project token")
+    func storageDirectory() throws {
+        let support = try #require(URL(string: "file:///support/"))
+
+        let directory = PostHogAnalytics.sdkStorageDirectory(
+            projectToken: "phc_test", bundleIdentifier: "nl.trackdown.Trackdown", applicationSupport: support)
+
+        #expect(directory?.path == "/support/nl.trackdown.Trackdown/phc_test")
+        #expect(
+            PostHogAnalytics.sdkStorageDirectory(
+                projectToken: "phc_test", bundleIdentifier: nil, applicationSupport: support) == nil)
+    }
+
     @Test("Starts opted out unless the player allowed usage data", arguments: AnalyticsConsent.allCases)
     func startupConsent(consent: AnalyticsConsent) throws {
         let (config, _) = try makeConfig(consent: consent)
         #expect(config.optOut == (consent != .allowed))
+    }
+}
+
+/// A `PostHogAnalytics` with a fake SDK and a temporary storage directory.
+@MainActor
+private final class Harness {
+    private(set) var engines: [FakeEngine] = []
+    private(set) var consentSeenAtStart: [AnalyticsConsent] = []
+    private(set) var analytics: PostHogAnalytics!
+    private let directory: URL
+
+    /// - Parameter leftover: Whether an earlier run left an anonymous id on disk.
+    init(consent: AnalyticsConsent, leftover: Bool = false) throws {
+        directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("PostHogAnalyticsTests.\(UUID().uuidString)", isDirectory: true)
+        if leftover {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            try Data("id".utf8).write(to: directory.appendingPathComponent("posthog.anonymousId"))
+        }
+        let host = try #require(URL(string: "https://t.trackdown.nl"))
+        analytics = PostHogAnalytics(
+            configuration: AnalyticsConfiguration(projectToken: "phc_test", host: host),
+            consent: consent,
+            storageDirectory: directory
+        ) { [unowned self] superProperties in
+            consentSeenAtStart.append(superProperties.current.consent)
+            let engine = FakeEngine()
+            engines.append(engine)
+            return engine
+        }
+    }
+
+    var hasStoredIdentity: Bool {
+        FileManager.default.fileExists(atPath: directory.path)
+    }
+}
+
+@MainActor
+private final class FakeEngine: AnalyticsEngine {
+    private(set) var events: [String] = []
+    private(set) var isStopped = false
+
+    func capture(_ name: String, properties: [String: Any]) {
+        events.append(name)
+    }
+
+    func stop() {
+        isStopped = true
     }
 }
