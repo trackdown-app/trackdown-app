@@ -24,11 +24,25 @@ struct TripLineLayout: Layout {
     var pieces: [TripLinePiece]
     var metrics: TripLineMetrics
 
-    /// Width used when the parent proposes none, such as inside a horizontal scroll view.
-    static let idealWidth: CGFloat = 346
-
+    /// Takes the width the parent proposes. With none, such as inside a horizontal scroll view, it takes the narrowest
+    /// width at which every ride shows its full label.
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        CGSize(width: proposal.width ?? Self.idealWidth, height: metrics.height)
+        let width =
+            proposal.width
+            ?? TripLineGeometry.idealWidth(
+                pieces: pieces, fullLabelWidths: fullLabelWidths(subviews: subviews), metrics: metrics)
+        return CGSize(width: width, height: metrics.height)
+    }
+
+    /// The ideal width of each ride's full label, by ride index.
+    private func fullLabelWidths(subviews: Subviews) -> [CGFloat] {
+        var widths: [Int: CGFloat] = [:]
+        for subview in subviews {
+            guard case .label(let index, .full) = subview[TripLinePart.self] else { continue }
+            widths[index] = subview.sizeThatFits(.unspecified).width
+        }
+        let rideCount = pieces.filter { if case .ride = $0 { true } else { false } }.count
+        return (0..<rideCount).map { widths[$0] ?? 0 }
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {

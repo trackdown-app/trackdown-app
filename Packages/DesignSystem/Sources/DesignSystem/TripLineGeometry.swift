@@ -98,6 +98,56 @@ struct TripLineGeometry: Sendable, Hashable {
         return min(1, max(minimumFraction, fraction))
     }
 
+    /// The narrowest width at which every ride has room for its full label, for when the parent proposes no width,
+    /// such as inside a horizontal scroll view. Every screen proposes its own width instead, so lines of different
+    /// trips stay comparable.
+    ///
+    /// - Parameter fullLabelWidths: The width of each ride's full label, by ride index.
+    static func idealWidth(pieces: [TripLinePiece], fullLabelWidths: [CGFloat], metrics: TripLineMetrics) -> CGFloat {
+        let rideMinutes = pieces.compactMap { piece -> Int? in
+            if case .ride(let minutes) = piece { return minutes }
+            return nil
+        }
+        let changeCount = pieces.count - rideMinutes.count
+        let rideSum = rideMinutes.reduce(0, +)
+
+        // Each ride needs its label and padding, plus what the dot, a ring or the bar covers at either end.
+        var rideWidth: CGFloat = 0
+        var rideIndex = 0
+        for (index, piece) in pieces.enumerated() {
+            guard case .ride(let minutes) = piece else { continue }
+            defer { rideIndex += 1 }
+            let before: TripLinePiece? = index > 0 ? pieces[index - 1] : nil
+            let after: TripLinePiece? = pieces.indices.contains(index + 1) ? pieces[index + 1] : nil
+            let leading: CGFloat =
+                switch before {
+                case nil: metrics.dotOverlap
+                case .change: metrics.ringOverlap
+                case .ride: 0
+                }
+            let trailing: CGFloat =
+                switch after {
+                case nil: metrics.barWidth / 2
+                case .change: metrics.ringOverlap
+                case .ride: 0
+                }
+            let label = fullLabelWidths.indices.contains(rideIndex) ? fullLabelWidths[rideIndex] : 0
+            let needed = label + 2 * metrics.labelPadding + leading + trailing
+            // A ride gets its share of the riding time, so the total must make this ride's share large enough.
+            let total =
+                rideSum > 0
+                ? needed * CGFloat(rideSum) / CGFloat(max(1, minutes))
+                : needed * CGFloat(rideMinutes.count)
+            rideWidth = max(rideWidth, total)
+        }
+
+        let dotAdvance = metrics.lineHeight - metrics.dotOverlap
+        let ringAdvance = metrics.ringDiameter - 2 * metrics.ringOverlap
+        let lineWidth = rideWidth + dotAdvance + CGFloat(changeCount) * ringAdvance
+        let trackWidth = lineWidth / lineFraction(totalMinutes: pieces.reduce(0) { $0 + $1.minutes })
+        return (trackWidth + metrics.barWidth / 2).rounded(.up)
+    }
+
     init(pieces: [TripLinePiece], width: CGFloat, metrics: TripLineMetrics) {
         let midY = metrics.height / 2
         let trackWidth = max(0, width - metrics.barWidth / 2)

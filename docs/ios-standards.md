@@ -139,6 +139,8 @@ In SDK 27, SwiftUI's result builders (including `@ViewBuilder`) are unified unde
 - Never use `UIScreen.main` (or any `UIScreen` bounds) to size or branch layout. It is wrong in multi-window and on iPhone Duo.
 - Never check device orientation (`UIDevice.current.orientation`, interface orientation, "is landscape" from width > height) to choose a layout. On iPhone Duo the inner display ignores supported orientations, so orientation says nothing reliable about the available space. Ask for the size class or the actual size instead.
 - Never branch on device model or screen size constants.
+- Give a full-screen screen's content `readableWidth()` (from `DesignSystem`), inside its scroll view and on its floating bar, so it stays one readable column on the iPhone Duo inner display and in landscape.
+- At accessibility text sizes, stack side-by-side text and controls (`dynamicTypeSize.isAccessibilitySize` with `AnyLayout`) instead of squeezing them. Drawings such as the trip line may stop growing at `.xxxLarge` with `.dynamicTypeSize(...)`; the text around them keeps scaling.
 - Respect safe areas; use `safeAreaInset` / `safeAreaPadding` instead of hard-coded insets.
 - Support Dynamic Type up to accessibility sizes. Use text styles (`.font(.body)`) and `DesignSystem` tokens, not fixed point sizes; use `@ScaledMetric` for custom dimensions.
 

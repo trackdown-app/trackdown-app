@@ -30,6 +30,7 @@ public struct PrivacyView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
+            .readableWidth()
         }
         .trackdownScrollEdges()
         .background { TrackdownColor.background.ignoresSafeArea() }

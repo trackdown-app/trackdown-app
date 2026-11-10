@@ -25,6 +25,33 @@ struct TripLineWidthTests {
         #expect(geometry.bar.width == metrics.barWidth)
     }
 
+    @Test(
+        "Without a proposed width, the line is just wide enough for every full label",
+        arguments: [
+            [TripLinePiece.ride(minutes: 13)],
+            [.ride(minutes: 122), .change(minutes: 6), .ride(minutes: 17)],
+            [.ride(minutes: 58), .change(minutes: 4), .ride(minutes: 41), .change(minutes: 7), .ride(minutes: 22)],
+            [.ride(minutes: 30), .ride(minutes: 10)],
+        ])
+    func idealWidth(pieces: [TripLinePiece]) {
+        let metrics = TripLineMetrics().scaled(by: 1.4)
+        let rideCount = pieces.filter { if case .ride = $0 { true } else { false } }.count
+        let labels = (0..<rideCount).map { CGFloat(48 + 6 * $0) }
+        let width = TripLineGeometry.idealWidth(pieces: pieces, fullLabelWidths: labels, metrics: metrics)
+        let geometry = TripLineGeometry(pieces: pieces, width: width, metrics: metrics)
+        for (ride, label) in zip(geometry.rides, labels) {
+            let fit = TripLineLabelFit.choose(
+                full: label, short: 0, available: ride.visible.width, padding: metrics.labelPadding)
+            #expect(fit == .full)
+        }
+        // And no wider than it needs to be: one point less leaves some label without room.
+        let narrower = TripLineGeometry(pieces: pieces, width: width - 1, metrics: metrics)
+        let allFit = zip(narrower.rides, labels).allSatisfy { ride, label in
+            label + 2 * metrics.labelPadding <= ride.visible.width
+        }
+        #expect(!allFit)
+    }
+
     @Test("A short trip still gets 14 % of the track, right-aligned")
     func shortTrip() {
         let metrics = TripLineMetrics()

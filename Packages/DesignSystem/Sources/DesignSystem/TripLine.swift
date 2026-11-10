@@ -21,7 +21,10 @@ public struct TripLine: View {
     private let changeNames: [String?]
 
     @ScaledMetric(relativeTo: .caption2) private var scale: CGFloat = 1
-    @Environment(\.backgroundStyle) private var backgroundStyle
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// The largest text size the track follows.
+    static let largestTrackSize = DynamicTypeSize.xxxLarge
 
     /// - Parameters:
     ///   - station: The guessed station's name.
@@ -39,14 +42,23 @@ public struct TripLine: View {
     private var metrics: TripLineMetrics { TripLineMetrics().scaled(by: scale) }
     private var totalMinutes: Int { steps.reduce(0) { $0 + $1.minutes } }
     private var summary: TripSummary { TripSummary(changeNames: changeNames) }
+    private var isAccessibilitySize: Bool { dynamicTypeSize.isAccessibilitySize }
+
+    /// The station and the trip time side by side, or the time under the station at accessibility sizes, where side
+    /// by side would break the name into slivers.
+    private var headingLayout: AnyLayout {
+        isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
+            : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 12))
+    }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             VStack(alignment: .leading, spacing: 4) {
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                headingLayout {
                     Text(station)
                         .font(TrackdownFont.title2)
-                    Spacer(minLength: 0)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     Text(totalMinutes.formatted(.tripDuration))
                         .font(TrackdownFont.time)
                 }
@@ -54,11 +66,13 @@ public struct TripLine: View {
                     .font(TrackdownFont.footnote)
                     .foregroundStyle(TrackdownColor.muted)
             }
-            // Keeps the text clear of the mystery-station bar.
-            .padding(.trailing, metrics.barWidth + 12 * scale)
+            // Keeps the text clear of the mystery-station bar. At accessibility sizes the text needs the full width.
+            .padding(.trailing, isAccessibilitySize ? 0 : metrics.barWidth + 12 * scale)
 
-            line
-                .padding(.vertical, 4 * scale)
+            TripTrack(pieces: pieces, rides: rides, changeNames: changeNames)
+                // The track is a drawing: past this size its rings and bar would crowd out the rides. The text above
+                // keeps growing.
+                .dynamicTypeSize(...Self.largestTrackSize)
         }
         .foregroundStyle(TrackdownColor.ink)
         .accessibilityElement(children: .ignore)
@@ -71,7 +85,35 @@ public struct TripLine: View {
                 station, totalMinutes.formatted(.spokenTripDuration), summary.spokenText))
     }
 
-    private var line: some View {
+    private var pieces: [TripLinePiece] {
+        steps.map { step in
+            switch step {
+            case .ride(_, let minutes): .ride(minutes: minutes)
+            case .change(_, let minutes): .change(minutes: minutes)
+            }
+        }
+    }
+
+    private var rides: [(train: TrainType, minutes: Int)] {
+        steps.compactMap { step in
+            guard case .ride(let train, let minutes) = step else { return nil }
+            return (train, minutes)
+        }
+    }
+}
+
+/// The drawn line of a ``TripLine``: dot, ride segments with their labels, change rings and the mystery-station bar.
+private struct TripTrack: View {
+    let pieces: [TripLinePiece]
+    let rides: [(train: TrainType, minutes: Int)]
+    let changeNames: [String?]
+
+    @ScaledMetric(relativeTo: .caption2) private var scale: CGFloat = 1
+    @Environment(\.backgroundStyle) private var backgroundStyle
+
+    private var metrics: TripLineMetrics { TripLineMetrics().scaled(by: scale) }
+
+    var body: some View {
         TripLineLayout(pieces: pieces, metrics: metrics) {
             ForEach(rides.indices, id: \.self) { index in
                 Rectangle()
@@ -103,22 +145,7 @@ public struct TripLine: View {
                 .background { Capsule().fill(TrackdownColor.surface) }
                 .layoutValue(key: TripLinePart.self, value: .bar)
         }
-    }
-
-    private var pieces: [TripLinePiece] {
-        steps.map { step in
-            switch step {
-            case .ride(_, let minutes): .ride(minutes: minutes)
-            case .change(_, let minutes): .change(minutes: minutes)
-            }
-        }
-    }
-
-    private var rides: [(train: TrainType, minutes: Int)] {
-        steps.compactMap { step in
-            guard case .ride(let train, let minutes) = step else { return nil }
-            return (train, minutes)
-        }
+        .padding(.vertical, 4 * scale)
     }
 }
 
