@@ -121,6 +121,7 @@ private struct PlayingBoard: View {
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
+            .readableWidth()
         }
         .scrollDismissesKeyboard(.interactively)
         .trackdownScrollEdges()
@@ -128,6 +129,7 @@ private struct PlayingBoard: View {
             bottomBar
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
+                .readableWidth()
         }
     }
 

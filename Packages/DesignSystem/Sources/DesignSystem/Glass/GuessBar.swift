@@ -23,6 +23,16 @@ public struct GuessBar: View {
 
     @Namespace private var glass
     @ScaledMetric(relativeTo: .body) private var height: CGFloat = 56
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// At accessibility text sizes the field and the button each get the full width, one above the other: side by side
+    /// the field has no room left for what the player types and "Guess" breaks over two lines.
+    private var isStacked: Bool { dynamicTypeSize.isAccessibilitySize }
+    private static let stackedMinHeight: CGFloat = 56
+
+    private var barLayout: AnyLayout {
+        isStacked ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
+    }
 
     /// - Parameters:
     ///   - text: What the player has typed.
@@ -56,7 +66,7 @@ public struct GuessBar: View {
                         .glassEffect(.regular, in: .rect(cornerRadius: 26))
                         .glassEffectID("suggestions", in: glass)
                 }
-                HStack(spacing: 10) {
+                barLayout {
                     field
                     guessButton
                 }
@@ -84,7 +94,10 @@ public struct GuessBar: View {
             .onKeyPress(.upArrow) { moveSelection(by: -1) }
         }
         .padding(.horizontal, 18)
-        .frame(minHeight: height, maxHeight: .infinity)
+        // Stacked, the field has the full width and only needs to be as tall as its text: the scaled height would
+        // take a quarter of a small screen.
+        .padding(.vertical, isStacked ? 12 : 0)
+        .frame(minHeight: isStacked ? Self.stackedMinHeight : height, maxHeight: .infinity)
         .glassEffect(.regular.interactive(), in: .capsule)
         .glassEffectID("field", in: glass)
     }
@@ -94,7 +107,7 @@ public struct GuessBar: View {
             Text("Guess", bundle: .module)
                 .font(TrackdownFont.headline)
                 .padding(.horizontal, 6)
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: isStacked ? .infinity : nil, maxHeight: .infinity)
         }
         .buttonStyle(.glassProminent)
         .buttonBorderShape(.capsule)
