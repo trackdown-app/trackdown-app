@@ -20,7 +20,7 @@ extension View {
                 ConsentToast(consent: choice, onSettings: onSettings)
                     .padding(.horizontal, 16)
                     // Clears the guess bar, as on the design canvas.
-                    .padding(.bottom, 68)
+                    .padding(.bottom, 72)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                     .task {
                         try? await Task.sleep(for: .seconds(8))
@@ -79,7 +79,8 @@ struct ConsentPrompt: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
             .padding(.top, 28)
-            .padding(.bottom, 24)
+            // The sheet adds the bottom safe area below this.
+            .padding(.bottom, 4)
             .onGeometryChange(for: CGFloat.self) {
                 $0.size.height
             } action: {
@@ -108,7 +109,6 @@ struct ConsentPrompt: View {
             }
             .buttonStyle(.glassProminent)
             .buttonBorderShape(.capsule)
-            .controlSize(.large)
             .tint(TrackdownColor.ink)
             .foregroundStyle(TrackdownColor.background)
             Button {
