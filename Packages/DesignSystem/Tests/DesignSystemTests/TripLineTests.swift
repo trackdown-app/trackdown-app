@@ -138,7 +138,15 @@ struct TripDurationTests {
         "Matches the web's format",
         arguments: [(145, "2h 25m"), (122, "2h 02m"), (17, "17m"), (60, "1h 00m"), (0, "0m"), (605, "10h 05m")])
     func compact(minutes: Int, expected: String) {
-        #expect(minutes.formatted(.tripDuration) == expected)
+        #expect(minutes.formatted(.tripDuration.locale(Locale(identifier: "en"))) == expected)
+    }
+
+    @Test("Dutch compact times use Dutch hour units")
+    func dutchCompact() {
+        let style = TripDurationFormatStyle(locale: Locale(identifier: "nl_NL"))
+        #expect(style.format(122) == "2u 02m")
+        #expect(style.format(17) == "17m")
+        #expect(style.format(0) == "0m")
     }
 
     @Test("Spells the units out for VoiceOver")

@@ -2,7 +2,7 @@ import Foundation
 
 /// Formats a trip time in minutes the way trackdown.nl does: `2h 25m`, `2h 02m`, `17m`.
 ///
-/// The compact form is the same in every language, like the web, so it is not localized. For
+/// The compact form uses `u` for Dutch hours and `h` for English hours. For
 /// VoiceOver use ``spoken``, which spells the units out in the user's language.
 ///
 /// ```swift
@@ -30,8 +30,17 @@ public struct TripDurationFormatStyle: FormatStyle {
         case .compact:
             let hours = minutes / 60
             let rest = minutes % 60
-            guard hours > 0 else { return "\(rest)m" }
-            return rest < 10 ? "\(hours)h 0\(rest)m" : "\(hours)h \(rest)m"
+            guard hours > 0 else {
+                return String(
+                    localized: LocalizedStringResource(
+                        "\(rest)m", locale: locale, bundle: .module,
+                        comment: "Compact trip duration in minutes, under one hour."))
+            }
+            let padded = rest < 10 ? "0\(rest)" : "\(rest)"
+            return String(
+                localized: LocalizedStringResource(
+                    "\(hours)h \(padded)m", locale: locale, bundle: .module,
+                    comment: "Compact trip duration: hours, then minutes padded to two digits."))
         case .spoken:
             return Duration.seconds(minutes * 60)
                 .formatted(.units(allowed: [.hours, .minutes], width: .wide).locale(locale))
