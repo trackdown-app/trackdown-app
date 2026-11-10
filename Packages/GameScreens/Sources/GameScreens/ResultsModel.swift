@@ -30,26 +30,6 @@ public struct ClosestGuess: Sendable, Hashable {
     public var minutes: Int
 }
 
-/// One bar of the "Guesses needed" chart.
-public struct DistributionBar: Sendable, Hashable, Identifiable {
-    public enum Bucket: Sendable, Hashable {
-        /// Solved in this many guesses.
-        case guesses(Int)
-        /// Ran out of guesses.
-        case missed
-    }
-
-    public var bucket: Bucket
-    /// How many games fell in this bucket.
-    public var count: Int
-    /// `count` over the fullest bucket, from 0 to 1.
-    public var fraction: Double
-    /// Whether this is how the game on the sheet went.
-    public var isHighlighted: Bool
-
-    public var id: Bucket { bucket }
-}
-
 /// The Solved and Missed sheet's state: the answer, the player's record and the text to share.
 ///
 /// The game itself lives in the ``GameStore``; the answer comes from the reveal, asked for once the game is over.
@@ -162,24 +142,13 @@ public final class ResultsModel {
     /// The "Guesses needed" chart: one bar per guess count, then Missed. The game on the sheet is highlighted.
     public var distribution: [DistributionBar] {
         guard let statistics = statistics.value else { return [] }
-        let counts =
-            statistics.distribution.enumerated().map { (DistributionBar.Bucket.guesses($0.offset + 1), $0.element) }
-            + [(.missed, statistics.missed)]
-        let fullest = max(counts.map(\.1).max() ?? 0, 1)
         let highlighted: DistributionBar.Bucket? =
             switch outcome {
             case .solved(let guesses, _): .guesses(guesses)
             case .missed: .missed
             case nil: nil
             }
-        return counts.map { bucket, count in
-            DistributionBar(
-                bucket: bucket,
-                count: count,
-                fraction: Double(count) / Double(fullest),
-                isHighlighted: bucket == highlighted
-            )
-        }
+        return DistributionBar.bars(for: statistics, highlighted: highlighted)
     }
 
     /// The text the Share button hands on, the same as the website's. `nil` until the game is over.

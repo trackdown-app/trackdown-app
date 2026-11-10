@@ -49,12 +49,7 @@ struct RootView: View {
             case .howToPlay:
                 HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
             case .statistics:
-                // Statistics is a separate ticket; until it lands, show its title.
-                VStack(alignment: .leading, spacing: 20) {
-                    GlassSheetHeader { destination.title }
-                    Spacer()
-                }
-                .padding(24)
+                StatisticsScreen(model: model.statistics())
             }
         }
         .consentToast($consentToast) {
@@ -137,13 +132,29 @@ extension RootView {
         }
     }
 
-    /// The Solved sheet leaves the revealed game showing above it; the others fill the screen.
+    /// The Solved sheet leaves the revealed game showing above it, and Statistics is no taller than its record; the
+    /// others fill the screen.
     fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
         switch destination {
         case .solved: [.fraction(0.75), .large]
         case .howToPlay: [.medium, .large]
-        case .archive, .statistics, .chooseNetwork, .privacy: [.large]
+        case .statistics: [.fraction(0.6), .large]
+        case .archive, .chooseNetwork, .privacy: [.large]
         }
+    }
+}
+
+/// The Statistics sheet. Owns its model for as long as the sheet is up, so the record is read again every time
+/// it opens.
+private struct StatisticsScreen: View {
+    @State private var model: StatisticsModel
+
+    init(model: StatisticsModel) {
+        self.model = model
+    }
+
+    var body: some View {
+        StatisticsSheet(model: model)
     }
 }
 
