@@ -28,7 +28,9 @@ Record the actual app viewport separately from the native panel: a rotated inner
 
 Local checks on 10 November 2026: strict swift-format lint, simulator build-for-testing, Release simulator build with warnings treated as errors, 32 DesignSystem tests, and 54 GameScreens tests. On the Duo inner display, the app launched full screen (2853 x 2007 pixels, or 951 x 669 points at 3x); How to play opened and dismissed, and Archive navigation pushed with a Back button. After importing the ignored secrets listed by `.worktreeinclude`, gameplay loaded successfully.
 
-The first simulator pass exposed background clipping around the system bars. The screen backgrounds now sit outside the clipped reserved-content container. This correction was built but not rechecked visually: text entry failed with `TEXT_ENTRY_MISMATCH`, and the recommended delayed retry lost the runner transport and invalidated its session. Query retention, archive selection/scroll continuity, and the final background correction still need the manual checks above. No guesses were submitted and app data was not reset.
+The first simulator pass exposed background clipping around the system bars. The screen backgrounds now sit outside the clipped reserved-content container. After installing and relaunching the final Release build, a Duo screenshot confirmed a uniform background behind the top, side, and bottom bars. The earlier simulator installation predated this correction.
+
+Text entry failed with `TEXT_ENTRY_MISMATCH`, and the recommended delayed retry lost the runner transport and invalidated its session. Query retention and archive selection/scroll continuity still need the manual checks above. No guesses were submitted and app data was not reset.
 
 The current agent-device pose command dispatches the request but cannot verify it with Xcode 27.2: its `devicectl device motion hinge-angle --device ...` invocation returns `Unknown option '--device'`. Automated hinge readback and claims about open/close/fold continuity are therefore skipped. Run the pose matrix above manually in Device Hub. Do not treat a dispatched pose request as a verified transition.
 
