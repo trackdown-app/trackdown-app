@@ -9,19 +9,24 @@ import SwiftUI
 /// showing above it: once the game is revealed, the playing screen names every change and the mystery station.
 public struct ResultsView: View {
     private let model: ResultsModel
+    private let solvedShowsOlderPuzzles: Bool
     private let onOlderPuzzles: () -> Void
     private let onNextPuzzle: () -> Void
 
     /// - Parameters:
     ///   - model: The finished game.
-    ///   - onOlderPuzzles: Opens the archive, from the Missed sheet's Older puzzles button.
+    ///   - solvedShowsOlderPuzzles: Whether the Solved sheet has an Older puzzles button too, as it does where the
+    ///     archive opens as a sidebar beside the puzzle. The Missed sheet always has one.
+    ///   - onOlderPuzzles: Opens the archive, from the Older puzzles button.
     ///   - onNextPuzzle: Makes way for the next puzzle, once it is today's.
     public init(
         model: ResultsModel,
+        solvedShowsOlderPuzzles: Bool = false,
         onOlderPuzzles: @escaping () -> Void,
         onNextPuzzle: @escaping () -> Void
     ) {
         self.model = model
+        self.solvedShowsOlderPuzzles = solvedShowsOlderPuzzles
         self.onOlderPuzzles = onOlderPuzzles
         self.onNextPuzzle = onNextPuzzle
     }
@@ -59,9 +64,12 @@ public struct ResultsView: View {
             }
             .scrollBounceBehavior(.basedOnSize)
             .clipped()
-            ResultsActions(model: model, onOlderPuzzles: onOlderPuzzles)
-                .padding(.horizontal, 24)
-                .padding(.bottom, 8)
+            ResultsActions(
+                model: model, showsOlderPuzzles: model.outcome == .missed || solvedShowsOlderPuzzles,
+                onOlderPuzzles: onOlderPuzzles
+            )
+            .padding(.horizontal, 24)
+            .padding(.bottom, 8)
         }
         .task { await model.load() }
         .onChange(of: model.hasNewerPuzzle, initial: true) { _, isNewer in
@@ -140,9 +148,10 @@ private struct ClosestGuessText: View {
     }
 }
 
-/// Share, Older puzzles on the Missed sheet, and the countdown to the next station.
+/// Share, Older puzzles, and the countdown to the next station.
 private struct ResultsActions: View {
     let model: ResultsModel
+    let showsOlderPuzzles: Bool
     let onOlderPuzzles: () -> Void
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -160,7 +169,7 @@ private struct ResultsActions: View {
             GlassEffectContainer(spacing: 10) {
                 layout {
                     shareButton
-                    if model.outcome == .missed {
+                    if showsOlderPuzzles {
                         Button(action: onOlderPuzzles) {
                             olderPuzzlesTitle
                                 .foregroundStyle(TrackdownColor.ink)
@@ -236,7 +245,7 @@ private struct ResultsActions: View {
     }
 
     private var olderPuzzlesTitle: Text {
-        Text("Older puzzles", bundle: .module, comment: "Missed sheet button that opens the archive.")
+        Text("Older puzzles", bundle: .module, comment: "Results sheet button that opens the archive.")
     }
 }
 

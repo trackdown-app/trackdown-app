@@ -15,6 +15,8 @@ struct RootView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     /// The active fold across the split view, as in the book pose of iPhone Duo.
     @State private var fold: TrackdownFold?
+    /// Whether the network picker shows as a popover from the network button, on a display wide enough for one.
+    @State private var isChoosingNetwork = false
     @State private var incomingURL: URL?
     @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
     /// The answer just given in the consent prompt, while its toast shows.
@@ -25,15 +27,21 @@ struct RootView: View {
             .glassSheet(item: $destination, detents: Self.detents(for:)) { destination in
                 switch destination {
                 case .solved(let key):
-                    ResultsSheet(model: model.results(key)) {
+                    // Beside the archive sidebar, Older puzzles is one tap from any result.
+                    ResultsSheet(model: model.results(key), solvedShowsOlderPuzzles: showsSidebar) {
                         self.destination = nil
                         openArchive()
                     } onNextPuzzle: {
                         self.destination = nil
                         model.path = []
                     }
-                case .archive, .chooseNetwork, .privacy:
-                    // Pushed onto the stack by `navigate(_:)`, never a sheet.
+                case .privacy:
+                    // A sheet only on a wide display; a narrow one pushes it.
+                    NavigationStack {
+                        PrivacyView(settings: model.analyticsSettings) { self.destination = nil }
+                    }
+                case .archive, .chooseNetwork:
+                    // The sidebar or the stack, and a popover or the stack: never a sheet.
                     EmptyView()
                 case .howToPlay:
                     HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
@@ -59,6 +67,12 @@ struct RootView: View {
                 guard phase == .active else { return }
                 // A suspended app misses the rollover; catch up when it comes back.
                 Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
+            }
+            .onChange(of: showsSidebar) { _, showsSidebar in
+                // The popover needs the wide display; a narrow one shows the picker on the stack instead.
+                guard !showsSidebar, isChoosingNetwork else { return }
+                isChoosingNetwork = false
+                model.path.append(.chooseNetwork)
             }
             .onOpenURL { url in
                 guard PuzzleLink(url: url) != nil else { return }
@@ -124,6 +138,16 @@ struct RootView: View {
         return fold.span.lowerBound
     }
 
+    /// The network picker as a popover from the playing screen's network button.
+    private var networkPopover: NetworkPopover {
+        NetworkPopover(isPresented: $isChoosingNetwork, model: model.chooseNetwork) { network in
+            isChoosingNetwork = false
+            model.choose(network)
+        } onNotify: { network in
+            model.notify(network)
+        }
+    }
+
     /// Whether the archive sidebar is on screen beside the puzzle.
     private var isSidebarVisible: Bool { showsSidebar && columnVisibility != .detailOnly }
 
@@ -137,7 +161,9 @@ struct RootView: View {
                 // Another puzzle is another screen, with its own scroll position.
                 .id(puzzle)
             } else {
-                PlayingView(model: model.playing, showsArchive: !isSidebarVisible, onNavigate: navigate)
+                PlayingView(
+                    model: model.playing, showsArchive: !isSidebarVisible,
+                    networkPopover: showsSidebar ? networkPopover : nil, onNavigate: navigate)
             }
         }
         // The playing screen arranges itself around an active fold.
@@ -177,9 +203,11 @@ struct RootView: View {
             case .solved(let key): return .screenViewed(.results, network: key.network)
             case .howToPlay: return .screenViewed(.howToPlay, network: model.network)
             case .statistics: return .screenViewed(.statistics, network: model.network)
-            case .archive, .chooseNetwork, .privacy: break
+            case .privacy: return .screenViewed(.privacy, network: model.network)
+            case .archive, .chooseNetwork: break
             }
         }
+        if isChoosingNetwork { return .screenViewed(.chooseNetwork, network: model.network) }
         // Beside the sidebar, the archive is always on screen; the detail column says what is being looked at.
         switch showsSidebar ? model.detailPath.last : model.path.last {
         case .archive: return .screenViewed(.archive, network: model.network)
@@ -191,12 +219,23 @@ struct RootView: View {
 }
 
 extension RootView {
-    /// Pushes the archive and the network picker; opens every other destination as a sheet.
+    /// Shows the archive, pushes the network picker and Privacy, and opens every other destination as a sheet. On a
+    /// display wide enough for the archive sidebar, the network picker is a popover and Privacy a sheet instead.
     fileprivate func navigate(_ destination: PlayingDestination) {
         switch destination {
         case .archive: openArchive()
-        case .chooseNetwork: model.path.append(.chooseNetwork)
-        case .privacy: model.path.append(.privacy)
+        case .chooseNetwork:
+            if showsSidebar {
+                isChoosingNetwork = true
+            } else {
+                model.path.append(.chooseNetwork)
+            }
+        case .privacy:
+            if showsSidebar {
+                self.destination = .privacy
+            } else {
+                model.path.append(.privacy)
+            }
         case .howToPlay, .statistics, .solved: self.destination = destination
         }
     }
@@ -230,12 +269,12 @@ extension RootView {
 
     /// The Solved sheet leaves the revealed game showing above it, and Statistics is no taller than its record; the
     /// others fill the screen.
-    fileprivate static func detents(for destination: PlayingDestination) -> Set<PresentationDetent> {
+    fileprivate static func detents(for destination: PlayingDestination) -> Set<GlassSheetDetent> {
         switch destination {
         case .solved: [.fraction(0.75), .large]
         case .howToPlay: [.medium, .large]
         case .statistics: [.fraction(0.6), .large]
-        case .archive, .chooseNetwork, .privacy: [.large]
+        case .privacy, .archive, .chooseNetwork: [.large]
         }
     }
 }
@@ -257,17 +296,26 @@ private struct StatisticsScreen: View {
 /// The Solved or Missed sheet. Owns its model for as long as the sheet is up.
 private struct ResultsSheet: View {
     @State private var model: ResultsModel
+    private let solvedShowsOlderPuzzles: Bool
     private let onOlderPuzzles: () -> Void
     private let onNextPuzzle: () -> Void
 
-    init(model: ResultsModel, onOlderPuzzles: @escaping () -> Void, onNextPuzzle: @escaping () -> Void) {
+    init(
+        model: ResultsModel,
+        solvedShowsOlderPuzzles: Bool,
+        onOlderPuzzles: @escaping () -> Void,
+        onNextPuzzle: @escaping () -> Void
+    ) {
         self.model = model
+        self.solvedShowsOlderPuzzles = solvedShowsOlderPuzzles
         self.onOlderPuzzles = onOlderPuzzles
         self.onNextPuzzle = onNextPuzzle
     }
 
     var body: some View {
-        ResultsView(model: model, onOlderPuzzles: onOlderPuzzles, onNextPuzzle: onNextPuzzle)
+        ResultsView(
+            model: model, solvedShowsOlderPuzzles: solvedShowsOlderPuzzles, onOlderPuzzles: onOlderPuzzles,
+            onNextPuzzle: onNextPuzzle)
     }
 }
 

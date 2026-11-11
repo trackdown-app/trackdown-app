@@ -410,7 +410,7 @@
       }
     },
     "Older puzzles" : {
-      "comment" : "Missed sheet button that opens the archive.",
+      "comment" : "Results sheet button that opens the archive.",
       "localizations" : {
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Eerdere puzzels" } }
       }

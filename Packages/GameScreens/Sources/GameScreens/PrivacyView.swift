@@ -9,11 +9,17 @@ import SwiftUI
 /// Usage data preferences. Push onto a navigation stack for the system glass back button.
 public struct PrivacyView: View {
     @Bindable private var settings: AnalyticsSettings
+    private let onClose: (() -> Void)?
     @State private var document: PrivacyDocument?
     @Environment(\.locale) private var locale
 
-    public init(settings: AnalyticsSettings) {
+    /// - Parameters:
+    ///   - settings: The usage data choice to show and change.
+    ///   - onClose: Dismisses the sheet the screen is in, from a close button in its navigation bar. Leave it out on
+    ///     the main navigation stack.
+    public init(settings: AnalyticsSettings, onClose: (() -> Void)? = nil) {
         self.settings = settings
+        self.onClose = onClose
     }
 
     public var body: some View {
@@ -34,6 +40,15 @@ public struct PrivacyView: View {
         }
         .trackdownScrollEdges()
         .background { TrackdownColor.background.ignoresSafeArea() }
+        .toolbar {
+            if let onClose {
+                ToolbarItem(placement: .trailingBar) {
+                    Button(action: onClose) {
+                        TrackdownIcon.close.label
+                    }
+                }
+            }
+        }
         #if os(iOS)
             .sheet(item: $document) { document in
                 PrivacySafariView(url: document.url(for: locale))

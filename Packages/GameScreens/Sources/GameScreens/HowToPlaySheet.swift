@@ -52,9 +52,13 @@ public struct HowToPlaySheet: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 24)
+            #if os(iOS)
+                // The sheet's glass is the background.
+                .containerBackground(.clear, for: .navigation)
+            #endif
             .navigationDestination(for: PlayingDestination.self) { destination in
                 switch destination {
-                case .privacy: PrivacyView(settings: settings)
+                case .privacy: PrivacyView(settings: settings) { dismiss() }
                 default: EmptyView()
                 }
             }
