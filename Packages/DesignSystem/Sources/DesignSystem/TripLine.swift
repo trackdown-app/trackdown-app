@@ -16,11 +16,23 @@ import SwiftUI
 /// station". The dot's halo takes the environment's `backgroundStyle`, or ``TrackdownColor/background``
 /// when none is set; set `.backgroundStyle(TrackdownColor.surface)` when the line sits on a card.
 public struct TripLine: View {
+    /// Where the station's name goes relative to the track.
+    public enum Arrangement: Sendable {
+        /// The name, time and summary above the track, which gets the full width.
+        case stacked
+        /// The name, time and summary in a column beside the track, so each guess takes one short row. For a wide,
+        /// short space such as the propped-up half of iPhone Duo in the tabletop pose.
+        case besideTrack
+    }
+
     private let station: String
     private let steps: [TripStep]
     private let changeNames: [String?]
+    private let arrangement: Arrangement
 
     @ScaledMetric(relativeTo: .caption2) private var scale: CGFloat = 1
+    /// The width of the name column beside the track.
+    @ScaledMetric(relativeTo: .title2) private var nameColumnWidth: CGFloat = 200
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// The largest text size the track follows.
@@ -29,10 +41,17 @@ public struct TripLine: View {
     /// - Parameters:
     ///   - station: The guessed station's name.
     ///   - steps: The trip from the guessed station to the mystery station.
+    ///   - arrangement: Whether the name goes above the track or beside it.
     ///   - stationName: The display name for a change station's code.
-    public init(station: String, steps: [TripStep], stationName: (StationCode) -> String) {
+    public init(
+        station: String,
+        steps: [TripStep],
+        arrangement: Arrangement = .stacked,
+        stationName: (StationCode) -> String
+    ) {
         self.station = station
         self.steps = steps
+        self.arrangement = arrangement
         self.changeNames = steps.compactMap { step -> String?? in
             guard case .change(let code, _) = step else { return nil }
             return .some(code.map(stationName))
@@ -52,8 +71,24 @@ public struct TripLine: View {
             : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 12))
     }
 
+    /// Beside the track only while the text fits a column: at accessibility sizes the name needs the full width.
+    private var isBesideTrack: Bool { arrangement == .besideTrack && !isAccessibilitySize }
+
+    /// The text above the track, or a column beside it.
+    private var rowLayout: AnyLayout {
+        isBesideTrack
+            ? AnyLayout(HStackLayout(alignment: .center, spacing: 12 * scale))
+            : AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+    }
+
+    /// Room kept between stacked text and the mystery-station bar below its end. Beside the track the text never
+    /// reaches the bar; at accessibility sizes the text needs the full width.
+    private var textTrailingPadding: CGFloat {
+        isBesideTrack || isAccessibilitySize ? 0 : metrics.barWidth + 12 * scale
+    }
+
     public var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        rowLayout {
             VStack(alignment: .leading, spacing: 4) {
                 headingLayout {
                     Text(station)
@@ -69,8 +104,8 @@ public struct TripLine: View {
                     .foregroundStyle(TrackdownColor.muted)
                     .accessibilityHidden(true)
             }
-            // Keeps the text clear of the mystery-station bar. At accessibility sizes the text needs the full width.
-            .padding(.trailing, isAccessibilitySize ? 0 : metrics.barWidth + 12 * scale)
+            .padding(.trailing, textTrailingPadding)
+            .frame(width: isBesideTrack ? nameColumnWidth : nil, alignment: .leading)
             .accessibilityHidden(true)
 
             TripTrack(pieces: pieces, rides: rides, changeNames: changeNames)
@@ -79,6 +114,9 @@ public struct TripLine: View {
                 // keeps growing.
                 .dynamicTypeSize(...Self.largestTrackSize)
                 .accessibilityHidden(true)
+                // The line's first baseline is the station name's, so a guess number beside it lines up with the name.
+                // Beside the track the row would otherwise take the baseline of an unused segment label at the top.
+                .alignmentGuide(.firstTextBaseline) { $0[.bottom] }
         }
         .foregroundStyle(TrackdownColor.ink)
         .accessibilityElement(children: .ignore)
@@ -227,6 +265,24 @@ private let previewNames: [StationCode: String] = ["ut": "Utrecht Centraal", "as
                 .ride(train: "SPR", minutes: 22),
             ]
         ) { previewNames[$0] ?? $0.rawValue }
+    }
+    .padding(16)
+    .background { TrackdownColor.background }
+}
+
+#Preview("Beside the track", traits: .fixedLayout(width: 669, height: 240)) {
+    TrackdownFont.register()
+    return VStack(spacing: 16) {
+        TripLine(
+            station: "Maastricht",
+            steps: [
+                .ride(train: "IC", minutes: 122), .change(station: nil, minutes: 6), .ride(train: "IC", minutes: 17),
+            ],
+            arrangement: .besideTrack
+        ) { previewNames[$0] ?? $0.rawValue }
+        TripLine(station: "Hilversum", steps: [.ride(train: "IC", minutes: 13)], arrangement: .besideTrack) {
+            previewNames[$0] ?? $0.rawValue
+        }
     }
     .padding(16)
     .background { TrackdownColor.background }
