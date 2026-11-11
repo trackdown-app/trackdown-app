@@ -2,18 +2,21 @@
 
 The API client can enroll an App Attest key and sign every request. Backend
 contract and rollout controls live in trackdown-website `docs/api.md#app-attest`.
-Deploy [website PR #98](https://github.com/trackdown-app/trackdown-website/pull/98)
-before enabling this app build.
+The backend was added in [website PR #98](https://github.com/trackdown-app/trackdown-website/pull/98).
+App Attest is enabled by default now that the backend change has merged.
 
 1. Enable App Attest for `nl.trackdown.Trackdown` in the Apple Developer account
-   and refresh signing profiles. Debug uses the development entitlement; Release
-   uses production (including TestFlight).
+   and refresh signing profiles. Debug and Release both use production
+   attestations because both call the Production API by default (including TestFlight).
 2. Configure the backend's Team ID, bundle ID and Upstash Redis credentials. Deploy
-   with `TRACKDOWN_ATTEST_MODE=observe`. Development devices also need the backend
-   development opt-in outside Production.
-3. Set `TRACKDOWN_APP_ATTEST_ENABLED=YES` in the app build configuration and use a
-   client key reserved for attesting distribution builds. The default is `NO`,
-   allowing the backend to deploy first without breaking the existing app.
+   with `TRACKDOWN_ATTEST_MODE=observe`.
+3. Use a client key reserved for attesting distribution builds.
+   `TRACKDOWN_APP_ATTEST_ENABLED` defaults to `YES`. When overriding the API URL
+   to a local/Preview backend without App Attest configuration, set it to `NO` in
+   `Secrets.xcconfig`. To test development attestations against a configured
+   non-Production backend, override `TRACKDOWN_APP_ATTEST_ENVIRONMENT=development`
+   and enable that backend's development opt-in. Production rejects development
+   attestations even for Debug builds.
 4. Verify enrollment and signed GET/POST calls on a real device, relaunch, offline
    behavior, and recovery after a server registration is removed. Confirm counters
    increase and server replay checks reject captured requests.
