@@ -40,6 +40,8 @@ final class AppModel {
     var path: [Route] = []
 
     @ObservationIgnored private let networkChoice: NetworkChoice
+    /// The last past puzzle's playing screen, reused while that puzzle stays open.
+    @ObservationIgnored private var archivedPlaying: PlayingModel?
 
     /// The network being played, kept for the next launch.
     var network: Network {
@@ -90,9 +92,60 @@ final class AppModel {
         }
     }
 
-    /// A playing screen for a past puzzle of the current network.
+    /// A playing screen for a past puzzle of the current network. Asking again for the same puzzle returns the same
+    /// model, so a guess being typed survives the switch between the stack and the split view when iPhone Duo opens
+    /// or closes.
     func playing(_ puzzle: ArchivedPuzzle) -> PlayingModel {
-        PlayingModel(puzzle: .archive(puzzle), network: network, store: games, service: service, analytics: analytics)
+        if let archivedPlaying, archivedPlaying.puzzle == .archive(puzzle), archivedPlaying.network == network {
+            return archivedPlaying
+        }
+        let model = PlayingModel(
+            puzzle: .archive(puzzle), network: network, store: games, service: service, analytics: analytics)
+        archivedPlaying = model
+        return model
+    }
+
+    // MARK: Split view
+
+    // ``path`` stays the one record of where the player is. With the archive as a sidebar, the detail column's root is
+    // the selected puzzle and its stack is what follows it in ``path``. The stack it collapses to when iPhone Duo
+    // closes then still has the archive under a past puzzle, and Back goes there.
+
+    /// Where the past puzzle open in the detail column sits in ``path``.
+    private var detailPuzzleIndex: Int? {
+        path.firstIndex { route in
+            if case .archivedPuzzle = route { true } else { false }
+        }
+    }
+
+    /// The past puzzle at the root of the detail column, or `nil` while it shows today's.
+    var detailPuzzle: ArchivedPuzzle? {
+        guard let index = detailPuzzleIndex, case .archivedPuzzle(let puzzle) = path[index] else { return nil }
+        return puzzle
+    }
+
+    /// What the detail column's stack pushes on top of ``detailPuzzle`` or today's puzzle. Never the archive: the
+    /// sidebar shows it instead.
+    var detailPath: [Route] {
+        get {
+            guard let index = detailPuzzleIndex else { return path.filter { $0 != .archive } }
+            return Array(path[(index + 1)...])
+        }
+        set {
+            guard newValue != detailPath else { return }
+            if let index = detailPuzzleIndex {
+                path = Array(path[...index]) + newValue
+            } else {
+                path = newValue
+            }
+        }
+    }
+
+    /// Opens an archive sidebar row's puzzle in the detail column: today's on the playing screen, a past one,
+    /// finished or not, as a past puzzle.
+    func show(_ row: ArchiveRow) {
+        let newPath: [Route] = row.isToday ? [] : [.archive, .archivedPuzzle(row.puzzle)]
+        if path != newPath { path = newPath }
     }
 
     /// The network picker, with the current network checked.

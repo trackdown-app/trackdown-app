@@ -125,21 +125,45 @@ private struct MonthSection: View {
 
 /// One past puzzle: the weekday and day, the station (once finished) with how it went, and Play, Continue or the
 /// result.
-private struct ArchiveRowView: View {
+struct ArchiveRowView: View {
+    /// Where the row sits, which sets how roomy it is.
+    enum Style {
+        /// A row on a month's card on the Archive screen.
+        case card
+        /// A tighter row in the Archive sidebar, highlighted while its puzzle is open beside it.
+        case sidebar(isSelected: Bool)
+    }
+
     let row: ArchiveRow
+    var style: Style = .card
     let action: () -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
+    private var isSidebar: Bool {
+        if case .sidebar = style { true } else { false }
+    }
+
+    private var isSelected: Bool {
+        if case .sidebar(let isSelected) = style { isSelected } else { false }
+    }
+
     private var layout: AnyLayout {
         dynamicTypeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
-            : AnyLayout(HStackLayout(spacing: 14))
+            : AnyLayout(HStackLayout(spacing: isSidebar ? 10 : 14))
     }
 
-    @ScaledMetric(relativeTo: .title2) private var dateWidth: CGFloat = 40
-    @ScaledMetric(relativeTo: .subheadline) private var chipHeight: CGFloat = 36
-    @ScaledMetric(relativeTo: .title3) private var minHeight: CGFloat = 64
+    @ScaledMetric(relativeTo: .title2) private var cardDateWidth: CGFloat = 40
+    @ScaledMetric(relativeTo: .subheadline) private var cardChipHeight: CGFloat = 36
+    @ScaledMetric(relativeTo: .title3) private var cardMinHeight: CGFloat = 64
+    @ScaledMetric(relativeTo: .title2) private var sidebarDateWidth: CGFloat = 32
+    @ScaledMetric(relativeTo: .subheadline) private var sidebarChipHeight: CGFloat = 30
+    @ScaledMetric(relativeTo: .title3) private var sidebarMinHeight: CGFloat = 52
+
+    private var dateWidth: CGFloat { isSidebar ? sidebarDateWidth : cardDateWidth }
+    private var chipHeight: CGFloat { isSidebar ? sidebarChipHeight : cardChipHeight }
+    private var minHeight: CGFloat { isSidebar ? sidebarMinHeight : cardMinHeight }
 
     var body: some View {
         Button(action: action) {
@@ -163,7 +187,7 @@ private struct ArchiveRowView: View {
                         .foregroundStyle(TrackdownColor.ink)
                         .fixedSize(horizontal: false, vertical: true)
                     subtitle
-                        .font(TrackdownFont.footnote)
+                        .font(isSidebar ? TrackdownFont.caption : TrackdownFont.footnote)
                         .monospacedDigit()
                         .foregroundStyle(TrackdownColor.muted)
                 }
@@ -171,14 +195,21 @@ private struct ArchiveRowView: View {
 
                 trailing
             }
-            .padding(.leading, 14)
-            .padding(.trailing, 12)
-            .padding(.vertical, 8)
+            .padding(.leading, isSidebar ? 10 : 14)
+            .padding(.trailing, isSidebar ? 10 : 12)
+            .padding(.vertical, isSidebar ? 4 : 8)
             .frame(minHeight: minHeight)
+            .background {
+                if isSelected {
+                    ConcentricRectangle(corners: .concentric(minimum: .fixed(16))).fill(
+                        TrackdownColor.ink.opacity(0.08))
+                }
+            }
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     private var title: Text {
@@ -245,6 +276,11 @@ private struct ArchiveRowView: View {
                 .font(TrackdownFont.headline)
                 .foregroundStyle(TrackdownColor.muted)
                 .padding(.trailing, 6)
+        case .notStarted where isSelected || (isSidebar && row.isToday),
+            .started where isSelected || (isSidebar && row.isToday):
+            // The puzzle open beside the sidebar has its highlight instead, and today's row, at the top, needs no
+            // Continue to stand out.
+            EmptyView()
         case .notStarted, .started:
             Group {
                 if row.isToday {
@@ -255,7 +291,7 @@ private struct ArchiveRowView: View {
             }
             .font(TrackdownFont.subheadlineEmphasized)
             .foregroundStyle(TrackdownColor.background)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, isSidebar ? 12 : 16)
             .frame(minHeight: chipHeight)
             .background { Capsule().fill(TrackdownColor.ink) }
         }

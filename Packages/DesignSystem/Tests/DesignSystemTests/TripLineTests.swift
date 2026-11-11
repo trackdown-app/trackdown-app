@@ -130,6 +130,36 @@ struct TripLineLabelTests {
         // "IC 2h 02m" is 60 pt wide, "2h 02m" 40 pt; 4 pt padding each side.
         #expect(TripLineLabelFit.choose(full: 60, short: 40, available: available, padding: 4) == expected)
     }
+
+    @Test("A wider track, such as the iPhone Duo detail column, fits more labels than a phone's")
+    func widerTrackFitsMore() {
+        let metrics = TripLineMetrics()
+        // Maastricht: IC 2h 02m, a change, IC 17m. Full labels about 60 and 40 pt wide, short ones 40 and 24 pt.
+        let pieces: [TripLinePiece] = [.ride(minutes: 122), .change(minutes: 6), .ride(minutes: 17)]
+        let labels: [(full: CGFloat, short: CGFloat)] = [(60, 40), (40, 24)]
+
+        func fits(width: CGFloat) -> [TripLineLabelFit] {
+            let geometry = TripLineGeometry(pieces: pieces, width: width, metrics: metrics)
+            return zip(geometry.rides, labels).map { ride, label in
+                TripLineLabelFit.choose(
+                    full: label.full, short: label.short, available: ride.visible.width, padding: metrics.labelPadding)
+            }
+        }
+
+        func rank(_ fit: TripLineLabelFit) -> Int {
+            switch fit {
+            case .none: 0
+            case .short: 1
+            case .full: 2
+            }
+        }
+
+        // A phone's column, and the detail column beside the 300 pt archive sidebar.
+        let phone = fits(width: 326)
+        let duo = fits(width: 507)
+        #expect(zip(phone, duo).allSatisfy { rank($0) <= rank($1) })
+        #expect(phone.map(rank).reduce(0, +) < duo.map(rank).reduce(0, +))
+    }
 }
 
 @Suite("Trip duration")

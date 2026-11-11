@@ -247,6 +247,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle eerdere stations van %@. Speel de puzzels die je hebt gemist, of kijk terug hoe het ging." } }
       }
     },
+    "Every past %@ station" : {
+      "comment" : "Under the Archive title in the sidebar. The argument is a network, such as Netherlands.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle eerdere stations van %@" } }
+      }
+    },
+    "Hide sidebar" : {
+      "comment" : "Button that hides the Archive sidebar.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Verberg navigatiekolom" } }
+      }
+    },
     "Germany" : {
       "comment" : "Rail network still to come.",
       "localizations" : {

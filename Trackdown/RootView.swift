@@ -8,91 +8,148 @@ struct RootView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.scenePhase) private var scenePhase
 
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     @State private var destination: PlayingDestination?
+    /// Whether the archive sidebar shows beside the puzzle, on a display wide enough for it.
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var incomingURL: URL?
     @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
     /// The answer just given in the consent prompt, while its toast shows.
     @State private var consentToast: AnalyticsConsent?
 
     var body: some View {
-        @Bindable var model = model
-        NavigationStack(path: $model.path) {
-            PlayingView(model: model.playing, onNavigate: navigate)
-                .reservedContent()
-                .background { TrackdownColor.background.ignoresSafeArea() }
-                .navigationDestination(for: Route.self) { route in
-                    Group {
-                        switch route {
-                        case .archive:
-                            ArchiveScreen(model: model.archive(), onSelect: select) {
-                                model.path.append(.chooseNetwork)
-                            }
-                        case .archivedPuzzle(let puzzle):
-                            ArchivedPuzzleView(model: model.playing(puzzle), onNavigate: navigate)
-                        case .chooseNetwork:
-                            ChooseNetworkScreen(
-                                model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
-                        case .privacy:
-                            PrivacyView(settings: model.analyticsSettings)
-                        }
+        navigation
+            .glassSheet(item: $destination, detents: Self.detents(for:)) { destination in
+                switch destination {
+                case .solved(let key):
+                    ResultsSheet(model: model.results(key)) {
+                        self.destination = nil
+                        openArchive()
+                    } onNextPuzzle: {
+                        self.destination = nil
+                        model.path = []
                     }
-                    .reservedContent()
-                    .background { TrackdownColor.background.ignoresSafeArea() }
+                case .archive, .chooseNetwork, .privacy:
+                    // Pushed onto the stack by `navigate(_:)`, never a sheet.
+                    EmptyView()
+                case .howToPlay:
+                    HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
+                case .statistics:
+                    StatisticsScreen(model: model.statistics())
                 }
-        }
-        .glassSheet(item: $destination, detents: Self.detents(for:)) { destination in
-            switch destination {
-            case .solved(let key):
-                ResultsSheet(model: model.results(key)) {
-                    self.destination = nil
-                    model.openArchive()
-                } onNextPuzzle: {
-                    self.destination = nil
-                    model.path = []
+            }
+            .consentToast($consentToast) {
+                consentToast = nil
+                navigate(.privacy)
+            }
+            .consentPrompt(isPresented: needsConsent, onChoose: choose)
+            .onAppear {
+                guard !hasSeenHowToPlay else { return }
+                destination = .howToPlay
+                hasSeenHowToPlay = true
+            }
+            // Loads and restores today's game, then picks up the next puzzle at `nextPuzzleAt` while the app is open.
+            .task(id: model.network) {
+                await model.games.followRollover(network: model.network)
+            }
+            .onChange(of: scenePhase) { _, phase in
+                guard phase == .active else { return }
+                // A suspended app misses the rollover; catch up when it comes back.
+                Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
+            }
+            .onOpenURL { url in
+                guard PuzzleLink(url: url) != nil else { return }
+                destination = nil
+                incomingURL = url
+            }
+            .task(id: incomingURL) {
+                guard let incomingURL, let link = PuzzleLink(url: incomingURL) else { return }
+                await model.open(link)
+                if !Task.isCancelled { self.incomingURL = nil }
+            }
+            .onChange(of: screenEvent, initial: true) { _, event in
+                model.analytics.capture(event)
+                if case .screenViewed(.howToPlay, let network) = event {
+                    model.analytics.capture(.howToPlayOpened(network: network))
                 }
-            case .archive, .chooseNetwork, .privacy:
-                // Pushed onto the stack by `navigate(_:)`, never a sheet.
-                EmptyView()
-            case .howToPlay:
-                HowToPlaySheet(settings: model.analyticsSettings, network: model.network)
-            case .statistics:
-                StatisticsScreen(model: model.statistics())
+            }
+    }
+
+    /// Whether the display is wide enough for the archive as a sidebar beside the puzzle, as on the iPhone Duo inner
+    /// display.
+    private var showsSidebar: Bool { horizontalSizeClass == .regular }
+
+    /// The archive as a sidebar beside the puzzle on a wide display; one stack, the archive pushed from the playing
+    /// screen, on a narrow one. Both follow `model.path`, so opening or closing iPhone Duo keeps the open puzzle.
+    @ViewBuilder
+    private var navigation: some View {
+        @Bindable var model = model
+        if showsSidebar {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                ArchiveSidebarScreen(
+                    model: model.archive(), selection: model.detailPuzzle?.number, onSelect: model.show
+                ) {
+                    withAnimation { columnVisibility = .detailOnly }
+                }
+                // A new network has a new archive.
+                .id(model.network)
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationSplitViewColumnWidth(300)
+            } detail: {
+                NavigationStack(path: $model.detailPath) {
+                    // The selected puzzle replaces the column's root rather than being pushed, so it has no Back
+                    // button: the sidebar is the way to another puzzle.
+                    stackRoot(puzzle: model.detailPuzzle)
+                }
+            }
+            .navigationSplitViewStyle(.balanced)
+            // The sidebar has its own Hide sidebar button. While it is hidden, the system's Show Sidebar toggle and the
+            // playing screen's archive button bring it back.
+            .toolbar(removing: .sidebarToggle)
+        } else {
+            NavigationStack(path: $model.path) {
+                stackRoot(puzzle: nil)
             }
         }
-        .consentToast($consentToast) {
-            consentToast = nil
-            navigate(.privacy)
-        }
-        .consentPrompt(isPresented: needsConsent, onChoose: choose)
-        .onAppear {
-            guard !hasSeenHowToPlay else { return }
-            destination = .howToPlay
-            hasSeenHowToPlay = true
-        }
-        // Loads and restores today's game, then picks up the next puzzle at `nextPuzzleAt` while the app is open.
-        .task(id: model.network) {
-            await model.games.followRollover(network: model.network)
-        }
-        .onChange(of: scenePhase) { _, phase in
-            guard phase == .active else { return }
-            // A suspended app misses the rollover; catch up when it comes back.
-            Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
-        }
-        .onOpenURL { url in
-            guard PuzzleLink(url: url) != nil else { return }
-            destination = nil
-            incomingURL = url
-        }
-        .task(id: incomingURL) {
-            guard let incomingURL, let link = PuzzleLink(url: incomingURL) else { return }
-            await model.open(link)
-            if !Task.isCancelled { self.incomingURL = nil }
-        }
-        .onChange(of: screenEvent, initial: true) { _, event in
-            model.analytics.capture(event)
-            if case .screenViewed(.howToPlay, let network) = event {
-                model.analytics.capture(.howToPlayOpened(network: network))
+    }
+
+    /// Whether the archive sidebar is on screen beside the puzzle.
+    private var isSidebarVisible: Bool { showsSidebar && columnVisibility != .detailOnly }
+
+    /// The playing screen for `puzzle`, or today's when it is `nil`, with every screen a stack can push on top of it.
+    private func stackRoot(puzzle: ArchivedPuzzle?) -> some View {
+        Group {
+            if let puzzle {
+                ArchivedPuzzleView(
+                    model: model.playing(puzzle), showsArchive: !isSidebarVisible, onNavigate: navigate
+                )
+                // Another puzzle is another screen, with its own scroll position.
+                .id(puzzle)
+            } else {
+                PlayingView(model: model.playing, showsArchive: !isSidebarVisible, onNavigate: navigate)
             }
+        }
+        .reservedContent()
+        .background { TrackdownColor.background.ignoresSafeArea() }
+        .navigationDestination(for: Route.self) { route in
+            Group {
+                switch route {
+                case .archive:
+                    ArchiveScreen(model: model.archive(), onSelect: select) {
+                        model.path.append(.chooseNetwork)
+                    }
+                case .archivedPuzzle(let puzzle):
+                    ArchivedPuzzleView(model: model.playing(puzzle), showsArchive: true, onNavigate: navigate)
+                case .chooseNetwork:
+                    ChooseNetworkScreen(
+                        model: model.chooseNetwork(), onChoose: model.choose, onNotify: model.notify)
+                case .privacy:
+                    PrivacyView(settings: model.analyticsSettings)
+                }
+            }
+            .reservedContent()
+            .background { TrackdownColor.background.ignoresSafeArea() }
         }
     }
 
@@ -112,7 +169,8 @@ struct RootView: View {
             case .archive, .chooseNetwork, .privacy: break
             }
         }
-        switch model.path.last {
+        // Beside the sidebar, the archive is always on screen; the detail column says what is being looked at.
+        switch showsSidebar ? model.detailPath.last : model.path.last {
         case .archive: return .screenViewed(.archive, network: model.network)
         case .chooseNetwork: return .screenViewed(.chooseNetwork, network: model.network)
         case .privacy: return .screenViewed(.privacy, network: model.network)
@@ -125,10 +183,20 @@ extension RootView {
     /// Pushes the archive and the network picker; opens every other destination as a sheet.
     fileprivate func navigate(_ destination: PlayingDestination) {
         switch destination {
-        case .archive: model.openArchive()
+        case .archive: openArchive()
         case .chooseNetwork: model.path.append(.chooseNetwork)
         case .privacy: model.path.append(.privacy)
         case .howToPlay, .statistics, .solved: self.destination = destination
+        }
+    }
+
+    /// Shows the archive: the sidebar beside the open puzzle on a wide display, the Archive screen on the stack
+    /// otherwise.
+    fileprivate func openArchive() {
+        if showsSidebar {
+            withAnimation { columnVisibility = .all }
+        } else {
+            model.openArchive()
         }
     }
 
@@ -234,18 +302,45 @@ private struct ArchiveScreen: View {
     }
 }
 
-/// The playing screen for a past puzzle, pushed from the archive. Owns its model for as long as it is on the stack.
+/// The archive as the sidebar beside the puzzle. Owns its model for as long as the network stays the same.
+private struct ArchiveSidebarScreen: View {
+    @State private var model: ArchiveModel
+    private let selection: Int?
+    private let onSelect: (ArchiveRow) -> Void
+    private let onHide: () -> Void
+
+    init(
+        model: ArchiveModel,
+        selection: Int?,
+        onSelect: @escaping (ArchiveRow) -> Void,
+        onHide: @escaping () -> Void
+    ) {
+        self.model = model
+        self.selection = selection
+        self.onSelect = onSelect
+        self.onHide = onHide
+    }
+
+    var body: some View {
+        ArchiveSidebar(model: model, selection: selection, onSelect: onSelect, onHide: onHide)
+    }
+}
+
+/// The playing screen for a past puzzle, pushed from the archive or, beside the archive sidebar, at the root of the
+/// detail column. Owns its model for as long as it is on the stack.
 private struct ArchivedPuzzleView: View {
     @State private var model: PlayingModel
+    private let showsArchive: Bool
     private let onNavigate: (PlayingDestination) -> Void
 
-    init(model: PlayingModel, onNavigate: @escaping (PlayingDestination) -> Void) {
+    init(model: PlayingModel, showsArchive: Bool, onNavigate: @escaping (PlayingDestination) -> Void) {
         self.model = model
+        self.showsArchive = showsArchive
         self.onNavigate = onNavigate
     }
 
     var body: some View {
-        PlayingView(model: model, onNavigate: onNavigate)
+        PlayingView(model: model, showsArchive: showsArchive, onNavigate: onNavigate)
     }
 }
 
