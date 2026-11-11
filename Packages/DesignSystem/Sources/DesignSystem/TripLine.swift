@@ -59,24 +59,31 @@ public struct TripLine: View {
                     Text(station)
                         .font(TrackdownFont.title2)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityHidden(true)
                     Text(totalMinutes.formatted(.tripDuration))
                         .font(TrackdownFont.time)
+                        .accessibilityHidden(true)
                 }
                 Text(summary.text)
                     .font(TrackdownFont.footnote)
                     .foregroundStyle(TrackdownColor.muted)
+                    .accessibilityHidden(true)
             }
             // Keeps the text clear of the mystery-station bar. At accessibility sizes the text needs the full width.
             .padding(.trailing, isAccessibilitySize ? 0 : metrics.barWidth + 12 * scale)
+            .accessibilityHidden(true)
 
             TripTrack(pieces: pieces, rides: rides, changeNames: changeNames)
+                .accessibilityIdentifier("trip-track")
                 // The track is a drawing: past this size its rings and bar would crowd out the rides. The text above
                 // keeps growing.
                 .dynamicTypeSize(...Self.largestTrackSize)
+                .accessibilityHidden(true)
         }
         .foregroundStyle(TrackdownColor.ink)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibilityLabel))
+        .accessibilityAddTraits(.isImage)
     }
 
     private var accessibilityLabel: String {
@@ -156,6 +163,8 @@ private struct SegmentLabel: View {
     var body: some View {
         Text(verbatim: text)
             .font(TrackdownFont.lineLabel)
+            .accessibilityHidden(true)
+            .accessibilityIdentifier("trip-track")
             .foregroundStyle(TrackdownColor.onLine)
             .lineLimit(1)
             .fixedSize()
@@ -177,6 +186,8 @@ private struct ChangeRing: View {
                 if hidden {
                     Text(verbatim: "?")
                         .font(TrackdownFont.lineLabel)
+                        .accessibilityHidden(true)
+                        .accessibilityIdentifier("trip-track")
                         .foregroundStyle(TrackdownColor.ink)
                 } else {
                     EmptyView()

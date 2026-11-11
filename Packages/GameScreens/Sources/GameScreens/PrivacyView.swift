@@ -82,12 +82,14 @@ public struct PrivacyView: View {
             } label: {
                 Text("Privacy policy", bundle: .module, comment: "Opens the Trackdown privacy policy in Safari.")
                     .frame(minHeight: 44)
+                    .contentShape(.rect)
             }
             Button {
                 document = .termsOfUse
             } label: {
                 Text("Terms of use", bundle: .module, comment: "Opens the Trackdown terms in Safari.")
                     .frame(minHeight: 44)
+                    .contentShape(.rect)
             }
         }
         .buttonStyle(.plain)

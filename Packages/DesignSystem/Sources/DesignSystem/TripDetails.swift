@@ -86,20 +86,30 @@ private struct TripDetailRow: View {
     @ScaledMetric(relativeTo: .subheadline) private var rideHeight: CGFloat = 44
     @ScaledMetric(relativeTo: .subheadline) private var markerSize: CGFloat = 18
     @Environment(\.backgroundStyle) private var backgroundStyle
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var textLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+            : AnyLayout(HStackLayout(spacing: 12))
+    }
 
     var body: some View {
         HStack(spacing: 12) {
             rail
-            label
-                .frame(maxWidth: .infinity, alignment: .leading)
-            if let time {
-                Text(time)
-                    .font(TrackdownFont.subheadline)
-                    .monospacedDigit()
-                    .foregroundStyle(TrackdownColor.muted)
-            } else {
-                EmptyView()
+            textLayout {
+                label
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if let time {
+                    Text(time)
+                        .font(TrackdownFont.subheadline)
+                        .monospacedDigit()
+                        .foregroundStyle(TrackdownColor.muted)
+                } else {
+                    EmptyView()
+                }
             }
+            .fixedSize(horizontal: false, vertical: true)
         }
         .frame(minHeight: isRide ? rideHeight : stopHeight)
         .accessibilityElement(children: .combine)

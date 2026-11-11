@@ -12,6 +12,13 @@ struct PlayingHeader: View {
     let used: Int
     /// Whether more guesses can be made, so the next dot is the current one.
     let isPlaying: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var progressLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 12))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -23,15 +30,9 @@ struct PlayingHeader: View {
             } else {
                 EmptyView()
             }
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 12) {
-                    dots
-                    progressText
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    dots
-                    progressText
-                }
+            progressLayout {
+                dots
+                progressText
             }
         }
     }

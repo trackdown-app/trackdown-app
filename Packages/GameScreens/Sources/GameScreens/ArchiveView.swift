@@ -10,6 +10,7 @@ public struct ArchiveView: View {
     private let model: ArchiveModel
     private let onSelect: (ArchiveRow.Action) -> Void
     private let onChooseNetwork: () -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var scrollPosition = ScrollPosition(edge: .top)
 
     /// - Parameters:
@@ -32,9 +33,12 @@ public struct ArchiveView: View {
             .background { TrackdownColor.background.ignoresSafeArea() }
             .toolbar {
                 ToolbarItem(placement: .trailingBar) {
-                    NetworkPill(code: model.network.code, name: model.network.name, action: onChooseNetwork)
-                        // The bar proposes an icon-sized width; the pill needs room for the network's name.
-                        .fixedSize()
+                    NetworkPill(
+                        code: model.network.code, name: model.network.name,
+                        compact: dynamicTypeSize.isAccessibilitySize, action: onChooseNetwork
+                    )
+                    // The bar proposes an icon-sized width; the pill needs room for the network's name.
+                    .fixedSize()
                 }
                 .sharedBackgroundVisibility(.hidden)
             }
@@ -125,13 +129,21 @@ private struct ArchiveRowView: View {
     let row: ArchiveRow
     let action: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var layout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 14))
+    }
+
     @ScaledMetric(relativeTo: .title2) private var dateWidth: CGFloat = 40
     @ScaledMetric(relativeTo: .subheadline) private var chipHeight: CGFloat = 36
     @ScaledMetric(relativeTo: .title3) private var minHeight: CGFloat = 64
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
+            layout {
                 VStack(spacing: 0) {
                     Text(verbatim: row.puzzle.date.shortWeekday())
                         .font(TrackdownFont.captionEmphasized)
@@ -149,7 +161,7 @@ private struct ArchiveRowView: View {
                     title
                         .font(TrackdownFont.title3)
                         .foregroundStyle(TrackdownColor.ink)
-                        .lineLimit(1)
+                        .fixedSize(horizontal: false, vertical: true)
                     subtitle
                         .font(TrackdownFont.footnote)
                         .monospacedDigit()

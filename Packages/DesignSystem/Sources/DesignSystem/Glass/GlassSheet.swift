@@ -47,6 +47,7 @@ public struct GlassSheetHeader<Title: View>: View {
                 .font(TrackdownFont.title)
                 .foregroundStyle(TrackdownColor.ink)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
             GlassIconButton(.close) { dismiss() }
                 .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] }

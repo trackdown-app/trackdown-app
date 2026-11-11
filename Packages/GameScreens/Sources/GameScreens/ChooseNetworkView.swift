@@ -155,12 +155,19 @@ private struct NetworkGroup<Content: View>: View {
 private struct NetworkRowView: View {
     let row: NetworkRow
     let action: () -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var layout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 14))
+            : AnyLayout(HStackLayout(spacing: 14))
+    }
 
     @ScaledMetric(relativeTo: .title3) private var checkSize: CGFloat = 24
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
+            layout {
                 NetworkBadge(code: row.code, isInked: row.isChosen)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(verbatim: row.name)
@@ -214,9 +221,16 @@ private struct UpcomingRowView: View {
     let network: UpcomingNetwork
     let isNotified: Bool
     let action: () -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var layout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 14))
+            : AnyLayout(HStackLayout(spacing: 14))
+    }
 
     var body: some View {
-        HStack(spacing: 14) {
+        layout {
             NetworkBadge(code: network.code)
             VStack(alignment: .leading, spacing: 0) {
                 Text(verbatim: network.name)
