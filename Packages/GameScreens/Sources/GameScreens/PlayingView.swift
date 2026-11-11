@@ -8,14 +8,22 @@ import SwiftUI
 /// `NavigationStack`; it adds its own toolbar.
 public struct PlayingView: View {
     private let model: PlayingModel
+    private let showsArchive: Bool
     private let onNavigate: (PlayingDestination) -> Void
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// - Parameters:
     ///   - model: The game to play.
+    ///   - showsArchive: Whether the toolbar has an archive button. Leave it out while the archive is already on
+    ///     screen beside the puzzle, as a sidebar.
     ///   - onNavigate: Opens the archive, How to play, statistics, network picker or Solved sheet.
-    public init(model: PlayingModel, onNavigate: @escaping (PlayingDestination) -> Void) {
+    public init(
+        model: PlayingModel,
+        showsArchive: Bool = true,
+        onNavigate: @escaping (PlayingDestination) -> Void
+    ) {
         self.model = model
+        self.showsArchive = showsArchive
         self.onNavigate = onNavigate
     }
 
@@ -74,10 +82,12 @@ public struct PlayingView: View {
                     NetworkLabel(name: model.network.name)
                 }
             }
-            Button {
-                onNavigate(.archive)
-            } label: {
-                TrackdownIcon.archive.label
+            if showsArchive {
+                Button {
+                    onNavigate(.archive)
+                } label: {
+                    TrackdownIcon.archive.label
+                }
             }
             Button {
                 onNavigate(.statistics)
@@ -110,10 +120,12 @@ public struct PlayingView: View {
         }
 
         ToolbarItemGroup(placement: .trailingBar) {
-            Button {
-                onNavigate(.archive)
-            } label: {
-                TrackdownIcon.archive.label
+            if showsArchive {
+                Button {
+                    onNavigate(.archive)
+                } label: {
+                    TrackdownIcon.archive.label
+                }
             }
             Button {
                 onNavigate(.howToPlay)
