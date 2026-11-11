@@ -106,6 +106,21 @@ final class AppModel {
         path = []
     }
 
+    /// Opens a website destination, leaving unavailable archive puzzles on today's screen.
+    func open(_ link: PuzzleLink) async {
+        switch link {
+        case .today(let network):
+            choose(network ?? self.network)
+        case .archive(let network, let number):
+            choose(network)
+            guard let puzzles = try? await service.puzzles(network: network),
+                !Task.isCancelled, self.network == network,
+                let puzzle = puzzles.first(where: { $0.number == number })
+            else { return }
+            path = [.archivedPuzzle(puzzle)]
+        }
+    }
+
     /// The player tapped Notify me on a network still to come.
     func notify(_ network: UpcomingNetwork) {
         analytics.capture(.networkNotifyRequested(network))
