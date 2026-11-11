@@ -20,20 +20,24 @@ public struct PlayingView: View {
     }
 
     public var body: some View {
-        content
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background { TrackdownColor.background.ignoresSafeArea() }
-            .toolbar { toolbar }
-            .toolbarTitleDisplayMode(.inline)
-            .task(id: model.network) { await model.load() }
-            .sensoryFeedback(trigger: model.lastGuess) { _, guess in
-                guard let guess else { return nil }
-                return guess.solved ? .success : .impact(weight: .medium)
-            }
+        // Where the status bar runs down a side, as on iPhone Duo in landscape, the system turns the toolbar into a
+        // vertical bar on that side. The network pill does not fit there: its name moves into the header.
+        VerticalToolbarReader { toolbarEdge in
+            content(toolbarEdge: toolbarEdge)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background { TrackdownColor.background.ignoresSafeArea() }
+                .toolbar { toolbar(isVertical: toolbarEdge != nil) }
+        }
+        .toolbarTitleDisplayMode(.inline)
+        .task(id: model.network) { await model.load() }
+        .sensoryFeedback(trigger: model.lastGuess) { _, guess in
+            guard let guess else { return nil }
+            return guess.solved ? .success : .impact(weight: .medium)
+        }
     }
 
     @ViewBuilder
-    private var content: some View {
+    private func content(toolbarEdge: HorizontalEdge?) -> some View {
         switch model.loadState {
         case .loading where model.game?.trips == nil:
             ProgressView {
@@ -45,12 +49,51 @@ public struct PlayingView: View {
                 Task { await model.load() }
             }
         case .loading, .ready:
-            PlayingBoard(model: model, onNavigate: onNavigate)
+            PlayingBoard(model: model, toolbarEdge: toolbarEdge, onNavigate: onNavigate)
         }
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private func toolbar(isVertical: Bool) -> some ToolbarContent {
+        if isVertical {
+            verticalToolbar
+        } else {
+            topToolbar
+        }
+    }
+
+    /// The puzzle actions as one vertical glass bar, symbols only, the network first.
+    @ToolbarContentBuilder
+    private var verticalToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .trailingBar) {
+            // A past puzzle belongs to its network, so only today's puzzle can switch.
+            if model.puzzle == .today {
+                Button {
+                    onNavigate(.chooseNetwork)
+                } label: {
+                    NetworkLabel(name: model.network.name)
+                }
+            }
+            Button {
+                onNavigate(.archive)
+            } label: {
+                TrackdownIcon.archive.label
+            }
+            Button {
+                onNavigate(.statistics)
+            } label: {
+                TrackdownIcon.statistics.label
+            }
+            Button {
+                onNavigate(.howToPlay)
+            } label: {
+                TrackdownIcon.howToPlay.label
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var topToolbar: some ToolbarContent {
         // A past puzzle belongs to its network; the back button takes the pill's place.
         if model.puzzle == .today {
             ToolbarItem(placement: .leadingBar) {
@@ -100,6 +143,8 @@ extension ToolbarItemPlacement {
 /// The loaded game: header, guess list and guess bar.
 private struct PlayingBoard: View {
     @Bindable var model: PlayingModel
+    /// The side of a vertical toolbar, which the column keeps clear of.
+    let toolbarEdge: HorizontalEdge?
     let onNavigate: (PlayingDestination) -> Void
     @State private var scrollPosition = ScrollPosition(edge: .top)
 
@@ -110,6 +155,8 @@ private struct PlayingBoard: View {
                     if let game = model.game {
                         PlayingHeader(
                             title: model.date?.title(),
+                            // Without the network pill, the header names the network.
+                            network: toolbarEdge != nil ? model.network.name : nil,
                             puzzle: game.key.number,
                             currentGuess: model.currentGuess,
                             maxGuesses: game.maxGuesses,
@@ -124,7 +171,7 @@ private struct PlayingBoard: View {
                         .padding(.bottom, 8)
                     GuessList(rows: model.rows, stationName: model.name(of:))
                 }
-                .padding(.horizontal, 16)
+                .horizontalPadding(16, verticalToolbar: toolbarEdge)
                 .padding(.bottom, 24)
                 .readableWidth()
             }
@@ -134,7 +181,7 @@ private struct PlayingBoard: View {
             .frame(minHeight: 0)
             .clipped()
             bottomBar
-                .padding(.horizontal, 16)
+                .horizontalPadding(16, verticalToolbar: toolbarEdge)
                 .padding(.bottom, 8)
                 .readableWidth()
         }

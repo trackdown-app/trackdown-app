@@ -5,6 +5,8 @@ import SwiftUI
 struct PlayingHeader: View {
     /// The day, such as "Friday 6 November". `nil` while unknown.
     let title: String?
+    /// The network's name, such as "Netherlands", where no network pill shows it. `nil` to leave it out.
+    var network: String? = nil
     let puzzle: Int
     let currentGuess: Int
     let maxGuesses: Int
@@ -42,10 +44,23 @@ struct PlayingHeader: View {
     }
 
     private var progressText: some View {
-        Text(
-            "Puzzle \(puzzle), guess \(currentGuess) of \(maxGuesses)", bundle: .module,
-            comment: "Under the day on the playing screen: the puzzle number and which guess is being made."
-        )
+        Group {
+            if let network {
+                Text(
+                    "\(network), puzzle \(puzzle), guess \(currentGuess) of \(maxGuesses)", bundle: .module,
+                    comment: """
+                        Under the day on the playing screen when the toolbar runs down the side, as on iPhone Duo in \
+                        landscape: the network's name, such as Netherlands, the puzzle number and which guess is being \
+                        made.
+                        """
+                )
+            } else {
+                Text(
+                    "Puzzle \(puzzle), guess \(currentGuess) of \(maxGuesses)", bundle: .module,
+                    comment: "Under the day on the playing screen: the puzzle number and which guess is being made."
+                )
+            }
+        }
         .font(TrackdownFont.subheadline)
         .monospacedDigit()
         .foregroundStyle(TrackdownColor.muted)
