@@ -6,13 +6,13 @@ What the app collects, what it declares to Apple, and the answers to give in App
 
 The app asks once, in a sheet over the playing screen. On first launch it follows How to play, so its toast lands on the playing screen.
 
-- **Until the player allows:** the PostHog SDK is not set up. No event is sent, and no anonymous id or device id is written to disk.
+- **Until the player allows:** the PostHog SDK is not set up. No analytics event is sent, and no analytics anonymous id or device id is written to disk. App Attest security keys are separate from this choice.
 - **Allow:** the SDK starts and keeps a random anonymous id for this install. Events carry `consent_analytics: true` and `consent_version`.
 - **Don't allow**, or turning the Privacy toggle off later: the SDK is shut down and its directory, with the ids and any unsent events, is deleted. Nothing is sent, including the refusal itself.
 
 The answer is stored with the consent text version, so the prompt never shows again unless `AnalyticsConsent.textVersion` is raised. After the answer a toast confirms it and links to Privacy settings, where the choice can be changed at any time.
 
-This is stricter than the website, which counts cookieless pageviews before an answer and after a refusal. posthog-ios has no cookieless mode, and the prompt promises that the app shares usage data "with your OK", so the app sends nothing without it.
+This is stricter than the website, which counts cookieless pageviews before an answer and after a refusal. posthog-ios has no cookieless mode, and the prompt promises that the app shares usage data "with your OK", so the app sends no analytics without it.
 
 ## No tracking
 
