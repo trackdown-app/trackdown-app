@@ -13,6 +13,7 @@ import SwiftUI
 public struct PlayingView: View {
     private let model: PlayingModel
     private let showsArchive: Bool
+    private let networkPopover: NetworkPopover?
     private let onNavigate: (PlayingDestination) -> Void
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.trackdownFoldSplit) private var foldSplit
@@ -26,14 +27,18 @@ public struct PlayingView: View {
     ///   - model: The game to play.
     ///   - showsArchive: Whether the toolbar has an archive button. Leave it out while the archive is already on
     ///     screen beside the puzzle, as a sidebar.
+    ///   - networkPopover: The network picker to show as a popover from the network button, on a display wide enough
+    ///     for one. Leave it out to have `onNavigate` push the picker.
     ///   - onNavigate: Opens the archive, How to play, statistics, network picker or Solved sheet.
     public init(
         model: PlayingModel,
         showsArchive: Bool = true,
+        networkPopover: NetworkPopover? = nil,
         onNavigate: @escaping (PlayingDestination) -> Void
     ) {
         self.model = model
         self.showsArchive = showsArchive
+        self.networkPopover = networkPopover
         self.onNavigate = onNavigate
     }
 
@@ -72,7 +77,7 @@ public struct PlayingView: View {
         case .loading, .ready:
             PlayingBoard(
                 model: model, toolbarEdge: toolbarEdge, foldSplit: foldSplit, showsArchive: showsArchive,
-                onNavigate: onNavigate)
+                networkPopover: networkPopover, onNavigate: onNavigate)
         }
     }
 
@@ -99,6 +104,7 @@ public struct PlayingView: View {
                 } label: {
                     NetworkLabel(name: model.network.name)
                 }
+                .networkPopover(networkPopover)
             }
             if showsArchive {
                 Button {
@@ -132,6 +138,7 @@ public struct PlayingView: View {
                 }
                 // The bar proposes an icon-sized width; the pill needs room for the network's name.
                 .fixedSize()
+                .networkPopover(networkPopover)
             }
             .sharedBackgroundVisibility(.hidden)
             .visibilityPriority(.high)
@@ -190,6 +197,7 @@ private struct PlayingBoard: View {
     /// The fold the board spreads across, if any.
     let foldSplit: TrackdownFoldSplit?
     let showsArchive: Bool
+    let networkPopover: NetworkPopover?
     let onNavigate: (PlayingDestination) -> Void
     @State private var scrollPosition = ScrollPosition(edge: .top)
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -272,6 +280,7 @@ private struct PlayingBoard: View {
                 ) {
                     onNavigate(.chooseNetwork)
                 }
+                .networkPopover(networkPopover)
             }
             Spacer(minLength: 0)
             GlassIconButtonGroup {
