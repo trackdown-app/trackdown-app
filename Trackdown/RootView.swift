@@ -13,6 +13,8 @@ struct RootView: View {
     @State private var destination: PlayingDestination?
     /// Whether the archive sidebar shows beside the puzzle, on a display wide enough for it.
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    /// The active fold across the split view, as in the book pose of iPhone Duo.
+    @State private var fold: TrackdownFold?
     @State private var incomingURL: URL?
     @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
     /// The answer just given in the consent prompt, while its toast shows.
@@ -95,7 +97,7 @@ struct RootView: View {
                 // A new network has a new archive.
                 .id(model.network)
                 .toolbar(.hidden, for: .navigationBar)
-                .navigationSplitViewColumnWidth(300)
+                .navigationSplitViewColumnWidth(min: sidebarWidth, ideal: sidebarWidth, max: sidebarWidth)
             } detail: {
                 NavigationStack(path: $model.detailPath) {
                     // The selected puzzle replaces the column's root rather than being pushed, so it has no Back
@@ -104,6 +106,7 @@ struct RootView: View {
                 }
             }
             .navigationSplitViewStyle(.balanced)
+            .onFoldChange { fold = $0 }
             // The sidebar has its own Hide sidebar button. While it is hidden, the system's Show Sidebar toggle and the
             // playing screen's archive button bring it back.
             .toolbar(removing: .sidebarToggle)
@@ -112,6 +115,13 @@ struct RootView: View {
                 stackRoot(puzzle: nil)
             }
         }
+    }
+
+    /// The sidebar's width: up to a vertical fold, so the archive and the puzzle each get one side of a device held like
+    /// a book; otherwise a fixed column.
+    private var sidebarWidth: CGFloat {
+        guard let fold, fold.axis == .vertical else { return 300 }
+        return fold.span.lowerBound
     }
 
     /// Whether the archive sidebar is on screen beside the puzzle.
@@ -130,7 +140,8 @@ struct RootView: View {
                 PlayingView(model: model.playing, showsArchive: !isSidebarVisible, onNavigate: navigate)
             }
         }
-        .reservedContent()
+        // The playing screen arranges itself around an active fold.
+        .reservedContent(spreadsAcrossFold: true)
         .background { TrackdownColor.background.ignoresSafeArea() }
         .navigationDestination(for: Route.self) { route in
             Group {
@@ -148,7 +159,7 @@ struct RootView: View {
                     PrivacyView(settings: model.analyticsSettings)
                 }
             }
-            .reservedContent()
+            .reservedContent(spreadsAcrossFold: route.isPuzzle)
             .background { TrackdownColor.background.ignoresSafeArea() }
         }
     }

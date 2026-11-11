@@ -14,6 +14,11 @@ enum Route: Hashable {
     case chooseNetwork
     /// Usage data preferences and legal links.
     case privacy
+
+    /// Whether the route shows the playing screen, which spreads across an active fold.
+    var isPuzzle: Bool {
+        if case .archivedPuzzle = self { true } else { false }
+    }
 }
 
 /// App-wide state, injected into the view tree through the environment.
