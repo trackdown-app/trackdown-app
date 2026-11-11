@@ -427,6 +427,12 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gespeeld" } }
       }
     },
+    "%@, puzzle %lld, guess %lld of %lld" : {
+      "comment" : "Under the day on the playing screen when the toolbar runs down the side, as on iPhone Duo in landscape: the network's name, such as Netherlands, the puzzle number and which guess is being made.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, puzzel %2$lld, gok %3$lld van %4$lld" } }
+      }
+    },
     "Puzzle %lld" : {
       "comment" : "Under an archive row's station: the puzzle number.",
       "localizations" : {

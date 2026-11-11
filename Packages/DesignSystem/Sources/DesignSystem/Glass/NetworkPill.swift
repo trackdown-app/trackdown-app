@@ -59,6 +59,25 @@ public struct NetworkPill: View {
     }
 }
 
+/// The network button's label where there is no room for the pill, such as a vertical toolbar: a globe, named for
+/// VoiceOver and overflow menus. Put it in a toolbar `Button`, where the system draws the glass.
+public struct NetworkLabel: View {
+    private let name: String
+
+    /// - Parameter name: The network's localized name, such as `Netherlands`.
+    public init(name: String) {
+        self.name = name
+    }
+
+    public var body: some View {
+        Label {
+            Text("Network: \(name). Change network", bundle: .module)
+        } icon: {
+            Image(systemName: "globe")
+        }
+    }
+}
+
 #Preview("Network pill") {
     GlassPreviewBackdrop {
         NetworkPill(code: "NL", name: "Netherlands") {}
