@@ -11,6 +11,8 @@
 	<string>$(TRACKDOWN_API_BASE_URL)</string>
 	<key>TrackdownClientKey</key>
 	<string>$(TRACKDOWN_CLIENT_KEY)</string>
+	<key>TrackdownAppAttestEnabled</key>
+	<string>$(TRACKDOWN_APP_ATTEST_ENABLED)</string>
 	<key>PostHogHost</key>
 	<string>$(POSTHOG_HOST)</string>
 	<key>PostHogProjectToken</key>

@@ -15,9 +15,13 @@ public struct APIConfiguration: Sendable, Equatable {
     /// `CFBundleShortVersionString`, such as `1.4.2`.
     public var appVersion: String
 
-    public init(baseURL: URL, clientKey: String, appVersion: String) {
+    /// Enable only after the backend's observe rollout is deployed.
+    public var appAttestEnabled: Bool
+
+    public init(baseURL: URL, clientKey: String, appVersion: String, appAttestEnabled: Bool = false) {
         self.baseURL = baseURL
         self.clientKey = clientKey
         self.appVersion = appVersion
+        self.appAttestEnabled = appAttestEnabled
     }
 }

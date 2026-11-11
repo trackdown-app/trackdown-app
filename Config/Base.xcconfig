@@ -57,5 +57,9 @@ POSTHOG_HOST = https:/$()/t.trackdown.nl
 
 // Real values live in Secrets.xcconfig (untracked). See Secrets.example.xcconfig.
 TRACKDOWN_CLIENT_KEY =
+TRACKDOWN_APP_ATTEST_ENABLED = YES
+CODE_SIGN_ENTITLEMENTS = Config/Trackdown.entitlements
+// Both builds call the Production API by default, which rejects development attestations.
+TRACKDOWN_APP_ATTEST_ENVIRONMENT = production
 POSTHOG_PROJECT_TOKEN =
 DEVELOPMENT_TEAM =

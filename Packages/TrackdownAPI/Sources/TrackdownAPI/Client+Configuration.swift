@@ -12,16 +12,19 @@ extension Client {
         apiConfiguration: APIConfiguration,
         transport: any ClientTransport = URLSessionTransport()
     ) {
+        var middlewares: [any ClientMiddleware] = [
+            TrackdownHeadersMiddleware(clientKey: apiConfiguration.clientKey, appVersion: apiConfiguration.appVersion)
+        ]
+        #if os(iOS)
+            if apiConfiguration.appAttestEnabled {
+                middlewares.append(AppAttestMiddleware(attester: DeviceAttester(configuration: apiConfiguration)))
+            }
+        #endif
         self.init(
             serverURL: apiConfiguration.baseURL,
             configuration: Configuration(dateTranscoder: LenientISO8601DateTranscoder()),
             transport: transport,
-            middlewares: [
-                TrackdownHeadersMiddleware(
-                    clientKey: apiConfiguration.clientKey,
-                    appVersion: apiConfiguration.appVersion
-                )
-            ]
+            middlewares: middlewares
         )
     }
 }
