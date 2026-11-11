@@ -27,7 +27,7 @@ The app does not track in Apple's sense: no advertising, no data brokers, no lin
 | `NSPrivacyTracking` | `false` | See above |
 | `NSPrivacyTrackingDomains` | Empty | No tracking domains |
 | Collected: Product Interaction | Not linked, not tracking, purpose Analytics | Screen views, guesses, results, shares, app opened and backgrounded |
-| Collected: Device ID | Not linked, not tracking, purpose Analytics | PostHog's random per-install anonymous id, only after Allow |
+| Collected: Device ID | Not linked, not tracking, purposes Analytics and App Functionality | Optional PostHog anonymous id; App Attest installation key ID when enabled |
 | Accessed API: User Defaults | `CA92.1` | The app's own settings: consent, chosen network, whether How to play was seen |
 
 The app's own code uses no other required-reason API. posthog-ios declares its own (User Defaults `CA92.1`, system boot time `35F9.1`, file timestamp `C617.1`).
@@ -41,16 +41,16 @@ App Store Connect > App Privacy.
 | Data type | Collected | Purpose | Linked to the user | Used for tracking |
 | --- | --- | --- | --- | --- |
 | Usage Data > Product Interaction | Yes | Analytics | No | No |
-| Identifiers > Device ID | Yes | Analytics | No | No |
+| Identifiers > Device ID | Yes | Analytics, App Functionality | No | No |
 | Everything else (contact info, location, user content, purchases, diagnostics, ...) | No | | | |
 
 Notes for filling it in:
 
-- Collection is optional and off until the player allows it. Apple still wants optional analytics declared, because it leaves the device once allowed.
-- The Device ID is a random id PostHog generates per install. It is not the IDFA or IDFV, is deleted when the player turns usage data off, and no person profile is ever created from it.
+- Analytics collection is optional and off until the player allows it. App Attest security records, when enabled, are required independently of analytics consent.
+- The analytics Device ID is a random id PostHog generates per install. It is not the IDFA or IDFV, is deleted when the player turns usage data off, and no person profile is ever created from it. The separate App Attest key ID remains for API security.
 - Events hold the network, puzzle number, guess counts and screen names. They never hold station names, the answer, search text or share text.
 - The IP address reaches PostHog's EU proxy with each request, as with any request. `$ip` is set to `null` on every event and the project discards IP data, so no location is derived or stored.
-- Game requests to `trackdown.nl/api/v1` carry the client key and app version, no identifier, and are not used for analytics.
+- Game requests carry the client key and app version and are not used for analytics. With App Attest enabled, they also carry an installation key ID and a signed proof. The server stores its public key and replay counter in Upstash Redis for the registration's lifetime; challenges expire after five minutes. These security records are independent of analytics consent and never go to PostHog. Declare Device ID for App Functionality as well as optional Analytics before enabling the distribution build.
 - Crash capture, session replay, surveys and feature flags are off, so no Diagnostics are collected.
 
 **Privacy policy URL:** `https://trackdown.nl/privacy` (Dutch), `https://trackdown.nl/en/privacy` (English).

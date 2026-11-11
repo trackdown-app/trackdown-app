@@ -94,6 +94,8 @@ See [docs/analytics.md](docs/analytics.md) for how PostHog is set up and what ev
 
 ## API client
 
+App Attest enrollment, signing, and coordinated backend rollout: [docs/app-attest.md](docs/app-attest.md).
+
 `TrackdownAPI` generates its client from `Packages/TrackdownAPI/openapi/v1.json` at build time with the [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator) build plugin. The spec comes from `trackdown-website`; never edit it by hand. Refresh it from the live site (or a local one) with:
 
 ```sh

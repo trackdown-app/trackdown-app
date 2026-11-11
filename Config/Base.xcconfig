@@ -57,5 +57,8 @@ POSTHOG_HOST = https:/$()/t.trackdown.nl
 
 // Real values live in Secrets.xcconfig (untracked). See Secrets.example.xcconfig.
 TRACKDOWN_CLIENT_KEY =
+TRACKDOWN_APP_ATTEST_ENABLED = NO
+CODE_SIGN_ENTITLEMENTS = Config/Trackdown.entitlements
+TRACKDOWN_APP_ATTEST_ENVIRONMENT = development
 POSTHOG_PROJECT_TOKEN =
 DEVELOPMENT_TEAM =
