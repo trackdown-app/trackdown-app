@@ -9,6 +9,7 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var destination: PlayingDestination?
+    @State private var incomingURL: URL?
     @AppStorage("hasSeenHowToPlay") private var hasSeenHowToPlay = false
     /// The answer just given in the consent prompt, while its toast shows.
     @State private var consentToast: AnalyticsConsent?
@@ -76,6 +77,16 @@ struct RootView: View {
             guard phase == .active else { return }
             // A suspended app misses the rollover; catch up when it comes back.
             Task { _ = try? await model.games.rolloverIfNeeded(network: model.network) }
+        }
+        .onOpenURL { url in
+            guard PuzzleLink(url: url) != nil else { return }
+            destination = nil
+            incomingURL = url
+        }
+        .task(id: incomingURL) {
+            guard let incomingURL, let link = PuzzleLink(url: incomingURL) else { return }
+            await model.open(link)
+            if !Task.isCancelled { self.incomingURL = nil }
         }
         .onChange(of: screenEvent, initial: true) { _, event in
             model.analytics.capture(event)

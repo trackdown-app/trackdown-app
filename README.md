@@ -84,6 +84,18 @@ See [docs/ios-standards.md](docs/ios-standards.md) for concurrency, SwiftUI, tes
 
 ## Configuration
 
+### Universal links
+
+The app declares `applinks:trackdown.nl` and handles HTTPS links to `/{network}` and
+`/{network}/archief/{number}`, with an optional `/en` prefix. Unknown paths open
+today's puzzle on the current network. Missing archive puzzles or a failed archive
+lookup leave the app on today's puzzle in the requested network.
+
+Device delivery also requires the website's `apple-app-site-association` file to
+authorize the signed app's application identifier (website issue #94), and the
+Associated Domains capability on the signing profile. Verify cold and warm launches
+with a signed device build after that website configuration is deployed.
+
 `Config/Debug.xcconfig` and `Config/Release.xcconfig` include `Base.xcconfig` first and the untracked `Secrets.xcconfig` last, so local values win. `Config/Info.plist` exposes the values to the app as `TrackdownAPIBaseURL`, `TrackdownClientKey`, `PostHogHost`, `PostHogProjectToken` and `PostHogEnvironment`, read by `AppConfiguration`.
 
 In xcconfig files `//` starts a comment, so write URLs as `https:/$()/host/path`.
