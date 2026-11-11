@@ -9,27 +9,23 @@
     struct AccessibilityFixtureView: View {
         let screen: String
         @State private var fixture: AccessibilityFixture?
-        @Environment(\.dynamicTypeSize) private var systemTypeSize
 
         private var typeSize: DynamicTypeSize {
             let arguments = ProcessInfo.processInfo.arguments
-            if arguments.contains("-accessibility-dynamic-type") { return systemTypeSize }
             return arguments.contains("UICTContentSizeCategoryAccessibilityXXXL") ? .accessibility5 : .large
         }
 
         var body: some View {
             Group {
-                if let fixture {
-                    NavigationStack {
-                        content(fixture)
-                            .accessibilityIdentifier("accessibility-fixture-\(screen)")
-                    }
+                // Launch arguments stay fixed for this view's lifetime. The scaling audit needs the
+                // unmodified system environment; visual audits use a fixed, reproducible text size.
+                if ProcessInfo.processInfo.arguments.contains("-accessibility-dynamic-type") {
+                    fixtureScreen
                 } else {
-                    ProgressView()
+                    fixtureScreen.dynamicTypeSize(typeSize)
                 }
             }
             .preferredColorScheme(ProcessInfo.processInfo.arguments.contains("-accessibility-dark") ? .dark : .light)
-            .dynamicTypeSize(typeSize)
             .task {
                 do {
                     let value = AccessibilityFixture()
@@ -43,6 +39,18 @@
                 } catch {
                     assertionFailure("Accessibility fixture failed: \(error)")
                 }
+            }
+        }
+
+        @ViewBuilder
+        private var fixtureScreen: some View {
+            if let fixture {
+                NavigationStack {
+                    content(fixture)
+                        .accessibilityIdentifier("accessibility-fixture-\(screen)")
+                }
+            } else {
+                ProgressView()
             }
         }
 
@@ -104,7 +112,7 @@
     private nonisolated struct AccessibilityPuzzleService: PuzzleService {
         let puzzle = Puzzle(
             network: .nl, number: 142, date: PuzzleDate(year: 2026, month: 11, day: 6), maxGuesses: 6,
-            nextPuzzleAt: Date.now.addingTimeInterval(3600))
+            nextPuzzleAt: .distantPast)
         let names: [(StationCode, String)] = [
             ("mt", "Maastricht"), ("ut", "Utrecht Centraal"), ("asd", "Amsterdam Centraal"),
             ("gn", "Groningen"), ("hlm", "Haarlem"), ("zl", "Zwolle"), ("asdz", "Amsterdam Zuid"),

@@ -79,9 +79,9 @@ struct ConsentPrompt: View {
                         .underline()
                         .foregroundStyle(TrackdownColor.ink)
                         .frame(minHeight: 44)
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
-                .padding(.vertical, -6)
                 choices
             }
             .frame(maxWidth: .infinity, alignment: .leading)

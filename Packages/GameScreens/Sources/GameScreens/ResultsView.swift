@@ -162,12 +162,14 @@ private struct ResultsActions: View {
                     shareButton
                     if model.outcome == .missed {
                         Button(action: onOlderPuzzles) {
-                            Text(
-                                "Older puzzles", bundle: .module, comment: "Missed sheet button that opens the archive."
-                            )
-                            .font(TrackdownFont.headline)
-                            .frame(maxWidth: .infinity, minHeight: 44)
+                            olderPuzzlesTitle
+                                .foregroundStyle(TrackdownColor.ink)
+                                .accessibilityIdentifier("older-puzzles-label")
+                                .accessibilityHidden(true)
+                                .font(TrackdownFont.headline)
+                                .frame(maxWidth: .infinity, minHeight: 44)
                         }
+                        .accessibilityLabel(olderPuzzlesTitle)
                         .buttonStyle(.glass)
                         .buttonBorderShape(.capsule)
                         .controlSize(.large)
@@ -196,12 +198,14 @@ private struct ResultsActions: View {
                 } label: {
                     shareLabel
                 }
+                .accessibilityLabel(shareTitle)
                 .sheet(item: $share) { share in
                     ResultShareSheet(text: share.text, onComplete: model.shareCompleted)
                 }
             #else
                 // The macOS build exists only for host tests; the app uses the completion-aware iOS sheet.
                 ShareLink(item: model.shareText ?? "") { shareLabel }
+                    .accessibilityLabel(shareTitle)
             #endif
         }
         .buttonStyle(.glassProminent)
@@ -214,16 +218,25 @@ private struct ResultsActions: View {
 
     private var shareLabel: some View {
         Label {
-            if model.outcome == .missed {
-                Text("Share", bundle: .module, comment: "Missed sheet button that shares the result.")
-            } else {
-                Text("Share result", bundle: .module, comment: "Solved sheet button that shares the result.")
-            }
+            shareTitle.accessibilityHidden(true)
         } icon: {
             Image(systemName: "square.and.arrow.up")
+                .accessibilityHidden(true)
         }
         .font(TrackdownFont.headline)
         .frame(maxWidth: .infinity, minHeight: 44)
+    }
+
+    private var shareTitle: Text {
+        if model.outcome == .missed {
+            Text("Share", bundle: .module, comment: "Missed sheet button that shares the result.")
+        } else {
+            Text("Share result", bundle: .module, comment: "Solved sheet button that shares the result.")
+        }
+    }
+
+    private var olderPuzzlesTitle: Text {
+        Text("Older puzzles", bundle: .module, comment: "Missed sheet button that opens the archive.")
     }
 }
 

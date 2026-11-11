@@ -25,7 +25,6 @@ public struct NetworkBadge: View {
             .foregroundStyle(isInked ? TrackdownColor.background : TrackdownColor.ink)
             .frame(width: size, height: size)
             .background { Circle().fill(isInked ? TrackdownColor.ink : TrackdownColor.soft) }
-            .accessibilityHidden(true)
     }
 }
 

@@ -15,7 +15,13 @@ For scroll content, the audit ignores contrast and clipping reports only when th
 
 Contrast findings on disabled buttons are also exempt, matching WCAG's exception for inactive controls. Enabled controls remain checked, and each inactive-button exemption is attached to the test result.
 
+The scaling audit exempts only decorative labels identified as `trip-track`. The diagram caps at `.xxxLarge`, as allowed by the layout standards; its station, total duration and change summary continue scaling, and expanded trip details expose each ride. Other text keeps the full Dynamic Type audit.
+
+XCTest also reports a native glass contrast failure on `older-puzzles-label` even though its captured text/background measured 17.55:1. This exact label gets an independent sRGB pixel check before the audit. Its report is accepted only when the sampled frame matches and the two dominant rendered color populations meet 4.5:1. Uncertain samples and low contrast remain failures; accepted reports include the crop, colors and measured ratio.
+
 The fixtures exercise the production screens and models. They do not test live API integration, native sheet transitions, every scroll position, or actual VoiceOver gestures. Review those separately. Run the same target on iPhone Duo before claiming coverage of its outer and inner layouts.
+
+Fixture countdowns remain at zero so pixel audits sample stable text. Production countdown behavior is unchanged.
 
 `DesignSystemTests` checks every shipped text color pairing against WCAG's 4.5:1 contrast threshold in both appearances. Glass uses system materials, which supply the Reduce Transparency fallback. Custom guess, message and toast animations honor Reduce Motion.
 

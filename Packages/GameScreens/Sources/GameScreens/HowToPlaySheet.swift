@@ -43,6 +43,7 @@ public struct HowToPlaySheet: View {
                                 .font(TrackdownFont.calloutEmphasized)
                                 .foregroundStyle(TrackdownColor.line1)
                                 .frame(maxWidth: .infinity, minHeight: 44)
+                                .contentShape(.rect)
                         }
                     }
                     .padding(.bottom, 24)

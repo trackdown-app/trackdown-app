@@ -163,6 +163,7 @@ private struct DistributionRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityValue(Text(bar.count, format: .number))
+        .accessibilityAddTraits(.isStaticText)
         .accessibilityAddTraits(bar.isHighlighted ? .isSelected : [])
     }
 

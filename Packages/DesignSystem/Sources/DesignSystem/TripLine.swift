@@ -74,6 +74,7 @@ public struct TripLine: View {
             .accessibilityHidden(true)
 
             TripTrack(pieces: pieces, rides: rides, changeNames: changeNames)
+                .accessibilityIdentifier("trip-track")
                 // The track is a drawing: past this size its rings and bar would crowd out the rides. The text above
                 // keeps growing.
                 .dynamicTypeSize(...Self.largestTrackSize)
@@ -82,6 +83,7 @@ public struct TripLine: View {
         .foregroundStyle(TrackdownColor.ink)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibilityLabel))
+        .accessibilityAddTraits(.isImage)
     }
 
     private var accessibilityLabel: String {
@@ -162,6 +164,7 @@ private struct SegmentLabel: View {
         Text(verbatim: text)
             .font(TrackdownFont.lineLabel)
             .accessibilityHidden(true)
+            .accessibilityIdentifier("trip-track")
             .foregroundStyle(TrackdownColor.onLine)
             .lineLimit(1)
             .fixedSize()
@@ -184,6 +187,7 @@ private struct ChangeRing: View {
                     Text(verbatim: "?")
                         .font(TrackdownFont.lineLabel)
                         .accessibilityHidden(true)
+                        .accessibilityIdentifier("trip-track")
                         .foregroundStyle(TrackdownColor.ink)
                 } else {
                     EmptyView()
