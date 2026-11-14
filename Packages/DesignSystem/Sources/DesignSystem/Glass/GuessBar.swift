@@ -29,6 +29,14 @@ public struct GuessBar: View {
     /// the field has no room left for what the player types and "Guess" breaks over two lines.
     private var isStacked: Bool { dynamicTypeSize.isAccessibilitySize }
     private static let stackedMinHeight: CGFloat = 56
+    /// Room between the field's leading edge and its magnifying glass.
+    private nonisolated static let fieldPadding: CGFloat = 18
+    /// The width the magnifying glass takes.
+    private nonisolated static let iconWidth: CGFloat = 20
+
+    /// How far the middle of the field's magnifying glass sits from the bar's leading edge, so a view above the bar
+    /// can point straight at it.
+    public nonisolated static var iconCenter: CGFloat { fieldPadding + iconWidth / 2 }
 
     private var barLayout: AnyLayout {
         isStacked ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
@@ -81,6 +89,7 @@ public struct GuessBar: View {
         HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 20, weight: .semibold))
+                .frame(width: Self.iconWidth)
                 .foregroundStyle(TrackdownColor.muted)
                 .accessibilityHidden(true)
             TextField(text: $text, prompt: Text("Guess a station", bundle: .module)) {
@@ -94,7 +103,7 @@ public struct GuessBar: View {
             .onKeyPress(.downArrow) { moveSelection(by: 1) }
             .onKeyPress(.upArrow) { moveSelection(by: -1) }
         }
-        .padding(.horizontal, 18)
+        .padding(.horizontal, Self.fieldPadding)
         // Stacked, the field has the full width and only needs to be as tall as its text: the scaled height would
         // take a quarter of a small screen.
         .padding(.vertical, isStacked ? 12 : 0)

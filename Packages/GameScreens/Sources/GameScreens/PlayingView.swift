@@ -202,9 +202,22 @@ private struct PlayingBoard: View {
     @State private var scrollPosition = ScrollPosition(edge: .top)
     /// The height of the controls, which float over the bottom of the clues when the board is one column.
     @State private var controlsHeight: CGFloat = 0
+    /// The height of the clues the scroll view shows between its bars, which the first-guess prompt fills.
+    @State private var visibleCluesHeight: CGFloat = 0
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var isTabletop: Bool { foldSplit?.axis == .horizontal }
+
+    /// Before the first guess the board says where to start.
+    private var showsFirstGuessPrompt: Bool {
+        model.game?.status == .playing && model.rows.isEmpty
+    }
+
+    /// In one column the guess bar sits right below the clues, so the prompt's route can run down to it.
+    private var showsRoute: Bool { showsFirstGuessPrompt && foldSplit == nil }
+
+    /// Room under the clues. The route stops just short of the guess bar.
+    private var cluesBottomPadding: CGFloat { showsRoute ? 10 : 24 }
 
     /// The vertical toolbar each part sits beside. In the book pose the clues only reach the leading edge and the
     /// controls only the trailing edge; on the fold's side each gets the usual padding.
@@ -247,13 +260,26 @@ private struct PlayingBoard: View {
                 GuessList(
                     rows: model.rows, arrangement: isTabletop ? .besideTrack : .stacked,
                     stationName: model.name(of:))
+                if showsFirstGuessPrompt {
+                    FirstGuessPrompt(showsRoute: showsRoute)
+                        .transition(.opacity)
+                } else {
+                    EmptyView()
+                }
             }
+            // The route runs from the top of the empty board to the guess bar, so the board fills what is on screen.
+            .frame(minHeight: showsRoute ? max(visibleCluesHeight - cluesBottomPadding, 0) : nil, alignment: .top)
             .horizontalPadding(16, verticalToolbar: toolbarEdge(for: .leading))
-            .padding(.bottom, 24)
+            .padding(.bottom, cluesBottomPadding)
             .readableWidth()
         }
         .scrollDismissesKeyboard(.interactively)
         .scrollPosition($scrollPosition)
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            geometry.containerSize.height - geometry.contentInsets.top - geometry.contentInsets.bottom
+        } action: { _, height in
+            visibleCluesHeight = height
+        }
         // In one column the controls float over the bottom of the clues, as the toolbar does over the top: the last
         // guess scrolls clear of them, and the edge effect softens what passes beneath. The controls draw themselves.
         .safeAreaBar(edge: .bottom, spacing: 0) {
