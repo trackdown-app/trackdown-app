@@ -34,7 +34,7 @@ LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
 PRODUCT_NAME = Trackdown
 PRODUCT_BUNDLE_IDENTIFIER = nl.trackdown.Trackdown
 MARKETING_VERSION = 0.1.0
-CURRENT_PROJECT_VERSION = 1
+CURRENT_PROJECT_VERSION = 2
 CODE_SIGN_STYLE = Automatic
 // Trackdown/AppIcon.icon, the layered Liquid Glass icon made in Icon Composer.
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
