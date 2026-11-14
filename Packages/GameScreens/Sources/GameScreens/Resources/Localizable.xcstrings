@@ -337,6 +337,18 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Mysteriestation" } }
       }
     },
+    "Start from a station you know" : {
+      "comment" : "Heading on the board before the first guess, beside a line that points to the guess field.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Begin bij een station dat je kent" } }
+      }
+    },
+    "Each guess draws the fastest train journey from your station to the mystery station." : {
+      "comment" : "Under the heading on the board before the first guess.",
+      "localizations" : {
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elke gok tekent de snelste treinreis van jouw station naar het mysteriestation." } }
+      }
+    },
     "National rail" : {
       "comment" : "Under a rail network still to come: the trains it will cover.",
       "localizations" : {
