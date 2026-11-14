@@ -8,8 +8,9 @@ struct TripLineMetrics: Sendable, Hashable {
     var dotOverlap: CGFloat = 4
     /// Diameter of a change ring.
     var ringDiameter: CGFloat = 28
-    /// How far a ride segment runs under a change ring, on each side.
-    var ringOverlap: CGFloat = 3
+    /// How far a ride segment runs under a change ring, on each side. Past where the ring's curve crosses the segment's
+    /// edges (about 4.2 points in), so no corner of the segment shows beside the ring.
+    var ringOverlap: CGFloat = 6
     /// Stroke of the change rings and the mystery-station bar.
     var strokeWidth: CGFloat = 4
     /// Width and height of the mystery-station bar.
@@ -17,6 +18,9 @@ struct TripLineMetrics: Sendable, Hashable {
     var barHeight: CGFloat = 44
     /// Room a label keeps free on each side inside its segment.
     var labelPadding: CGFloat = 4
+    /// The least of a ride segment that shows between the dot, rings and bar, so a short ride still reads as a piece
+    /// of line rather than slivers peeking out around a ring.
+    var minimumVisibleRide: CGFloat = 10
 
     /// Scales every size by `factor`, as `@ScaledMetric` does for Dynamic Type.
     func scaled(by factor: CGFloat) -> TripLineMetrics {
@@ -28,7 +32,8 @@ struct TripLineMetrics: Sendable, Hashable {
             strokeWidth: strokeWidth * factor,
             barWidth: barWidth * factor,
             barHeight: barHeight * factor,
-            labelPadding: labelPadding * factor
+            labelPadding: labelPadding * factor,
+            minimumVisibleRide: minimumVisibleRide * factor
         )
     }
 
@@ -73,7 +78,7 @@ enum TripLineLabelFit: Sendable, Hashable {
 /// The line is right-aligned so every trip ends at the mystery-station bar, whose center sits on the
 /// line's end. Its length is the trip's share of ``fullTrackMinutes`` (at least ``minimumFraction``
 /// of the track). The guess dot and change rings keep their size; the ride segments share what is left
-/// in proportion to their minutes.
+/// in proportion to their minutes, with a short ride kept wide enough to show (see ``rideWidths(pieces:available:metrics:)``).
 struct TripLineGeometry: Sendable, Hashable {
     /// A trip this long fills the whole track.
     static let fullTrackMinutes = 150
@@ -113,26 +118,10 @@ struct TripLineGeometry: Sendable, Hashable {
 
         // Each ride needs its label and padding, plus what the dot, a ring or the bar covers at either end.
         var rideWidth: CGFloat = 0
-        var rideIndex = 0
-        for (index, piece) in pieces.enumerated() {
-            guard case .ride(let minutes) = piece else { continue }
-            defer { rideIndex += 1 }
-            let before: TripLinePiece? = index > 0 ? pieces[index - 1] : nil
-            let after: TripLinePiece? = pieces.indices.contains(index + 1) ? pieces[index + 1] : nil
-            let leading: CGFloat =
-                switch before {
-                case nil: metrics.dotOverlap
-                case .change: metrics.ringOverlap
-                case .ride: 0
-                }
-            let trailing: CGFloat =
-                switch after {
-                case nil: metrics.barWidth / 2
-                case .change: metrics.ringOverlap
-                case .ride: 0
-                }
+        for (rideIndex, covered) in coveredWidths(pieces: pieces, metrics: metrics).enumerated() {
+            let minutes = rideMinutes[rideIndex]
             let label = fullLabelWidths.indices.contains(rideIndex) ? fullLabelWidths[rideIndex] : 0
-            let needed = label + 2 * metrics.labelPadding + leading + trailing
+            let needed = label + 2 * metrics.labelPadding + covered
             // A ride gets its share of the riding time, so the total must make this ride's share large enough.
             let total =
                 rideSum > 0
@@ -148,29 +137,79 @@ struct TripLineGeometry: Sendable, Hashable {
         return (trackWidth + metrics.barWidth / 2).rounded(.up)
     }
 
+    /// How much of each ride segment the dot, a ring or the bar covers at its two ends, by ride index.
+    static func coveredWidths(pieces: [TripLinePiece], metrics: TripLineMetrics) -> [CGFloat] {
+        pieces.indices.compactMap { index -> CGFloat? in
+            guard case .ride = pieces[index] else { return nil }
+            let before: TripLinePiece? = index > 0 ? pieces[index - 1] : nil
+            let after: TripLinePiece? = pieces.indices.contains(index + 1) ? pieces[index + 1] : nil
+            let leading: CGFloat =
+                switch before {
+                case nil: metrics.dotOverlap
+                case .change: metrics.ringOverlap
+                case .ride: 0
+                }
+            let trailing: CGFloat =
+                switch after {
+                case nil: metrics.barWidth / 2
+                case .change: metrics.ringOverlap
+                case .ride: 0
+                }
+            return leading + trailing
+        }
+    }
+
+    /// Shares `available` points between the rides in proportion to their minutes, except that no ride gets less than
+    /// what its ends cover plus ``TripLineMetrics/minimumVisibleRide``. A ride held at that minimum leaves the rest to
+    /// the others, still in proportion. When even the minimums do not fit, each ride gets its minimum scaled down.
+    static func rideWidths(pieces: [TripLinePiece], available: CGFloat, metrics: TripLineMetrics) -> [CGFloat] {
+        let minutes = pieces.compactMap { piece -> Int? in
+            if case .ride(let minutes) = piece { return minutes }
+            return nil
+        }
+        let minimums = coveredWidths(pieces: pieces, metrics: metrics).map { $0 + metrics.minimumVisibleRide }
+        let minimumSum = minimums.reduce(0, +)
+        guard minimumSum < available else {
+            return minimums.map { minimumSum > 0 ? $0 * available / minimumSum : 0 }
+        }
+
+        var held = Set<Int>()
+        while true {
+            let free = minutes.indices.filter { !held.contains($0) }
+            let room = available - held.reduce(0) { $0 + minimums[$1] }
+            let freeMinutes = free.reduce(0) { $0 + minutes[$1] }
+            func share(_ index: Int) -> CGFloat {
+                freeMinutes > 0
+                    ? room * CGFloat(minutes[index]) / CGFloat(freeMinutes)
+                    : room / CGFloat(free.count)
+            }
+            let tooNarrow = free.filter { share($0) < minimums[$0] }
+            guard tooNarrow.isEmpty else {
+                held.formUnion(tooNarrow)
+                continue
+            }
+            return minutes.indices.map { held.contains($0) ? minimums[$0] : share($0) }
+        }
+    }
+
     init(pieces: [TripLinePiece], width: CGFloat, metrics: TripLineMetrics) {
         let midY = metrics.height / 2
         let trackWidth = max(0, width - metrics.barWidth / 2)
         let totalMinutes = pieces.reduce(0) { $0 + $1.minutes }
-        let lineWidth = trackWidth * Self.lineFraction(totalMinutes: totalMinutes)
-        let start = trackWidth - lineWidth
+        let changeCount = pieces.count { if case .change = $0 { true } else { false } }
 
-        let rideMinutes = pieces.compactMap { piece -> Int? in
-            if case .ride(let minutes) = piece { return minutes }
-            return nil
-        }
-        let changeCount = pieces.count - rideMinutes.count
-        let rideSum = rideMinutes.reduce(0, +)
-
-        // The dot and each ring take a fixed width; the rides share the rest.
+        // The dot and each ring take a fixed width; the rides share the rest. A short trip with several changes grows
+        // past its share of the track, up to the whole track, until every ride shows a piece of line.
         let dotAdvance = metrics.lineHeight - metrics.dotOverlap
         let ringAdvance = metrics.ringDiameter - 2 * metrics.ringOverlap
-        let rideWidth = max(0, lineWidth - dotAdvance - CGFloat(changeCount) * ringAdvance)
-
-        func share(_ minutes: Int) -> CGFloat {
-            guard rideSum > 0 else { return rideWidth / CGFloat(max(1, rideMinutes.count)) }
-            return rideWidth * CGFloat(minutes) / CGFloat(rideSum)
-        }
+        let fixedWidth = dotAdvance + CGFloat(changeCount) * ringAdvance
+        let minimumRides = Self.coveredWidths(pieces: pieces, metrics: metrics)
+            .reduce(0) { $0 + $1 + metrics.minimumVisibleRide }
+        let lineWidth = min(
+            trackWidth, max(trackWidth * Self.lineFraction(totalMinutes: totalMinutes), fixedWidth + minimumRides))
+        let start = trackWidth - lineWidth
+        let rideWidth = max(0, lineWidth - fixedWidth)
+        let rideWidths = Self.rideWidths(pieces: pieces, available: rideWidth, metrics: metrics)
 
         dot = CGRect(
             x: start, y: midY - metrics.lineHeight / 2, width: metrics.lineHeight, height: metrics.lineHeight)
@@ -185,8 +224,8 @@ struct TripLineGeometry: Sendable, Hashable {
         var coveredUntil = dot.maxX
         for (index, piece) in pieces.enumerated() {
             switch piece {
-            case .ride(let minutes):
-                let segmentWidth = share(minutes)
+            case .ride:
+                let segmentWidth = rideWidths[rides.count]
                 let frame = CGRect(
                     x: x, y: midY - metrics.lineHeight / 2, width: segmentWidth, height: metrics.lineHeight)
                 // Visible until the next ring, or until the bar for the last segment.

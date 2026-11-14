@@ -168,7 +168,7 @@ private struct TripDetailRow: View {
                 .overlay {
                     if name == nil {
                         Text(verbatim: "?")
-                            .font(TrackdownFont.lineLabel)
+                            .font(TrackdownFont.hiddenChangeMark)
                     } else {
                         EmptyView()
                     }

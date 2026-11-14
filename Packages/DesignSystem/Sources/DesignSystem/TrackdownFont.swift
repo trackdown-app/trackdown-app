@@ -74,6 +74,9 @@ public enum TrackdownFont {
     public static let time = font(.semiBold, size: 17, relativeTo: .headline).monospacedDigit()
     /// Train and time label inside a line, with tabular figures.
     public static let lineLabel = font(.bold, size: 12, relativeTo: .caption2).monospacedDigit()
+    /// The "?" in a hidden change's marker beside a trip's rides, sized to sit inside the 18-point ring with room to
+    /// spare. Scales with the subheadline style, as the marker does.
+    static let hiddenChangeMark = font(.bold, size: 10, relativeTo: .subheadline)
 
     // MARK: Faces
 

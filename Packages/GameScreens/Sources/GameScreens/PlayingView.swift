@@ -200,6 +200,8 @@ private struct PlayingBoard: View {
     let networkPopover: NetworkPopover?
     let onNavigate: (PlayingDestination) -> Void
     @State private var scrollPosition = ScrollPosition(edge: .top)
+    /// The height of the controls, which float over the bottom of the clues when the board is one column.
+    @State private var controlsHeight: CGFloat = 0
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var isTabletop: Bool { foldSplit?.axis == .horizontal }
@@ -214,6 +216,11 @@ private struct PlayingBoard: View {
         PlayingBoardLayout(split: foldSplit) {
             clues
             controls
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    controlsHeight = height
+                }
         }
     }
 
@@ -247,9 +254,17 @@ private struct PlayingBoard: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .scrollPosition($scrollPosition)
+        // In one column the controls float over the bottom of the clues, as the toolbar does over the top: the last
+        // guess scrolls clear of them, and the edge effect softens what passes beneath. The controls draw themselves.
+        .safeAreaBar(edge: .bottom, spacing: 0) {
+            if foldSplit == nil {
+                SwiftUI.Color.clear.frame(height: controlsHeight)
+            } else {
+                EmptyView()
+            }
+        }
         .trackdownScrollEdges()
         .frame(minHeight: 0)
-        .clipped()
     }
 
     private var controls: some View {
@@ -331,7 +346,7 @@ private struct PlayingBoard: View {
 
 /// Places the board's two parts, the clues and the controls, around the fold the screen spreads across.
 ///
-/// - No fold: one column, the controls under the clues.
+/// - No fold: one column, the controls floating over the bottom of the clues.
 /// - Book pose (vertical fold): the clues fill the leading side; the controls sit at the bottom of the trailing side.
 /// - Tabletop pose (horizontal fold): the clues fill the top half; the controls fill the bottom half.
 ///
@@ -348,11 +363,10 @@ private struct PlayingBoardLayout: Layout {
         let clues = subviews[0]
         let controls = subviews[1]
         guard let split else {
+            // The clues fill the board and scroll beneath the controls, which keep them clear with a bar of their own.
             let controlsHeight = min(
                 controls.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height, bounds.height)
-            clues.place(
-                at: bounds.origin,
-                proposal: ProposedViewSize(width: bounds.width, height: bounds.height - controlsHeight))
+            clues.place(at: bounds.origin, proposal: ProposedViewSize(bounds.size))
             controls.place(
                 at: CGPoint(x: bounds.minX, y: bounds.maxY - controlsHeight),
                 proposal: ProposedViewSize(width: bounds.width, height: controlsHeight))

@@ -94,6 +94,52 @@ struct TripLineWidthTests {
         #expect(geometry.rides[0].frame.minX == geometry.dot.maxX - metrics.dotOverlap)
     }
 
+    @Test("A short ride still shows a piece of line; the others share the rest by their minutes")
+    func shortRideMinimum() {
+        let metrics = TripLineMetrics()
+        // A 1-minute ride before two changes.
+        let pieces: [TripLinePiece] = [
+            .ride(minutes: 1), .change(minutes: 6), .ride(minutes: 60), .change(minutes: 4), .ride(minutes: 48),
+        ]
+        let geometry = TripLineGeometry(pieces: pieces, width: 358, metrics: metrics)
+        #expect(abs(geometry.rides[0].visible.width - metrics.minimumVisibleRide) < 0.001)
+        #expect(abs(geometry.rides[1].frame.width / geometry.rides[2].frame.width - 60.0 / 48.0) < 0.001)
+        #expect(abs(geometry.rides[2].frame.maxX - (358 - metrics.barWidth / 2)) < 0.001)
+    }
+
+    @Test("A short trip with several changes grows its line until every ride shows")
+    func shortTripWithChanges() {
+        let metrics = TripLineMetrics()
+        // Amsterdam Amstel: 47 minutes, two changes.
+        let pieces: [TripLinePiece] = [
+            .ride(minutes: 1), .change(minutes: 6), .ride(minutes: 20), .change(minutes: 4), .ride(minutes: 16),
+        ]
+        let geometry = TripLineGeometry(pieces: pieces, width: 358, metrics: metrics)
+        let track = 358 - metrics.barWidth / 2
+        #expect(track - geometry.dot.minX > track * TripLineGeometry.lineFraction(totalMinutes: 47))
+        for ride in geometry.rides {
+            #expect(ride.visible.width >= metrics.minimumVisibleRide - 0.001)
+        }
+        #expect(abs(geometry.rides[2].frame.maxX - track) < 0.001)
+    }
+
+    @Test("Rides squeezed below their minimums share the room by those minimums")
+    func squeezedRides() {
+        let metrics = TripLineMetrics()
+        let pieces: [TripLinePiece] = [.ride(minutes: 1), .change(minutes: 1), .ride(minutes: 1)]
+        let widths = TripLineGeometry.rideWidths(pieces: pieces, available: 20, metrics: metrics)
+        #expect(abs(widths.reduce(0, +) - 20) < 0.001)
+    }
+
+    @Test("A segment's corners stay under a ring's curve")
+    func ringCoversSegmentCorners() {
+        let metrics = TripLineMetrics()
+        let radius = metrics.ringDiameter / 2
+        let halfLine = metrics.lineHeight / 2
+        let curveInset = radius - (radius * radius - halfLine * halfLine).squareRoot()
+        #expect(metrics.ringOverlap > curveInset)
+    }
+
     @Test("A label can use only the part of a segment the dot, rings and bar leave free")
     func visibleParts() {
         let metrics = TripLineMetrics()
