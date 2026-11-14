@@ -87,15 +87,34 @@ private struct ReservedContent: ViewModifier {
                 ? ReservedContentGeometry.availableFrame(
                     in: bounds, avoiding: regions.activeFolds + regions.activeCameras)
                 : bounds
+            let outsets = ReservedContentGeometry.clipOutsets(
+                frame: frame, bounds: bounds, safeArea: geometry.safeAreaInsets)
             // One code path for both cases, so a pose change never replaces the content.
             content
                 .environment(\.trackdownReservedRegions, regions.exposed)
                 .environment(\.trackdownFoldSplit, split)
                 .frame(width: frame.width, height: frame.height)
-                .clipped()
+                .clipShape(OutsetRectangle(outsets: outsets))
                 .contentShape(.rect)
                 .position(x: frame.midX, y: frame.midY)
         }
+    }
+}
+
+/// A rectangle grown past its frame by `outsets`. Leading and trailing follow the layout direction, as the frames and
+/// safe area ``ReservedContent`` reads do.
+private struct OutsetRectangle: Shape {
+    var outsets: EdgeInsets
+
+    var layoutDirectionBehavior: LayoutDirectionBehavior { .mirrors }
+
+    func path(in rect: CGRect) -> Path {
+        Path(
+            CGRect(
+                x: rect.minX - outsets.leading,
+                y: rect.minY - outsets.top,
+                width: rect.width + outsets.leading + outsets.trailing,
+                height: rect.height + outsets.top + outsets.bottom))
     }
 }
 
@@ -198,6 +217,18 @@ enum ReservedContentGeometry {
             return .horizontal
         }
         return nil
+    }
+
+    /// How far past `frame` the content may draw. On each edge `frame` shares with `bounds`, that's the container's safe
+    /// area there, so a scroll view reaching the edge still runs under the bars and the home indicator. On an edge moved
+    /// in to clear a fold or camera, nothing, so the content never draws over the region it avoids.
+    static func clipOutsets(frame: CGRect, bounds: CGRect, safeArea: EdgeInsets) -> EdgeInsets {
+        func touches(_ edge: CGFloat, _ boundsEdge: CGFloat) -> Bool { abs(edge - boundsEdge) < 0.5 }
+        return EdgeInsets(
+            top: touches(frame.minY, bounds.minY) ? safeArea.top : 0,
+            leading: touches(frame.minX, bounds.minX) ? safeArea.leading : 0,
+            bottom: touches(frame.maxY, bounds.maxY) ? safeArea.bottom : 0,
+            trailing: touches(frame.maxX, bounds.maxX) ? safeArea.trailing : 0)
     }
 
     static func availableFrame(in bounds: CGRect, avoiding obstacles: [CGRect]) -> CGRect {
