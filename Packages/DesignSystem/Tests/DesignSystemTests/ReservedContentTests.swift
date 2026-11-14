@@ -1,4 +1,5 @@
 import CoreGraphics
+import SwiftUI
 import Testing
 
 @testable import DesignSystem
@@ -97,5 +98,17 @@ struct ReservedContentTests {
             ReservedContentGeometry.availableFrame(
                 in: bounds, avoiding: [CGRect(x: 0, y: 280, width: 900, height: 40)])
                 == CGRect(x: 0, y: 320, width: 900, height: 280))
+    }
+
+    @Test("Content draws into the safe area on the edges it shares with the container, and no further")
+    func clipOutsets() {
+        let safeArea = EdgeInsets(top: 62, leading: 0, bottom: 34, trailing: 0)
+        let full = ReservedContentGeometry.clipOutsets(frame: bounds, bounds: bounds, safeArea: safeArea)
+        #expect(full == safeArea)
+
+        // Moved down clear of a camera at the top: the top edge clips exactly, the bottom still reaches under the bar.
+        let belowCamera = CGRect(x: 0, y: 40, width: 900, height: 560)
+        let displaced = ReservedContentGeometry.clipOutsets(frame: belowCamera, bounds: bounds, safeArea: safeArea)
+        #expect(displaced == EdgeInsets(top: 0, leading: 0, bottom: 34, trailing: 0))
     }
 }
