@@ -1395,6 +1395,36 @@
         }
       }
     },
+    "tripDetails.stationAbroad" : {
+      "comment" : "A change station in a trip's details that lies outside the network, such as Luxembourg on a Belgian trip. Shown once the game is over.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station in het buitenland"
+          }
+        }
+      }
+    },
     "tripDetails.unknownStation" : {
       "comment" : "A change station in a trip's details that the player has not found yet.",
       "extractionState" : "manual",
@@ -1481,6 +1511,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@, %3$@"
+          }
+        }
+      }
+    },
+    "tripSummary.changeAbroad" : {
+      "comment" : "Trip summary under a guess: the trip changes trains once, at a station outside the network, such as Luxembourg on a Belgian trip.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change at a station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance dans une gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overstap in het buitenland"
+          }
+        }
+      }
+    },
+    "tripSummary.changeAbroad.spoken" : {
+      "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at a station outside the network.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "change at a station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "correspondance dans une gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "overstap in het buitenland"
           }
         }
       }

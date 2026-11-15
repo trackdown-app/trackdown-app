@@ -27,7 +27,7 @@ public struct TripLine: View {
 
     private let station: String
     private let steps: [TripStep]
-    private let changeNames: [String?]
+    private let changes: [ChangeStation]
     private let arrangement: Arrangement
 
     @ScaledMetric(relativeTo: .caption2) private var scale: CGFloat = 1
@@ -42,25 +42,26 @@ public struct TripLine: View {
     ///   - station: The guessed station's name.
     ///   - steps: The trip from the guessed station to the mystery station.
     ///   - arrangement: Whether the name goes above the track or beside it.
-    ///   - stationName: The display name for a change station's code.
+    ///   - stationName: The display name for a change station's code, `nil` for a code outside the network's
+    ///     stations, which the line calls a station abroad.
     public init(
         station: String,
         steps: [TripStep],
         arrangement: Arrangement = .stacked,
-        stationName: (StationCode) -> String
+        stationName: (StationCode) -> String?
     ) {
         self.station = station
         self.steps = steps
         self.arrangement = arrangement
-        self.changeNames = steps.compactMap { step -> String?? in
+        self.changes = steps.compactMap { step in
             guard case .change(let code, _) = step else { return nil }
-            return .some(code.map(stationName))
+            return ChangeStation(code: code, stationName: stationName)
         }
     }
 
     private var metrics: TripLineMetrics { TripLineMetrics().scaled(by: scale) }
     private var totalMinutes: Int { steps.reduce(0) { $0 + $1.minutes } }
-    private var summary: TripSummary { TripSummary(changeNames: changeNames) }
+    private var summary: TripSummary { TripSummary(changes: changes) }
     private var isAccessibilitySize: Bool { dynamicTypeSize.isAccessibilitySize }
 
     /// The station and the trip time side by side, or the time under the station at accessibility sizes, where side
@@ -108,7 +109,7 @@ public struct TripLine: View {
             .frame(width: isBesideTrack ? nameColumnWidth : nil, alignment: .leading)
             .accessibilityHidden(true)
 
-            TripTrack(pieces: pieces, rides: rides, changeNames: changeNames)
+            TripTrack(pieces: pieces, rides: rides, changes: changes)
                 .accessibilityIdentifier("trip-track")
                 // The track is a drawing: past this size its rings and bar would crowd out the rides. The text above
                 // keeps growing.
@@ -151,7 +152,7 @@ public struct TripLine: View {
 private struct TripTrack: View {
     let pieces: [TripLinePiece]
     let rides: [(train: TrainType, minutes: Int)]
-    let changeNames: [String?]
+    let changes: [ChangeStation]
 
     @ScaledMetric(relativeTo: .caption2) private var scale: CGFloat = 1
     @Environment(\.backgroundStyle) private var backgroundStyle
@@ -181,8 +182,8 @@ private struct TripTrack: View {
                         .padding(-3 * scale)
                 }
                 .layoutValue(key: TripLinePart.self, value: .dot)
-            ForEach(changeNames.indices, id: \.self) { index in
-                ChangeRing(hidden: changeNames[index] == nil, strokeWidth: metrics.strokeWidth)
+            ForEach(changes.indices, id: \.self) { index in
+                ChangeRing(hidden: changes[index] == .hidden, strokeWidth: metrics.strokeWidth)
                     .layoutValue(key: TripLinePart.self, value: .change(index))
             }
             Capsule()

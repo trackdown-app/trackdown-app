@@ -259,7 +259,7 @@ private struct PlayingBoard: View {
                     .padding(.bottom, 8)
                 GuessList(
                     rows: model.rows, arrangement: isTabletop ? .besideTrack : .stacked,
-                    stationName: model.name(of:))
+                    stationName: model.changeStationName(of:))
                 if showsFirstGuessPrompt {
                     FirstGuessPrompt(showsRoute: showsRoute)
                         .transition(.opacity)
@@ -418,7 +418,7 @@ private struct PlayingBoardLayout: Layout {
 private struct GuessList: View {
     let rows: [GuessRow]
     let arrangement: TripLine.Arrangement
-    let stationName: (StationCode) -> String
+    let stationName: (StationCode) -> String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -438,7 +438,7 @@ private struct GuessList: View {
 private struct GuessRowView: View {
     let row: GuessRow
     let arrangement: TripLine.Arrangement
-    let stationName: (StationCode) -> String
+    let stationName: (StationCode) -> String?
 
     @State private var isExpanded = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
