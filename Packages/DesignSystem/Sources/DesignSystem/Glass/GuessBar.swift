@@ -21,6 +21,10 @@ public struct GuessBar: View {
     private let suggestions: [GuessSuggestion]
     private let onGuess: () -> Void
 
+    /// The name of the suggestion the player tapped, now in the field. The list stays closed until they change the
+    /// text again: they picked their station and only the Guess button is left to press.
+    @State private var pickedName: String?
+
     @Namespace private var glass
     @ScaledMetric(relativeTo: .body) private var height: CGFloat = 56
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -45,7 +49,8 @@ public struct GuessBar: View {
     /// - Parameters:
     ///   - text: What the player has typed.
     ///   - suggestions: The matches for `text`, best first. The list is hidden while this is empty.
-    ///   - selection: The highlighted suggestion.
+    ///   - selection: The highlighted suggestion. Tapping a suggestion selects it, puts its full name in `text` and
+    ///     closes the list until the text changes again.
     ///   - onGuess: Guesses the selected suggestion, or what was typed. Called from the button and from the keyboard's
     ///     return key whenever something is typed, so the screen can refuse an unknown or already guessed station with
     ///     a message instead of the button silently doing nothing.
@@ -66,11 +71,16 @@ public struct GuessBar: View {
             || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
+    /// The suggestions the list shows: none once the player has picked one and left its name in the field.
+    private var shownSuggestions: [GuessSuggestion] {
+        pickedName != nil && pickedName == text ? [] : suggestions
+    }
+
     public var body: some View {
         GlassEffectContainer(spacing: 12) {
             VStack(spacing: 12) {
-                if !suggestions.isEmpty {
-                    SuggestionList(suggestions: suggestions, selection: $selection)
+                if !shownSuggestions.isEmpty {
+                    SuggestionList(suggestions: shownSuggestions, selection: selection, onPick: pick)
                         .frame(height: 180)
                         .glassEffect(.regular, in: ConcentricRectangle(corners: .concentric(minimum: .fixed(26))))
                         .glassEffectID("suggestions", in: glass)
@@ -82,7 +92,18 @@ public struct GuessBar: View {
                 .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .trackdownAnimation(value: suggestions.isEmpty)
+        .trackdownAnimation(value: shownSuggestions.isEmpty)
+        .onChange(of: text) { _, newText in
+            if newText != pickedName { pickedName = nil }
+        }
+    }
+
+    /// Fills the field with the tapped suggestion's full name and closes the list.
+    private func pick(_ suggestion: GuessSuggestion) {
+        pickedName = suggestion.name
+        text = suggestion.name
+        // After the text: a screen that highlights the best match whenever the text changes must not override the pick.
+        selection = suggestion.id
     }
 
     private var field: some View {
@@ -127,8 +148,8 @@ public struct GuessBar: View {
     }
 
     private func moveSelection(by offset: Int) -> KeyPress.Result {
-        guard !suggestions.isEmpty else { return .ignored }
-        selection = suggestions.selection(movingFrom: selection, by: offset)
+        guard !shownSuggestions.isEmpty else { return .ignored }
+        selection = shownSuggestions.selection(movingFrom: selection, by: offset)
         return .handled
     }
 }
@@ -136,14 +157,15 @@ public struct GuessBar: View {
 /// The glass list of matching stations. The glass itself comes from ``GuessBar``.
 struct SuggestionList: View {
     let suggestions: [GuessSuggestion]
-    @Binding var selection: GuessSuggestion.ID?
+    let selection: GuessSuggestion.ID?
+    let onPick: (GuessSuggestion) -> Void
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 ForEach(suggestions) { suggestion in
                     SuggestionRow(suggestion: suggestion, isSelected: suggestion.id == selection) {
-                        selection = suggestion.id
+                        onPick(suggestion)
                     }
                 }
             }
