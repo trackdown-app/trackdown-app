@@ -228,8 +228,9 @@ struct TripDurationTests {
     @Test("German and French compact times match the web's format", arguments: ["de_DE", "fr_FR"])
     func germanAndFrenchCompact(locale: String) {
         let style = TripDurationFormatStyle(locale: Locale(identifier: locale))
-        #expect(style.format(122) == "2h 02m")
-        #expect(style.format(17) == "17m")
+        #expect(style.format(122) == "2 h 02")
+        #expect(style.format(145) == "2 h 25")
+        #expect(style.format(17) == "17 min")
     }
 
     @Test("Spells the units out for VoiceOver")

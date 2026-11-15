@@ -7,7 +7,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lldh %2$@m"
+            "value" : "%1$lld h %2$@"
           }
         },
         "en" : {
@@ -19,7 +19,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lldh %2$@m"
+            "value" : "%1$lld h %2$@"
           }
         },
         "nl" : {
@@ -36,7 +36,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lldm"
+            "value" : "%lld min"
           }
         },
         "en" : {
@@ -48,7 +48,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lldm"
+            "value" : "%lld min"
           }
         },
         "nl" : {
@@ -71,7 +71,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déjà proposée"
+            "value" : "Déjà devinée"
           }
         },
         "nl" : {
@@ -163,7 +163,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proposer"
+            "value" : "Deviner"
           }
         },
         "nl" : {
@@ -180,13 +180,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bahnhof raten"
+            "value" : "Rate einen Bahnhof"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proposez une gare"
+            "value" : "Devine une gare"
           }
         },
         "nl" : {
@@ -295,7 +295,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Statistiken"
+            "value" : "Statistik"
           }
         },
         "fr" : {
@@ -742,7 +742,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ICE"
+            "value" : "ICE-Hochgeschwindigkeitszug"
           }
         },
         "en" : {
@@ -754,7 +754,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ICE à grande vitesse"
+            "value" : "Train à grande vitesse ICE"
           }
         },
         "nl" : {
