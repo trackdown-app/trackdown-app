@@ -7,7 +7,8 @@ import SwiftUI
 /// Top to bottom: the guessed station with the guess dot; each ride with its train code in a chip of its line color,
 /// the train spelled out ("Sprinter", "LNER") and its time; each change as a ring with its station and its wait
 /// ("6m to change"); and the mystery station under an ink disc. A change the player has not found stays
-/// "Unknown station" with a "?" ring, as on the line.
+/// "Unknown station" with a "?" ring, as on the line. A revealed change outside the network's stations reads
+/// "Station abroad".
 ///
 /// The guess dot's halo takes the environment's `backgroundStyle`, or ``TrackdownColor/background`` when none is set.
 public struct TripDetails: View {
@@ -16,8 +17,9 @@ public struct TripDetails: View {
     /// - Parameters:
     ///   - station: The guessed station's name.
     ///   - steps: The trip from the guessed station to the mystery station.
-    ///   - stationName: The display name for a change station's code.
-    public init(station: String, steps: [TripStep], stationName: (StationCode) -> String) {
+    ///   - stationName: The display name for a change station's code, `nil` for a code outside the network's
+    ///     stations.
+    public init(station: String, steps: [TripStep], stationName: (StationCode) -> String?) {
         stops = TripDetailStop.stops(station: station, steps: steps, stationName: stationName)
     }
 
@@ -37,12 +39,12 @@ enum TripDetailStop: Sendable, Hashable {
     case start(name: String, below: Int?)
     /// A ride on line `line` (an index into ``TrackdownColor/lines``).
     case ride(train: TrainType, minutes: Int, line: Int)
-    /// A change between the rides on lines `above` and `below`. `name` is `nil` while the station is hidden.
-    case change(name: String?, minutes: Int, above: Int?, below: Int?)
+    /// A change at `station` between the rides on lines `above` and `below`.
+    case change(station: ChangeStation, minutes: Int, above: Int?, below: Int?)
     /// The mystery station, where the last ride (`above`) arrives.
     case end(above: Int?)
 
-    static func stops(station: String, steps: [TripStep], stationName: (StationCode) -> String) -> [TripDetailStop] {
+    static func stops(station: String, steps: [TripStep], stationName: (StationCode) -> String?) -> [TripDetailStop] {
         // The line of each step's ride, as on the trip line: first, second, then third for the rest.
         var rides = 0
         let lines: [Int?] = steps.map { step in
@@ -59,7 +61,7 @@ enum TripDetailStop: Sendable, Hashable {
             case .change(let code, let minutes):
                 stops.append(
                     .change(
-                        name: code.map(stationName),
+                        station: ChangeStation(code: code, stationName: stationName),
                         minutes: minutes,
                         above: index > 0 ? lines[index - 1] : nil,
                         below: index + 1 < lines.count ? lines[index + 1] : nil
@@ -161,12 +163,12 @@ private struct TripDetailRow: View {
                         .padding(-3)
                 }
                 .frame(width: markerSize, height: markerSize)
-        case .change(let name, _, _, _):
+        case .change(let station, _, _, _):
             Circle()
                 .strokeBorder(TrackdownColor.ink, lineWidth: 3)
                 .background { Circle().fill(TrackdownColor.surface) }
                 .overlay {
-                    if name == nil {
+                    if station == .hidden {
                         Text(verbatim: "?")
                             .font(TrackdownFont.hiddenChangeMark)
                     } else {
@@ -199,12 +201,15 @@ private struct TripDetailRow: View {
                 Text(train.name)
                     .font(TrackdownFont.subheadline)
             }
-        case .change(let name?, _, _, _):
+        case .change(.named(let name), _, _, _):
             Text(name).font(TrackdownFont.subheadlineEmphasized)
-        case .change(nil, _, _, _):
+        case .change(.hidden, _, _, _):
             Text(String(localized: .tripDetailsUnknownStation))
                 .font(TrackdownFont.subheadline)
                 .foregroundStyle(TrackdownColor.muted)
+        case .change(.abroad, _, _, _):
+            Text(String(localized: .tripDetailsStationAbroad))
+                .font(TrackdownFont.subheadline)
         case .end:
             Text(String(localized: .tripDetailsMysteryStation))
                 .font(TrackdownFont.subheadlineEmphasized)
@@ -231,7 +236,7 @@ private struct TripDetailRow: View {
             .ride(train: "SPR", minutes: 41), .change(station: "ut", minutes: 7),
             .ride(train: "ICD", minutes: 22),
         ]
-    ) { $0 == "ut" ? "Utrecht Centraal" : $0.rawValue }
+    ) { $0 == "ut" ? "Utrecht Centraal" : nil }
     .padding(16)
     .background { TrackdownColor.surface }
 }

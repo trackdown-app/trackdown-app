@@ -292,7 +292,9 @@
               "type": "string",
               "enum": [
                 "nl",
-                "en"
+                "en",
+                "de",
+                "fr"
               ]
             }
           }
@@ -799,7 +801,9 @@
             "type": "string",
             "enum": [
               "nl",
-              "en"
+              "en",
+              "de",
+              "fr"
             ]
           },
           "stations": {

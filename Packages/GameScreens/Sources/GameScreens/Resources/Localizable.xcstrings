@@ -4,672 +4,905 @@
     "Guess the mystery station." : {
       "comment" : "First rule of Trackdown.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Errate den Rätselbahnhof." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Devine la gare mystère." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad het geheime station." } }
       }
     },
     "Each guess shows the fastest train journey from your station to the mystery station." : {
       "comment" : "Second rule: guesses produce route clues.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Jeder Tipp zeigt die schnellste Zugfahrt von deinem Bahnhof zum Rätselbahnhof." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chaque essai montre le trajet en train le plus rapide de ta gare à la gare mystère." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elke gok toont de snelste treinreis van jouw station naar het geheime station." } }
       }
     },
     "Use the travel times and changes to narrow it down. A new station every day!" : {
       "comment" : "Third rule: use the clues to solve the daily puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutze Fahrzeiten und Umstiege, um ihn einzugrenzen. Jeden Tag ein neuer Bahnhof!" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sers-toi des temps de trajet et des correspondances pour la trouver. Une nouvelle gare chaque jour !" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruik de reistijden en overstappen om dichterbij te komen. Elke dag een nieuw station!" } }
       }
     },
     "For example" : {
       "comment" : "Heading above the example train journey clue.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zum Beispiel" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Par exemple" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bijvoorbeeld" } }
       }
     },
     "From Maastricht, ride an Intercity for 2 hours and 2 minutes, change at a hidden station with a 6-minute wait, then ride another Intercity for 17 minutes. The mystery station is at the end of the line." : {
       "comment" : "Explains the Maastricht example clue, including the hidden change and destination.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ab Maastricht 2 Stunden und 2 Minuten mit einem Intercity fahren, an einem verborgenen Bahnhof mit 6 Minuten Wartezeit umsteigen und dann noch 17 Minuten mit einem Intercity fahren. Der Rätselbahnhof liegt am Ende der Strecke." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Depuis Maastricht, 2 heures et 2 minutes en Intercity, une correspondance dans une gare cachée avec 6 minutes d’attente, puis encore 17 minutes en Intercity. La gare mystère se trouve au bout de la ligne." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Reis vanuit Maastricht 2 uur en 2 minuten met een Intercity, stap over op een verborgen station met 6 minuten wachttijd en reis daarna nog 17 minuten met een Intercity. Het geheime station staat aan het einde van de lijn." } }
       }
     },
     "Guess a change station to reveal its name in earlier clues." : {
       "comment" : "Explains how guessing a hidden change station updates earlier clues.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Errate einen Umstiegsbahnhof, um seinen Namen in früheren Hinweisen aufzudecken." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Devine une gare de correspondance pour révéler son nom dans les indices précédents." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Raad een overstapstation om de naam in eerdere aanwijzingen te onthullen." } }
       }
     },
     "Play today's station" : {
       "comment" : "Dismisses How to play so the player can start the daily puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Den Bahnhof von heute spielen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Jouer la gare du jour" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Speel het station van vandaag" } }
       }
     },
     "Privacy" : {
       "comment" : "Title of the privacy settings screen.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datenschutz" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Confidentialité" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } }
       }
     },
     "Privacy settings" : {
       "comment" : "Opens Privacy from How to play.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datenschutzeinstellungen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réglages de confidentialité" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacyinstellingen" } }
       }
     },
     "Share usage data" : {
       "comment" : "Label of the analytics consent toggle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsdaten teilen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Partager les données d’utilisation" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens delen" } }
       }
     },
     "Anonymous, through PostHog" : {
       "comment" : "Subtitle of the analytics toggle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anonym, über PostHog" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Anonymes, via PostHog" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Anoniem, via PostHog" } }
       }
     },
     "On. Thanks for helping improve Trackdown." : {
       "comment" : "Status under the analytics toggle when enabled.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "An. Danke, dass du hilfst, Trackdown zu verbessern." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activé. Merci d’aider à améliorer Trackdown." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Aan. Bedankt dat je helpt Trackdown te verbeteren." } }
       }
     },
     "Off. You can turn this on or off at any time." : {
       "comment" : "Status under the analytics toggle when disabled.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aus. Du kannst das jederzeit ein- oder ausschalten." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Désactivé. Tu peux l’activer ou le désactiver à tout moment." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Uit. Je kunt dit op elk moment aan- of uitzetten." } }
       }
     },
     "Why ask?" : {
       "comment" : "Heading of the explanation of usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warum diese Frage?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pourquoi cette question ?" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Waarom deze vraag?" } }
       }
     },
     "Trackdown is a hobby project without ads. Anonymous usage data helps me understand how people play and where they get stuck, so I can improve the game. Nothing is sold. If you turn this off, the game works exactly the same." : {
       "comment" : "Explains why the player is asked to share anonymous usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown ist ein Hobbyprojekt ohne Werbung. Anonyme Nutzungsdaten helfen mir zu verstehen, wie gespielt wird und wo es hakt, damit ich das Spiel verbessern kann. Es wird nichts verkauft. Wenn du das ausschaltest, funktioniert das Spiel genauso." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown est un projet personnel sans publicité. Les données d’utilisation anonymes m’aident à comprendre comment on joue et où l’on bloque, pour que je puisse améliorer le jeu. Rien n’est vendu. Si tu désactives cette option, le jeu fonctionne exactement pareil." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown is een hobbyproject zonder advertenties. Anonieme gebruiksgegevens helpen me begrijpen hoe mensen spelen en waar ze vastlopen, zodat ik het spel kan verbeteren. Er wordt niets verkocht. Als je dit uitzet, werkt het spel precies hetzelfde." } }
       }
     },
     "Help improve Trackdown?" : {
       "comment" : "Title of the first-launch usage data prompt.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hilfst du, Trackdown zu verbessern?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aider à améliorer Trackdown ?" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown helpen verbeteren?" } }
       }
     },
     "Trackdown is a hobby project without ads. With your OK, the app shares anonymous usage data with PostHog, like how many guesses a puzzle takes. Nothing is sold. Say no and the game works exactly the same." : {
       "comment" : "Body of the first-launch usage data prompt.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown ist ein Hobbyprojekt ohne Werbung. Wenn du einverstanden bist, teilt die App anonyme Nutzungsdaten mit PostHog, etwa wie viele Tipps ein Rätsel braucht. Es wird nichts verkauft. Sagst du Nein, funktioniert das Spiel genauso." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown est un projet personnel sans publicité. Avec ton accord, l’app partage des données d’utilisation anonymes avec PostHog, comme le nombre d’essais nécessaires pour une énigme. Rien n’est vendu. Si tu refuses, le jeu fonctionne exactement pareil." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown is een hobbyproject zonder advertenties. Als jij het goed vindt, deelt de app anonieme gebruiksgegevens met PostHog, zoals hoeveel gokken een puzzel kost. Er wordt niets verkocht. Zeg je nee, dan werkt het spel precies hetzelfde." } }
       }
     },
     "Allow" : {
       "comment" : "Allows sharing anonymous usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erlauben" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Autoriser" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Toestaan" } }
       }
     },
     "Don't allow" : {
       "comment" : "Declines sharing anonymous usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht erlauben" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ne pas autoriser" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Niet toestaan" } }
       }
     },
     "Usage data on. Thanks for helping." : {
       "comment" : "Toast after the player allows usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsdaten an. Danke für deine Hilfe." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Données d’utilisation activées. Merci pour ton aide." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens aan. Bedankt voor je hulp." } }
       }
     },
     "Usage data off." : {
       "comment" : "Toast after the player declines usage data.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsdaten aus." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Données d’utilisation désactivées." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksgegevens uit." } }
       }
     },
     "Settings" : {
       "comment" : "Link in the usage data toast that opens Privacy settings.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einstellungen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réglages" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Instellingen" } }
       }
     },
     "Privacy policy" : {
       "comment" : "Opens the Trackdown privacy policy in Safari.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datenschutzerklärung" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Politique de confidentialité" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Privacybeleid" } }
       }
     },
     "Terms of use" : {
       "comment" : "Opens the Trackdown terms in Safari.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsbedingungen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Conditions d’utilisation" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gebruiksvoorwaarden" } }
       }
     },
     "%@, streak %lld" : {
       "comment" : "Under a network's name: what it covers, then the current streak, such as \"All railway stations, streak 7\".",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, Serie %2$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, série %2$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, reeks %2$lld" } }
       }
     },
     "%lld guesses" : {
       "comment" : "VoiceOver label of a chart row of games solved in this many guesses, more than one.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Tipps" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld essais" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lld gokken" } }
       }
     },
     "%lld of %lld guesses" : {
       "comment" : "VoiceOver label of an archive row's result, such as \"4 of 6 guesses\".",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld von %2$lld Tipps" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld sur %2$lld essais" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld van %2$lld gokken" } }
       }
     },
     "%lld/%lld" : {
       "comment" : "Result at the end of an archive row: guesses used of the guesses allowed, such as 4/6.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld/%2$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld/%2$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lld/%2$lld" } }
       }
     },
     "%lldh%@" : {
       "comment" : "A trip time in a shared result, such as 2h25. The arguments are hours and the minutes, padded to two digits.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldh%2$@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldh%2$@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldu%2$@" } }
+      }
+    },
+    "%lldm" : {
+      "comment" : "A trip time under an hour in a shared result, such as 17m. The argument is the minutes.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } }
       }
     },
     "1 guess" : {
       "comment" : "VoiceOver label of the chart row of games solved in one guess.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "1 Tipp" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "1 essai" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "1 gok" } }
       }
     },
     "All National Rail stations" : {
       "comment" : "Under Great Britain in the network list: the stations the game covers.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle National-Rail-Bahnhöfe" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les gares National Rail" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle National Rail-stations" } }
       }
     },
     "All railway stations" : {
       "comment" : "Under Netherlands in the network list: the stations the game covers.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle Bahnhöfe" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les gares" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle treinstations" } }
       }
     },
     "Belgium" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Belgien" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Belgique" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "België" } }
       }
     },
     "Best" : {
       "comment" : "Statistic: the longest streak so far.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Beste Serie" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Meilleure série" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Beste" } }
       }
     },
     "Check your connection and try again." : {
       "comment" : "Description when the puzzle cannot load without a connection.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Prüfe deine Verbindung und versuche es erneut." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vérifie ta connexion et réessaie." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Controleer je verbinding en probeer het opnieuw." } }
       }
     },
     "Choose network" : {
       "comment" : "Title of the network picker.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Netz wählen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisir un réseau" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Kies een netwerk" } }
       }
     },
     "Closest guess: **%@**, %@ away." : {
       "comment" : "On the Missed sheet. The arguments are the guessed station closest to the answer and its trip time, such as \"17 minutes\".",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nächster Tipp: **%1$@**, %2$@ entfernt." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Essai le plus proche : **%1$@**, à %2$@." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dichtstbijzijnde gok: **%1$@**, op %2$@ afstand." } }
       }
     },
     "Coming next" : {
       "comment" : "Header above the rail networks still to come.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Demnächst" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bientôt" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Binnenkort" } }
       }
     },
     "Continue" : {
       "comment" : "Archive row button that goes back to today's puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Verder" } }
       }
     },
     "Each network has its own daily station and its own streak." : {
       "comment" : "Introduction under the title of the network picker.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Jedes Netz hat seinen eigenen Bahnhof des Tages und seine eigene Serie." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chaque réseau a sa propre gare du jour et sa propre série." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elk netwerk heeft zijn eigen station van de dag en zijn eigen reeks." } }
       }
     },
     "Every past %@ station. Play the ones you missed, or look back at how you did." : {
       "comment" : "Introduction under the Archive title. The argument is a network, such as Netherlands.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle bisherigen Bahnhöfe im Netz %@. Spiele die verpassten nach oder schau zurück, wie es lief." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les gares passées du réseau %@. Rattrape celles que tu as manquées, ou revois tes résultats." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle eerdere stations van %@. Speel de puzzels die je hebt gemist, of kijk terug hoe het ging." } }
       }
     },
     "Every past %@ station" : {
       "comment" : "Under the Archive title in the sidebar. The argument is a network, such as Netherlands.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle bisherigen Bahnhöfe im Netz %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les gares passées du réseau %@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle eerdere stations van %@" } }
       }
     },
     "Hide sidebar" : {
       "comment" : "Button that hides the Archive sidebar.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Seitenleiste ausblenden" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Masquer la barre latérale" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Verberg navigatiekolom" } }
       }
     },
     "Germany" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deutschland" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Allemagne" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Duitsland" } }
       }
     },
     "Great Britain" : {
       "comment" : "Rail network name in the network pill.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Großbritannien" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Grande-Bretagne" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Groot-Brittannië" } }
       }
     },
     "Guess %lld" : {
       "comment" : "VoiceOver label of a guess's number.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tipp %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Essai %lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gok %lld" } }
       }
     },
     "Guesses needed" : {
       "comment" : "Heading of the chart of how many guesses each game took.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benötigte Tipps" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Essais nécessaires" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Benodigde gokken" } }
       }
     },
     "https://trackdown.nl/en/%@" : {
-      "comment" : "Link at the end of a shared result: the network's game in the app's language. Dutch drops the /en. The argument is the network, such as nl.",
+      "comment" : "Link at the end of a shared result: the network's game in the app's language, under the website's prefix for it (/en, /de, /fr). Dutch has no prefix. The argument is the network, such as nl.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/de/%@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/fr/%@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/%@" } }
       }
     },
     "Japan" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Japan" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Japon" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Japan" } }
       }
     },
     "JR and private lines" : {
       "comment" : "Under Japan in Coming next: the trains it will cover.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "JR und Privatbahnen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "JR et lignes privées" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "JR en particuliere lijnen" } }
       }
     },
     "Loading archive" : {
       "comment" : "Shown while the list of past puzzles loads.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Archiv wird geladen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement des archives" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Archief laden" } }
       }
     },
     "Loading puzzle" : {
       "comment" : "Shown while today's puzzle loads.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rätsel wird geladen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement de l’énigme" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel laden" } }
       }
     },
     "Loading the answer" : {
       "comment" : "VoiceOver label while the mystery station loads.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Lösung wird geladen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement de la réponse" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het antwoord wordt geladen" } }
       }
     },
     "Loading your record" : {
       "comment" : "VoiceOver label while the statistics load.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Bilanz wird geladen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement de ton bilan" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record wordt geladen" } }
       }
     },
     "Missed" : {
       "comment" : "Chart row of the games that ran out of guesses.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verfehlt" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Manquées" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gemist" } }
       }
     },
     "Mystery station" : {
       "comment" : "Label above the bars that stand for the mystery station.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rätselbahnhof" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Gare mystère" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Mysteriestation" } }
       }
     },
     "Start from a station you know" : {
       "comment" : "Heading on the board before the first guess, beside a line that points to the guess field.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Starte an einem Bahnhof, den du kennst" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pars d’une gare que tu connais" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Begin bij een station dat je kent" } }
       }
     },
     "Each guess draws the fastest train journey from your station to the mystery station." : {
       "comment" : "Under the heading on the board before the first guess.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Jeder Tipp zeichnet die schnellste Zugfahrt von deinem Bahnhof zum Rätselbahnhof." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chaque essai trace le trajet en train le plus rapide de ta gare à la gare mystère." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Elke gok tekent de snelste treinreis van jouw station naar het mysteriestation." } }
       }
     },
     "National rail" : {
       "comment" : "Under a rail network still to come: the trains it will cover.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nationales Bahnnetz" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réseau ferré national" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nationaal spoor" } }
       }
     },
     "Netherlands" : {
       "comment" : "Rail network name in the network pill.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Niederlande" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pays-Bas" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nederland" } }
       }
     },
     "Networks" : {
       "comment" : "Title of the network picker.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Netze" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réseaux" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Netwerken" } }
       }
     },
     "Next station in %@" : {
       "comment" : "Under the Share button: the time until the next puzzle, such as 13:42:08.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nächster Bahnhof in %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Prochaine gare dans %@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Volgend station over %@" } }
       }
     },
     "No networks match “%@”." : {
       "comment" : "Shown when the network search matches nothing. The argument is what was typed.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Netze für „%@“ gefunden." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun réseau ne correspond à « %@ »." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen netwerken gevonden voor “%@”." } }
       }
     },
     "Not finished yet" : {
       "comment" : "Archive row of a past puzzle started but not finished.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch nicht fertig" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas encore terminée" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog niet af" } }
       }
     },
     "Not played yet" : {
       "comment" : "Archive row of a past puzzle never played.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch nicht gespielt" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas encore jouée" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog niet gespeeld" } }
       }
     },
     "Not tracked down" : {
       "comment" : "Shared result of a game that ran out of guesses.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht gefunden" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas trouvée" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Niet gevonden" } }
       }
     },
     "Noted" : {
       "comment" : "Notify me button once tapped.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Notiert" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "C’est noté" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Genoteerd" } }
       }
     },
     "Noted: %@" : {
       "comment" : "VoiceOver label of a tapped Notify me button. The argument is a country, such as Belgium.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Notiert: %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "C’est noté : %@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Genoteerd: %@" } }
       }
     },
     "Notify me" : {
       "comment" : "Button to hear when a rail network comes out.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Me prévenir" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Laat weten" } }
       }
     },
     "Notify me about %@" : {
       "comment" : "VoiceOver label of Notify me. The argument is a country, such as Belgium.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigen, wenn %@ verfügbar ist" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Me prévenir : %@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Laat weten wanneer %@ er is" } }
       }
     },
     "Older puzzles" : {
       "comment" : "Results sheet button that opens the archive.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ältere Rätsel" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Énigmes précédentes" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Eerdere puzzels" } }
       }
     },
     "Out of guesses" : {
       "comment" : "Archive row of a missed puzzle while its station's name has not loaded.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Tipps mehr" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plus d’essais" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen gokken meer" } }
       }
     },
     "Out of guesses. The station was" : {
       "comment" : "Above the mystery station on the Missed sheet. The station's name follows on its own line.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Tipps mehr. Der Bahnhof war" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plus d’essais. La gare était" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Geen gokken meer. Het station was" } }
       }
     },
     "Play" : {
       "comment" : "Archive row button that plays a past puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Spielen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Jouer" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Spelen" } }
       }
     },
     "Played" : {
       "comment" : "Statistic: games finished.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gespielt" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Jouées" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gespeeld" } }
       }
     },
     "%@, puzzle %lld, guess %lld of %lld" : {
       "comment" : "Under the day on the playing screen when the toolbar runs down the side, as on iPhone Duo in landscape: the network's name, such as Netherlands, the puzzle number and which guess is being made.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, Rätsel %2$lld, Tipp %3$lld von %4$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, énigme %2$lld, essai %3$lld sur %4$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$@, puzzel %2$lld, gok %3$lld van %4$lld" } }
       }
     },
     "Puzzle %lld" : {
       "comment" : "Under an archive row's station: the puzzle number.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rätsel %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Énigme %lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %lld" } }
       }
     },
     "Puzzle %lld, guess %lld of %lld" : {
       "comment" : "Under the day on the playing screen: the puzzle number and which guess is being made.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rätsel %1$lld, Tipp %2$lld von %3$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Énigme %1$lld, essai %2$lld sur %3$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %1$lld, gok %2$lld van %3$lld" } }
       }
     },
     "Puzzle %lld, solved in %lld" : {
       "comment" : "Under an archive row's station: the puzzle number and how many guesses it took.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rätsel %1$lld, gelöst mit %2$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Énigme %1$lld, résolue en %2$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Puzzel %1$lld, opgelost in %2$lld" } }
       }
     },
     "Results" : {
       "comment" : "Title of the sheet with a finished game's results.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ergebnis" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Résultat" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Resultaat" } }
       }
     },
     "Regional and long distance" : {
       "comment" : "Under Germany in Coming next: the trains it will cover.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Regional- und Fernverkehr" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Régional et grandes lignes" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Regionaal en lange afstand" } }
       }
     },
     "Search countries" : {
       "comment" : "Placeholder of the network search field.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Länder suchen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Rechercher un pays" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zoek landen" } }
       }
     },
     "See results" : {
       "comment" : "Button under a finished game that opens its results.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ergebnis ansehen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Voir le résultat" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk resultaat" } }
       }
     },
     "Share" : {
       "comment" : "Missed sheet button that shares the result.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Teilen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Partager" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Delen" } }
       }
     },
     "Share result" : {
       "comment" : "Solved sheet button that shares the result.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ergebnis teilen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Partager le résultat" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Deel je resultaat" } }
       }
     },
     "Shows the trip ride by ride" : {
       "comment" : "VoiceOver hint of a guess: tapping it opens its trip ride by ride.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zeigt die Fahrt Abschnitt für Abschnitt" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Affiche le trajet train par train" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Toont de reis rit voor rit" } }
       }
     },
     "Something went wrong" : {
       "comment" : "Title when the puzzle failed to load.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Etwas ist schiefgelaufen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Un problème est survenu" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Er ging iets mis" } }
       }
     },
     "Streak" : {
       "comment" : "Statistic: puzzles solved on their day in a row.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Serie" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Série" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Reeks" } }
       }
     },
     "Suggest a network, like a metro system" : {
       "comment" : "Link that opens an email to suggest a new rail network.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schlag ein Netz vor, etwa eine U-Bahn" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suggérer un réseau, comme un métro" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Stel een netwerk voor, zoals een metro" } }
       }
     },
     "Switzerland" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schweiz" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suisse" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zwitserland" } }
       }
     },
     "That's not a station on this network." : {
       "comment" : "A guess for an unknown station.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Das ist kein Bahnhof in diesem Netz." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ce n’est pas une gare de ce réseau." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dat is geen station op dit netwerk." } }
       }
     },
     "The answer didn't load." : {
       "comment" : "On the results sheet when the mystery station could not be loaded.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Lösung konnte nicht geladen werden." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La réponse n’a pas pu être chargée." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het antwoord kwam niet door." } }
       }
     },
     "The archive couldn't be loaded. Try again in a moment." : {
       "comment" : "Description when the list of past puzzles failed to load.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Das Archiv konnte nicht geladen werden. Versuche es gleich noch einmal." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les archives. Réessaie dans un instant." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Het archief kon niet worden geladen. Probeer het zo opnieuw." } }
       }
     },
     "The puzzle couldn't be loaded. Try again in a moment." : {
       "comment" : "Description when the puzzle failed to load.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Das Rätsel konnte nicht geladen werden. Versuche es gleich noch einmal." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger l’énigme. Réessaie dans un instant." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "De puzzel kon niet worden geladen. Probeer het zo opnieuw." } }
       }
     },
     "This version of the app is no longer supported. Update it from the App Store." : {
       "comment" : "Description when the app version is no longer supported.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese Version der App wird nicht mehr unterstützt. Aktualisiere sie im App Store." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cette version de l’app n’est plus prise en charge. Mets-la à jour depuis l’App Store." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Deze versie van de app wordt niet meer ondersteund. Werk hem bij via de App Store." } }
       }
     },
     "Today's station" : {
       "comment" : "Archive row of today's unfinished puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bahnhof von heute" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Gare du jour" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Station van vandaag" } }
       }
     },
     "Too many guesses. Try again in %@." : {
       "comment" : "Rate-limited guess. The argument is a wait such as \"30 seconds\".",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zu viele Tipps. Versuche es in %@ erneut." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trop d’essais. Réessaie dans %@." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel gokken. Probeer het over %@ opnieuw." } }
       }
     },
     "Too many requests" : {
       "comment" : "Title when the server asks the app to wait.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zu viele Anfragen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trop de requêtes" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Te veel verzoeken" } }
       }
     },
     "Tracked down" : {
       "comment" : "Archive row of a solved puzzle while its station's name has not loaded.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gefunden" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trouvée" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden" } }
       }
     },
     "Tracked down in %lld of %lld" : {
       "comment" : "Above the mystery station on the Solved sheet: how many guesses it took, of how many.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gefunden mit %1$lld von %2$lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trouvée en %1$lld sur %2$lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden in %1$lld van %2$lld" } }
       }
     },
     "Tracked down in %lld" : {
       "comment" : "Shared result of a solved game. The argument is how many guesses it took.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gefunden mit %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trouvée en %lld" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gevonden in %lld" } }
       }
     },
     "Try again" : {
       "comment" : "Retries loading the puzzle.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erneut versuchen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réessayer" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Probeer opnieuw" } }
       }
     },
     "Try again in %@." : {
       "comment" : "Description when rate limited. The argument is a wait such as \"30 seconds\".",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Versuche es in %@ erneut." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réessaie dans %@." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Probeer het over %@ opnieuw." } }
       }
     },
     "Update Trackdown" : {
       "comment" : "Title when the app version is no longer supported.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trackdown aktualisieren" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mettre à jour Trackdown" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Werk Trackdown bij" } }
       }
     },
     "Update Trackdown to keep playing." : {
       "comment" : "The server no longer accepts this version of the app.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktualisiere Trackdown, um weiterzuspielen." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mets à jour Trackdown pour continuer à jouer." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Werk Trackdown bij om verder te spelen." } }
       }
     },
     "Won" : {
       "comment" : "Statistic: the share of games solved.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gewonnen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Gagnées" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Gewonnen" } }
       }
     },
     "You already guessed %@." : {
       "comment" : "A guess for a station guessed before. The argument is the station's name.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Du hast %@ schon geraten." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tu as déjà deviné %@." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je hebt %@ al geraden." } }
       }
     },
     "You're offline" : {
       "comment" : "Title when the puzzle cannot load without a connection.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Du bist offline" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tu es hors ligne" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je bent offline" } }
       }
     },
     "You're offline. Your guess wasn't sent." : {
       "comment" : "A guess that could not reach the server.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Du bist offline. Dein Tipp wurde nicht gesendet." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tu es hors ligne. Ton essai n’a pas été envoyé." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je bent offline. Je gok is niet verstuurd." } }
       }
     },
     "Your guess couldn't be sent. Try again." : {
       "comment" : "A guess that failed on the server.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dein Tipp konnte nicht gesendet werden. Versuche es erneut." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ton essai n’a pas pu être envoyé. Réessaie." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je gok kon niet worden verstuurd. Probeer het opnieuw." } }
       }
     },
     "Your %@ record" : {
       "comment" : "Title of the Statistics sheet. The argument is the rail network's name, such as Netherlands.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Bilanz für %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ton bilan : %@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Jouw record in %@" } }
       }
     },
     "Your record didn't load." : {
       "comment" : "On the results and statistics sheets when the statistics could not be loaded.",
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Bilanz konnte nicht geladen werden." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ton bilan n’a pas pu être chargé." } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record kwam niet door." } }
       }
     }

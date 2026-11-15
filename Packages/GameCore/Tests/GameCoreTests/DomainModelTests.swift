@@ -46,15 +46,26 @@ struct StationLocaleTests {
     @Test(
         "English when preferred over Dutch or no supported language matches",
         arguments: [
-            ["en-GB"], ["en", "nl-NL"], ["de-DE", "en", "nl"], ["fy-NL"], [],
+            ["en-GB"], ["en", "nl-NL"], ["es-ES", "en", "nl"], ["fy-NL"], [],
         ])
     func english(languages: [String]) {
         #expect(StationLocale.preferred(languages: languages) == .en)
     }
 
+    @Test(
+        "German and French for any German or French first language",
+        arguments: [
+            ("de", StationLocale.de), ("de-DE", .de), ("de-AT", .de), ("de-CH", .de),
+            ("fr", .fr), ("fr-FR", .fr), ("fr-BE", .fr), ("fr-CA", .fr),
+        ])
+    func germanAndFrench(language: String, expected: StationLocale) {
+        #expect(StationLocale.preferred(languages: [language, "en"]) == expected)
+    }
+
     @Test("Skips unsupported languages like app localization selection")
     func supportedFallback() {
-        #expect(StationLocale.preferred(languages: ["de-DE", "nl-NL", "en"]) == .nl)
+        #expect(StationLocale.preferred(languages: ["es-ES", "nl-NL", "en"]) == .nl)
+        #expect(StationLocale.preferred(languages: ["it-IT", "fr-FR", "en"]) == .fr)
     }
 }
 

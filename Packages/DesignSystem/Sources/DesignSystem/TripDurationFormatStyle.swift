@@ -2,7 +2,8 @@ import Foundation
 
 /// Formats a trip time in minutes the way trackdown.nl does: `2h 25m`, `2h 02m`, `17m`.
 ///
-/// The compact form uses `u` for Dutch hours and `h` for English hours. For
+/// The compact form follows the web in each language: `2h 25m` in English, `2u 25m` in Dutch, `2 h 25` and
+/// `17 min` in German and French. For
 /// VoiceOver use ``spoken``, which spells the units out in the user's language.
 ///
 /// ```swift

@@ -16,10 +16,13 @@ public struct Station: Sendable, Hashable, Codable, Identifiable {
     }
 }
 
-/// The language station names and provinces come in.
+/// The language station names, provinces and shared results come in: the app's languages, which are also the API's
+/// and trackdown.nl's.
 public enum StationLocale: String, Sendable, Hashable, Codable, CaseIterable {
     case nl
     case en
+    case de
+    case fr
 
     /// The first supported language in the app's language preferences, falling back to English.
     public static var device: StationLocale {
@@ -32,6 +35,8 @@ public enum StationLocale: String, Sendable, Hashable, Codable, CaseIterable {
             switch Locale.Language(identifier: language).languageCode {
             case .dutch: return .nl
             case .english: return .en
+            case .german: return .de
+            case .french: return .fr
             default: continue
             }
         }

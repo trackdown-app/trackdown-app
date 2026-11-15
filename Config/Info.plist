@@ -6,6 +6,8 @@
 	<array>
 		<string>en</string>
 		<string>nl</string>
+		<string>de</string>
+		<string>fr</string>
 	</array>
 	<key>TrackdownAPIBaseURL</key>
 	<string>$(TRACKDOWN_API_BASE_URL)</string>

@@ -190,6 +190,12 @@ public final class PlayingModel {
         stations[code]?.name ?? code.rawValue
     }
 
+    /// The name of a change's station, or `nil` when the network's station list has no such station: a trip may change
+    /// trains abroad, such as at Luxembourg on a Belgian trip, and the trip then calls it a station abroad.
+    public func changeStationName(of code: StationCode) -> String? {
+        stations[code]?.name
+    }
+
     // MARK: Loading
 
     /// Loads the station list and opens the game, replaying stored guesses. Call from the view's `.task(id:)` with

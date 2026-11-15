@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import GameCore
 import Testing
 
 @testable import DesignSystem
@@ -225,6 +226,14 @@ struct TripDurationTests {
         #expect(style.format(0) == "0m")
     }
 
+    @Test("German and French compact times match the web's format", arguments: ["de_DE", "fr_FR"])
+    func germanAndFrenchCompact(locale: String) {
+        let style = TripDurationFormatStyle(locale: Locale(identifier: locale))
+        #expect(style.format(122) == "2 h 02")
+        #expect(style.format(145) == "2 h 25")
+        #expect(style.format(17) == "17 min")
+    }
+
     @Test("Spells the units out for VoiceOver")
     func spoken() {
         let style = TripDurationFormatStyle(width: .spoken, locale: Locale(identifier: "en_US"))
@@ -237,18 +246,29 @@ struct TripDurationTests {
 struct TripSummaryTests {
     @Test("Says how the trip changes trains")
     func summaries() {
-        #expect(TripSummary(changeNames: []) == .direct)
-        #expect(TripSummary(changeNames: [nil]) == .change(at: nil))
-        #expect(TripSummary(changeNames: ["Utrecht Centraal"]) == .change(at: "Utrecht Centraal"))
-        #expect(TripSummary(changeNames: [nil, "Utrecht Centraal"]) == .changes(2))
+        #expect(TripSummary(changes: []) == .direct)
+        #expect(TripSummary(changes: [.hidden]) == .change(at: .hidden))
+        #expect(TripSummary(changes: [.named("Utrecht Centraal")]) == .change(at: .named("Utrecht Centraal")))
+        #expect(TripSummary(changes: [.abroad]) == .change(at: .abroad))
+        #expect(TripSummary(changes: [.hidden, .named("Utrecht Centraal")]) == .changes(2))
     }
 
     @Test("Reads as text and as the end of a VoiceOver label")
     func texts() {
         #expect(TripSummary.direct.text == "Direct")
-        #expect(TripSummary.change(at: nil).text == "Change at a hidden station")
-        #expect(TripSummary.change(at: nil).spokenText == "change at a hidden station")
-        #expect(TripSummary.change(at: "Utrecht Centraal").text == "Change at Utrecht Centraal")
+        #expect(TripSummary.change(at: .hidden).text == "Change at a hidden station")
+        #expect(TripSummary.change(at: .hidden).spokenText == "change at a hidden station")
+        #expect(TripSummary.change(at: .named("Utrecht Centraal")).text == "Change at Utrecht Centraal")
+        #expect(TripSummary.change(at: .abroad).text == "Change at a station abroad")
+        #expect(TripSummary.change(at: .abroad).spokenText == "change at a station abroad")
         #expect(TripSummary.changes(2).text == "2 changes")
+    }
+
+    @Test("A change is hidden without a code, named when the network has it, else abroad")
+    func changeStation() {
+        let names: [StationCode: String] = ["ut": "Utrecht Centraal"]
+        #expect(ChangeStation(code: nil) { names[$0] } == .hidden)
+        #expect(ChangeStation(code: "ut") { names[$0] } == .named("Utrecht Centraal"))
+        #expect(ChangeStation(code: "8200100") { names[$0] } == .abroad)
     }
 }

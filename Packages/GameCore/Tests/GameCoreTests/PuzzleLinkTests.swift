@@ -5,26 +5,35 @@ import Testing
 
 @Suite("Puzzle links")
 struct PuzzleLinkTests {
-    @Test("Opens today's puzzle in either language", arguments: ["nl", "gb", "en/nl", "en/gb"])
+    static let networkPaths = ["nl", "gb", "en/nl", "en/gb", "de/nl", "de/gb", "fr/nl", "fr/gb"]
+
+    @Test("Opens today's puzzle in every language", arguments: networkPaths)
     func today(path: String) throws {
         let url = try #require(URL(string: "https://trackdown.nl/\(path)/?shared=1#result"))
         let network = try #require(Network(rawValue: String(path.suffix(2))))
         #expect(PuzzleLink(url: url) == .today(network))
     }
 
-    @Test("Opens numbered archive puzzles", arguments: ["nl", "gb", "en/nl", "en/gb"])
+    @Test("Opens numbered archive puzzles", arguments: networkPaths)
     func archive(path: String) throws {
         let url = try #require(URL(string: "https://trackdown.nl/\(path)/archief/142"))
         let network = try #require(Network(rawValue: String(path.suffix(2))))
         #expect(PuzzleLink(url: url) == .archive(network, number: 142))
     }
 
+    @Test("No network's id is a language prefix, so a prefix is never read as a network")
+    func prefixesAreNotNetworks() {
+        for network in Network.allCases {
+            #expect(!PuzzleLink.languagePrefixes.contains(Substring(network.rawValue)))
+        }
+    }
+
     @Test(
         "Unknown paths preserve the current network",
         arguments: [
-            "", "en", "be", "nl/unknown", "en/gb/archief", "nl/archief/0", "nl/archief/-1",
-            "nl/archief/+1", "nl/archief/no", "nl/archief/999999999999999999999999",
-            "nl/archief/1/extra", "nl//archief/1",
+            "", "en", "de", "fr", "be", "nl/unknown", "en/gb/archief", "de/fr/nl", "en/de/nl", "es/nl",
+            "nl/archief/0", "nl/archief/-1", "nl/archief/+1", "nl/archief/no",
+            "nl/archief/999999999999999999999999", "nl/archief/1/extra", "nl//archief/1",
         ])
     func fallback(path: String) throws {
         let url = try #require(URL(string: "https://trackdown.nl/\(path)"))

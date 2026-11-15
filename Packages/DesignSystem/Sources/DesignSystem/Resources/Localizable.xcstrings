@@ -4,10 +4,22 @@
     "%lldh %@m" : {
       "comment" : "Compact trip duration: hours, then minutes padded to two digits.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld h %2$@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$lldh %2$@m"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld h %2$@"
           }
         },
         "nl" : {
@@ -21,10 +33,22 @@
     "%lldm" : {
       "comment" : "Compact trip duration in minutes, under one hour.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lldm"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
           }
         },
         "nl" : {
@@ -38,6 +62,18 @@
     "Already guessed" : {
       "comment" : "VoiceOver value of a suggestion the player already guessed in this game.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereits geraten"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déjà devinée"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49,6 +85,18 @@
     "Archive" : {
       "comment" : "Icon button that opens the archive of past puzzles.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archiv"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archives"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -60,6 +108,18 @@
     "Back" : {
       "comment" : "Icon button that goes back to the previous screen.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71,6 +131,18 @@
     "Close" : {
       "comment" : "Icon button that closes a sheet.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82,6 +154,18 @@
     "Guess" : {
       "comment" : "Button that submits the selected station as a guess. A verb.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raten"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deviner"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93,6 +177,18 @@
     "Guess a station" : {
       "comment" : "Placeholder and label of the field where the player types a station name.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate einen Bahnhof"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devine une gare"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104,6 +200,18 @@
     "How to play" : {
       "comment" : "Icon button that opens the game rules.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So wird gespielt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment jouer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115,6 +223,18 @@
     "Matching stations" : {
       "comment" : "VoiceOver label of the list of stations that match what the player typed.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passende Bahnhöfe"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gares correspondantes"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126,6 +246,18 @@
     "Network: %@. Change network" : {
       "comment" : "VoiceOver label of the network button. %@ is the network name, such as Netherlands.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netz: %@. Netz wechseln"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réseau : %@. Changer de réseau"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137,6 +269,18 @@
     "New" : {
       "comment" : "Badge next to a rail network that was added recently.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveau"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -148,6 +292,18 @@
     "Statistics" : {
       "comment" : "Icon button that opens the player's statistics.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistik"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistiques"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163,7 +319,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code AW in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport for Wales"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport for Wales"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transport for Wales"
@@ -181,7 +349,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code CC in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "c2c"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "c2c"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "c2c"
@@ -199,7 +379,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code CH in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiltern Railways"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiltern Railways"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chiltern Railways"
@@ -217,7 +409,19 @@
       "comment" : "Train type shown next to its code EC in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EuroCity"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "EuroCity"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "EuroCity"
@@ -235,7 +439,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code EM in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "East Midlands Railway"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "East Midlands Railway"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "East Midlands Railway"
@@ -253,7 +469,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code GC in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grand Central"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grand Central"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grand Central"
@@ -271,7 +499,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code GN in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Northern"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Northern"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Great Northern"
@@ -289,7 +529,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code GR in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LNER"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LNER"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "LNER"
@@ -307,7 +559,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code GW in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Western Railway"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great Western Railway"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Great Western Railway"
@@ -325,7 +589,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code GX in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gatwick Express"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gatwick Express"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gatwick Express"
@@ -343,7 +619,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code HT in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hull Trains"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hull Trains"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hull Trains"
@@ -361,7 +649,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code HX in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heathrow Express"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heathrow Express"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heathrow Express"
@@ -379,7 +679,19 @@
       "comment" : "Train type shown next to its code IC in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intercity"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intercity"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intercity"
@@ -397,7 +709,19 @@
       "comment" : "Train type shown next to its code ICD in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intercity direct"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intercity direct"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Intercity direct"
@@ -415,10 +739,22 @@
       "comment" : "Train type shown next to its code ICE in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ICE-Hochgeschwindigkeitszug"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ICE high-speed train"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Train à grande vitesse ICE"
           }
         },
         "nl" : {
@@ -433,7 +769,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code IL in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Island Line"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Island Line"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Island Line"
@@ -451,7 +799,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code LD in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumo"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lumo"
@@ -469,7 +829,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code LE in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greater Anglia"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greater Anglia"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Greater Anglia"
@@ -487,7 +859,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code LF in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grand Union"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grand Union"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grand Union"
@@ -505,7 +889,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code LM in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "West Midlands Trains"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "West Midlands Trains"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "West Midlands Trains"
@@ -523,7 +919,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code LO in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "London Overground"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "London Overground"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "London Overground"
@@ -541,7 +949,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code ME in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merseyrail"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merseyrail"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Merseyrail"
@@ -559,7 +979,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code NT in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Northern"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Northern"
@@ -577,7 +1009,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code SE in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southeastern"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southeastern"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Southeastern"
@@ -595,7 +1039,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code SN in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southern"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Southern"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Southern"
@@ -613,10 +1069,22 @@
       "comment" : "Train type shown next to its code SNT in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schnellzug"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Semi-fast train"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Train semi-direct"
           }
         },
         "nl" : {
@@ -631,7 +1099,19 @@
       "comment" : "Train type shown next to its code SPR in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprinter"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprinter"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sprinter"
@@ -649,7 +1129,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code SR in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ScotRail"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ScotRail"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ScotRail"
@@ -667,10 +1159,22 @@
       "comment" : "Train type shown next to its code ST in a trip's details.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahverkehrszug"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stopping train"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Train omnibus"
           }
         },
         "nl" : {
@@ -685,7 +1189,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code SW in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "South Western Railway"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "South Western Railway"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "South Western Railway"
@@ -703,7 +1219,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code TL in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thameslink"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thameslink"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thameslink"
@@ -721,7 +1249,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code TP in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TransPennine Express"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TransPennine Express"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "TransPennine Express"
@@ -739,7 +1279,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code VT in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanti West Coast"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanti West Coast"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avanti West Coast"
@@ -757,7 +1309,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code XC in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CrossCountry"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CrossCountry"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "CrossCountry"
@@ -775,7 +1339,19 @@
       "comment" : "Train operator in Great Britain, shown next to its code XR in a trip's details. A brand name.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elizabeth line"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elizabeth line"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elizabeth line"
@@ -793,10 +1369,22 @@
       "comment" : "Last stop in a trip's details: the station being searched for.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rätselbahnhof"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mystery station"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gare mystère"
           }
         },
         "nl" : {
@@ -807,14 +1395,56 @@
         }
       }
     },
+    "tripDetails.stationAbroad" : {
+      "comment" : "A change station in a trip's details that lies outside the network, such as Luxembourg on a Belgian trip. Shown once the game is over.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station in het buitenland"
+          }
+        }
+      }
+    },
     "tripDetails.unknownStation" : {
       "comment" : "A change station in a trip's details that the player has not found yet.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannter Bahnhof"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unknown station"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gare inconnue"
           }
         },
         "nl" : {
@@ -829,10 +1459,22 @@
       "comment" : "Time to change trains in a trip's details. The argument is a time such as \"6m\".",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Umstiegszeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ to change"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ de correspondance"
           }
         },
         "nl" : {
@@ -847,7 +1489,19 @@
       "comment" : "VoiceOver label of a guess: station name, trip time, how the trip changes trains. Example: \"Maastricht, 2 hours, 25 minutes, change at a hidden station\".",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@, %3$@"
@@ -861,14 +1515,86 @@
         }
       }
     },
+    "tripSummary.changeAbroad" : {
+      "comment" : "Trip summary under a guess: the trip changes trains once, at a station outside the network, such as Luxembourg on a Belgian trip.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change at a station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance dans une gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overstap in het buitenland"
+          }
+        }
+      }
+    },
+    "tripSummary.changeAbroad.spoken" : {
+      "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at a station outside the network.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem Bahnhof im Ausland"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "change at a station abroad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "correspondance dans une gare à l’étranger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "overstap in het buitenland"
+          }
+        }
+      }
+    },
     "tripSummary.changeAt" : {
       "comment" : "Trip summary under a guess: the trip changes trains once, at this station.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg in %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change at %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance à %@"
           }
         },
         "nl" : {
@@ -883,10 +1609,22 @@
       "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at this station.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg in %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "change at %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "correspondance à %@"
           }
         },
         "nl" : {
@@ -901,6 +1639,24 @@
       "comment" : "Trip summary under a guess: the trip changes trains this many times (2 or more).",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Umstieg"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Umstiege"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -914,6 +1670,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld changes"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld correspondance"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld correspondances"
                 }
               }
             }
@@ -943,7 +1717,19 @@
       "comment" : "Trip summary under a guess: the trip needs no change of trains.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direkt"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direct"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Direct"
@@ -961,7 +1747,19 @@
       "comment" : "VoiceOver, after the station and trip time: the trip needs no change of trains.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "direkt"
+          }
+        },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "direct"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "direct"
@@ -979,10 +1777,22 @@
       "comment" : "Trip summary under a guess: the trip changes trains once, at a station the player has not guessed yet.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem verborgenen Bahnhof"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change at a hidden station"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance dans une gare cachée"
           }
         },
         "nl" : {
@@ -997,10 +1807,22 @@
       "comment" : "VoiceOver, after the station and trip time: the trip changes trains once, at a station not guessed yet.",
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umstieg an einem verborgenen Bahnhof"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "change at a hidden station"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "correspondance dans une gare cachée"
           }
         },
         "nl" : {
