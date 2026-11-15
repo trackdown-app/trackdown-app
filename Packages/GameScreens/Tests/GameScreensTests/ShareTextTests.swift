@@ -85,6 +85,31 @@ struct ShareTextTests {
         #expect(lost.hasSuffix("Niet gevonden\nhttps://trackdown.nl/nl"))
     }
 
+    @Test("Writes German times, footer and link in German")
+    func german() throws {
+        let text = try #require(ShareText.text(for: Self.solved, language: .de))
+        #expect(
+            text == """
+                Trackdown NL 142, 5/6
+                ●━━━━━━━━○━  2h25
+                ●━━━━━○━━    1h57
+                ●━           17 min
+                ●━           13 min
+                Gefunden mit 5
+                https://trackdown.nl/de/nl
+                """)
+        let lost = try #require(ShareText.text(for: Self.lost, language: .de))
+        #expect(lost.hasSuffix("Nicht gefunden\nhttps://trackdown.nl/de/nl"))
+    }
+
+    @Test("Writes French times, footer and link in French")
+    func french() throws {
+        let text = try #require(ShareText.text(for: Self.solved, language: .fr))
+        #expect(text.hasSuffix("●━           17 min\n●━           13 min\nTrouvée en 5\nhttps://trackdown.nl/fr/nl"))
+        let lost = try #require(ShareText.text(for: Self.lost, language: .fr))
+        #expect(lost.hasSuffix("Pas trouvée\nhttps://trackdown.nl/fr/nl"))
+    }
+
     @Test(
         "Writes times as the grid does", arguments: [(0, "0m"), (17, "17m"), (60, "1h00"), (65, "1h05"), (145, "2h25")])
     func minutes(minutes: Int, expected: String) {

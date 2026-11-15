@@ -14,7 +14,8 @@ public enum PuzzleLink: Sendable, Equatable {
         var parts = url.path().split(separator: "/", omittingEmptySubsequences: false)
         if parts.first == "" { parts.removeFirst() }
         if parts.last == "" { parts.removeLast() }
-        if parts.first == "en" { parts.removeFirst() }
+        // Dutch has no prefix; the website's other languages each have one. No network's id is one of them.
+        if let first = parts.first, Self.languagePrefixes.contains(first) { parts.removeFirst() }
         guard let first = parts.first, let network = Network(rawValue: String(first)) else {
             self = .today(nil)
             return
@@ -30,4 +31,7 @@ public enum PuzzleLink: Sendable, Equatable {
             self = .today(nil)
         }
     }
+
+    /// The website's language prefixes: `/en`, `/de` and `/fr`.
+    static let languagePrefixes: Set<Substring> = ["en", "de", "fr"]
 }

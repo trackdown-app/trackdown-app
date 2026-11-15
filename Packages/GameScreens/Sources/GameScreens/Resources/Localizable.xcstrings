@@ -233,6 +233,15 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "%1$lldu%2$@" } }
       }
     },
+    "%lldm" : {
+      "comment" : "A trip time under an hour in a shared result, such as 17m. The argument is the minutes.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lldm" } }
+      }
+    },
     "1 guess" : {
       "comment" : "VoiceOver label of the chart row of games solved in one guess.",
       "localizations" : {
@@ -378,10 +387,10 @@
       }
     },
     "https://trackdown.nl/en/%@" : {
-      "comment" : "Link at the end of a shared result: the network's game in the app's language. Dutch drops the /en. The argument is the network, such as nl.",
+      "comment" : "Link at the end of a shared result: the network's game in the app's language, under the website's prefix for it (/en, /de, /fr). Dutch has no prefix. The argument is the network, such as nl.",
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/en/%@" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/en/%@" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/de/%@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/fr/%@" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "https://trackdown.nl/%@" } }
       }
     },

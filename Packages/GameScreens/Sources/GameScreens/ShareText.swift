@@ -48,9 +48,14 @@ enum ShareText {
             .joined(separator: "\n")
     }
 
-    /// A time as the grid writes it: `2h25`, or `17m` under an hour. `2u25` in Dutch.
+    /// A time as the grid writes it: `2h25`, or `17m` under an hour. `2u25` in Dutch, `17 min` in German and French.
     static func minutes(_ minutes: Int, language: StationLocale) -> String {
-        guard minutes >= 60 else { return "\(minutes)m" }
+        guard minutes >= 60 else {
+            return string(
+                LocalizedStringResource(
+                    "\(minutes)m", locale: language.locale, bundle: .module,
+                    comment: "A trip time under an hour in a shared result, such as 17m. The argument is the minutes."))
+        }
         let rest = minutes % 60
         let padded = rest < 10 ? "0\(rest)" : "\(rest)"
         return string(
