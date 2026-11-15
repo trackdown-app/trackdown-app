@@ -17,16 +17,20 @@ public struct Station: Sendable, Hashable, Codable, Identifiable {
 }
 
 /// The language station names and provinces come in.
+///
+/// The API and trackdown.nl only come in Dutch and English, so this is narrower than the app's own languages: a
+/// player whose app runs in German or French gets station names, and shared results, in the next of their preferred
+/// languages that is Dutch or English.
 public enum StationLocale: String, Sendable, Hashable, Codable, CaseIterable {
     case nl
     case en
 
-    /// The first supported language in the app's language preferences, falling back to English.
+    /// The first Dutch or English language in the app's language preferences, falling back to English.
     public static var device: StationLocale {
         preferred(languages: Locale.preferredLanguages)
     }
 
-    /// Matches the app's supported languages in preference order, including regional identifiers.
+    /// Matches Dutch or English in preference order, including regional identifiers.
     public static func preferred(languages: [String]) -> StationLocale {
         for language in languages {
             switch Locale.Language(identifier: language).languageCode {

@@ -207,6 +207,8 @@ struct FormattingTests {
         let date = PuzzleDate(year: 2026, month: 11, day: 6)
         #expect(date.title(locale: Locale(identifier: "en_GB")) == "Friday 6 November")
         #expect(date.title(locale: Locale(identifier: "nl_NL")) == "Vrijdag 6 november")
+        #expect(date.title(locale: Locale(identifier: "de_DE")) == "Freitag, 6. November")
+        #expect(date.title(locale: Locale(identifier: "fr_FR")) == "Vendredi 6 novembre")
     }
 
     @Test(

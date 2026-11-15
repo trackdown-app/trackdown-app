@@ -170,6 +170,8 @@
 			knownRegions = (
 				en,
 				nl,
+				de,
+				fr,
 				Base,
 			);
 			mainGroup = 7D0000000000000000000A01;

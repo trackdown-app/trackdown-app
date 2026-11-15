@@ -52,9 +52,10 @@ struct StationLocaleTests {
         #expect(StationLocale.preferred(languages: languages) == .en)
     }
 
-    @Test("Skips unsupported languages like app localization selection")
+    @Test("Skips languages station names don't come in, such as the app's German and French")
     func supportedFallback() {
         #expect(StationLocale.preferred(languages: ["de-DE", "nl-NL", "en"]) == .nl)
+        #expect(StationLocale.preferred(languages: ["fr-FR", "en-GB", "nl"]) == .en)
     }
 }
 
