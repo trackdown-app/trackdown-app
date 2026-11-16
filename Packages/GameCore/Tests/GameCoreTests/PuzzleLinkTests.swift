@@ -6,21 +6,27 @@ import Testing
 @Suite("Puzzle links")
 struct PuzzleLinkTests {
     static let networkPaths = [
-        "nl", "gb", "lu", "en/nl", "en/gb", "en/lu", "de/nl", "de/gb", "de/lu", "fr/nl", "fr/gb", "fr/lu",
+        "nl", "gb", "lu", "ret", "en/nl", "en/gb", "en/lu", "en/ret", "de/nl", "de/gb", "de/lu", "de/ret",
+        "fr/nl", "fr/gb", "fr/lu", "fr/ret",
     ]
 
     @Test("Opens today's puzzle in every language", arguments: networkPaths)
     func today(path: String) throws {
         let url = try #require(URL(string: "https://trackdown.nl/\(path)/?shared=1#result"))
-        let network = try #require(Network(rawValue: String(path.suffix(2))))
+        let network = try #require(Self.network(in: path))
         #expect(PuzzleLink(url: url) == .today(network))
     }
 
     @Test("Opens numbered archive puzzles", arguments: networkPaths)
     func archive(path: String) throws {
         let url = try #require(URL(string: "https://trackdown.nl/\(path)/archief/142"))
-        let network = try #require(Network(rawValue: String(path.suffix(2))))
+        let network = try #require(Self.network(in: path))
         #expect(PuzzleLink(url: url) == .archive(network, number: 142))
+    }
+
+    /// The network a test path names: its last part, after any language prefix.
+    static func network(in path: String) -> Network? {
+        path.split(separator: "/").last.flatMap { Network(rawValue: String($0)) }
     }
 
     @Test("No network's id is a language prefix, so a prefix is never read as a network")

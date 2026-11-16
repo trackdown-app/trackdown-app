@@ -1695,6 +1695,146 @@
         }
       }
     },
+    "train.A" : {
+      "comment" : "Rotterdam metro line, shown next to its code A in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Metro A" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Metro A" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Metro A" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Metro A" } }
+      }
+    },
+    "train.B" : {
+      "comment" : "Rotterdam metro line, shown next to its code B in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Metro B" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Metro B" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Metro B" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Metro B" } }
+      }
+    },
+    "train.C" : {
+      "comment" : "Rotterdam metro line, shown next to its code C in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Metro C" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Metro C" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Metro C" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Metro C" } }
+      }
+    },
+    "train.D" : {
+      "comment" : "Rotterdam metro line, shown next to its code D in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Metro D" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Metro D" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Metro D" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Metro D" } }
+      }
+    },
+    "train.E" : {
+      "comment" : "Rotterdam metro line, shown next to its code E in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Metro E" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Metro E" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Metro E" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Metro E" } }
+      }
+    },
+    "train.1" : {
+      "comment" : "Rotterdam tram line, shown next to its code 1 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 1" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 1" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 1" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 1" } }
+      }
+    },
+    "train.2" : {
+      "comment" : "Rotterdam tram line, shown next to its code 2 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 2" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 2" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 2" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 2" } }
+      }
+    },
+    "train.3" : {
+      "comment" : "Rotterdam tram line, shown next to its code 3 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 3" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 3" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 3" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 3" } }
+      }
+    },
+    "train.4" : {
+      "comment" : "Rotterdam tram line, shown next to its code 4 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 4" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 4" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 4" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 4" } }
+      }
+    },
+    "train.5" : {
+      "comment" : "Rotterdam tram line, shown next to its code 5 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 5" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 5" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 5" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 5" } }
+      }
+    },
+    "train.6" : {
+      "comment" : "Rotterdam tram line, shown next to its code 6 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 6" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 6" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 6" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 6" } }
+      }
+    },
+    "train.7" : {
+      "comment" : "Rotterdam tram line, shown next to its code 7 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 7" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 7" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 7" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 7" } }
+      }
+    },
+    "train.8" : {
+      "comment" : "Rotterdam tram line, shown next to its code 8 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 8" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 8" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 8" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 8" } }
+      }
+    },
+    "train.11" : {
+      "comment" : "Rotterdam tram line, shown next to its code 11 in a trip's details. A line name, the same in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tram 11" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tram 11" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tram 11" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 11" } }
+      }
+    },
     "tripDetails.mysteryStation" : {
       "comment" : "Last stop in a trip's details: the station being searched for.",
       "extractionState" : "manual",

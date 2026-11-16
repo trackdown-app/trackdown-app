@@ -274,6 +274,14 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle metrostations" } }
       }
     },
+    "All metro and tram stops" : {
+      "comment" : "Under Rotterdam metro and tram in the network list: the stops the game covers.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle Metro- und Tramhaltestellen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tous les arrêts de métro et de tram" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle metro- en tramhaltes" } }
+      }
+    },
     "Belgium" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
@@ -672,6 +680,14 @@
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Regional- und Fernverkehr" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Régional et grandes lignes" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Regionaal en lange afstand" } }
+      }
+    },
+    "Rotterdam metro and tram" : {
+      "comment" : "Rail network name in the network pill: Rotterdam's metro and tram, not a country.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rotterdamer Metro und Tram" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Métro et tram de Rotterdam" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Rotterdamse metro en tram" } }
       }
     },
     "Search countries" : {
