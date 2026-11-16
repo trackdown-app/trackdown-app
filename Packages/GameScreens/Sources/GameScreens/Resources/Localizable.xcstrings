@@ -266,6 +266,14 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle treinstations" } }
       }
     },
+    "All Underground stations" : {
+      "comment" : "Under London Underground in the network list: the stations the game covers.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle U-Bahn-Stationen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les stations de métro" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Alle metrostations" } }
+      }
+    },
     "Belgium" : {
       "comment" : "Rail network still to come.",
       "localizations" : {
@@ -440,6 +448,14 @@
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Bilanz wird geladen" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement de ton bilan" } },
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Je record wordt geladen" } }
+      }
+    },
+    "London Underground" : {
+      "comment" : "Rail network name in the network pill: London's metro, not a country.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Londoner U-Bahn" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Métro de Londres" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Londense metro" } }
       }
     },
     "Missed" : {

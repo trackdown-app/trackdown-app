@@ -13,12 +13,12 @@ struct ChooseNetworkModelTests {
         ChooseNetworkModel(current: current, store: GameStore(service: service, storage: MemoryGameStorage(games)))
     }
 
-    @Test("Lists every playable network, the current one chosen and Great Britain new")
+    @Test("Lists every playable network, the current one chosen and the London Underground new")
     func networks() {
         let model = makeModel(current: .gb)
-        #expect(model.networks.map(\.network) == [.nl, .gb])
+        #expect(model.networks.map(\.network) == [.nl, .gb, .lu])
         #expect(model.networks.filter(\.isChosen).map(\.network) == [.gb])
-        #expect(model.networks.filter(\.isNew).map(\.network) == [.gb])
+        #expect(model.networks.filter(\.isNew).map(\.network) == [.lu])
         #expect(model.upcoming == [.be, .de, .ch, .jp])
     }
 
@@ -41,9 +41,11 @@ struct ChooseNetworkModelTests {
         arguments: [
             ("brit", [Network.gb], [UpcomingNetwork]()),
             ("NL", [.nl], []),
+            ("london", [.lu], []),
+            ("LU", [.lu], []),
             ("zwitser", [], []),
             ("switz", [], [.ch]),
-            ("  ", [.nl, .gb], [.be, .de, .ch, .jp]),
+            ("  ", [.nl, .gb, .lu], [.be, .de, .ch, .jp]),
         ])
     func search(query: String, networks: [Network], upcoming: [UpcomingNetwork]) {
         let model = makeModel()
