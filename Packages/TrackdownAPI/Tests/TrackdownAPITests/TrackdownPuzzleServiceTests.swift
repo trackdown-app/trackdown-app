@@ -181,6 +181,32 @@ struct TrackdownPuzzleServiceTests {
         #expect(await transport.sent.first?.request.path == "/api/v1/lu/puzzles/2/guesses")
     }
 
+    @Test("guess(...) plays the Rotterdam metro and tram, its stops coded by dashed names and rides by line")
+    func rotterdamGuess() async throws {
+        let transport = MockTransport(
+            .json(
+                #"""
+                {"network":"ret","number":152,"guess":"s-gravendijkwal","correct":false,
+                 "steps":[{"kind":"ride","train":"D","minutes":5},{"kind":"change","station":null,"minutes":2},
+                          {"kind":"ride","train":"11","minutes":9}],
+                 "totalMinutes":16,"earlierTrips":[]}
+                """#
+            )
+        )
+
+        let result = try await TrackdownPuzzleService.test(transport)
+            .guess("s-gravendijkwal", earlierGuesses: ["rotterdam-centraal"], puzzle: 152, network: .ret)
+
+        #expect(
+            result.steps == [
+                .ride(train: "D", minutes: 5), .change(station: nil, minutes: 2), .ride(train: "11", minutes: 9),
+            ])
+        #expect(await transport.sent.first?.request.path == "/api/v1/ret/puzzles/152/guesses")
+        #expect(
+            try jsonObject(await transport.sent.first?.body)
+                == ["guess": "s-gravendijkwal", "earlierGuesses": ["rotterdam-centraal"]])
+    }
+
     // MARK: - reveal
 
     @Test("reveal(...) posts every guess, for any puzzle number, and names every change", arguments: [1, 42])

@@ -6,9 +6,12 @@ public enum Network: String, Sendable, Hashable, Codable, CaseIterable {
     case gb
     /// The London Underground.
     case lu
+    /// Rotterdam's metro and tram, run by RET.
+    case ret
 }
 
-/// A station's code, such as `asd` for Amsterdam Centraal. Stable across locales.
+/// A station's code, such as `asd` for Amsterdam Centraal, or `rotterdam-centraal` on a network whose stops have
+/// no public codes. Stable across locales.
 public struct StationCode: RawRepresentable, Sendable, Hashable, Codable, ExpressibleByStringLiteral,
     CustomStringConvertible
 {
