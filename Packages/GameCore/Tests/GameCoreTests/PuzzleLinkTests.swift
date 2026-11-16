@@ -5,7 +5,9 @@ import Testing
 
 @Suite("Puzzle links")
 struct PuzzleLinkTests {
-    static let networkPaths = ["nl", "gb", "en/nl", "en/gb", "de/nl", "de/gb", "fr/nl", "fr/gb"]
+    static let networkPaths = [
+        "nl", "gb", "lu", "en/nl", "en/gb", "en/lu", "de/nl", "de/gb", "de/lu", "fr/nl", "fr/gb", "fr/lu",
+    ]
 
     @Test("Opens today's puzzle in every language", arguments: networkPaths)
     func today(path: String) throws {

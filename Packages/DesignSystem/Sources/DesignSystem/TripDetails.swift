@@ -75,7 +75,8 @@ enum TripDetailStop: Sendable, Hashable {
 
 extension TrainType {
     /// The train spelled out: the train type on the Dutch network ("Sprinter", "Stopping train"), the operator in
-    /// Great Britain ("LNER" for `GR`). The code itself for a type the app does not know yet.
+    /// Great Britain ("LNER" for `GR`), the line on the London Underground ("Northern line" for `NTN`). The code
+    /// itself for a type the app does not know yet.
     public var name: String {
         Bundle.module.localizedString(forKey: "train.\(rawValue)", value: rawValue, table: nil)
     }

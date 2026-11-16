@@ -233,6 +233,7 @@ extension Components.Schemas.NetworkId {
         switch network {
         case .nl: self = .nl
         case .gb: self = .gb
+        case .lu: self = .lu
         }
     }
 }
@@ -242,6 +243,7 @@ extension Network {
         switch network {
         case .nl: self = .nl
         case .gb: self = .gb
+        case .lu: self = .lu
         }
     }
 }

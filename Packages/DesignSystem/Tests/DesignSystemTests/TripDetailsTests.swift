@@ -75,6 +75,8 @@ struct TripDetailsTests {
             (TrainType("SPR"), "Sprinter"),
             ("ST", "Stopping train"),
             ("GR", "LNER"),
+            ("NTN", "Northern line"),
+            ("HAM", "Hammersmith & City line"),
             ("XYZ", "XYZ"),
         ])
     func trainNames(train: TrainType, name: String) {

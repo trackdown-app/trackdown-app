@@ -4,6 +4,8 @@ import Foundation
 public enum Network: String, Sendable, Hashable, Codable, CaseIterable {
     case nl
     case gb
+    /// The London Underground.
+    case lu
 }
 
 /// A station's code, such as `asd` for Amsterdam Centraal. Stable across locales.
