@@ -88,7 +88,7 @@ struct PostHogAnalyticsTests {
     func anonymousUntilAllowed(consent: AnalyticsConsent) throws {
         let harness = try Harness(consent: consent, leftover: true)
 
-        harness.analytics.capture(.networkNotifyRequested(.be))
+        harness.analytics.capture(.networkNotifyRequested(.de))
 
         #expect(!harness.analytics.isRunning)
         #expect(harness.engines.isEmpty)
@@ -101,7 +101,7 @@ struct PostHogAnalyticsTests {
 
         harness.analytics.setConsent(.allowed)
         harness.analytics.setConsent(.allowed)
-        harness.analytics.capture(.networkNotifyRequested(.be))
+        harness.analytics.capture(.networkNotifyRequested(.de))
 
         #expect(harness.engines.count == 1)
         #expect(harness.engines.first?.events == ["network_notify_requested"])
@@ -121,7 +121,7 @@ struct PostHogAnalyticsTests {
         let harness = try Harness(consent: .allowed, leftover: true)
 
         harness.analytics.setConsent(.declined)
-        harness.analytics.capture(.networkNotifyRequested(.be))
+        harness.analytics.capture(.networkNotifyRequested(.de))
 
         #expect(!harness.analytics.isRunning)
         #expect(harness.engines.first?.isStopped == true)

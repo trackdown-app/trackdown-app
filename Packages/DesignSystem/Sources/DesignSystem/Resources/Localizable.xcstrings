@@ -1835,6 +1835,36 @@
         "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tram 11" } }
       }
     },
+    "train.L" : {
+      "comment" : "Belgian train type shown next to its code L in a trip's details: a local train that stops at every station.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nahverkehrszug" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Local train" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Train local" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Lokale trein" } }
+      }
+    },
+    "train.S" : {
+      "comment" : "Belgian train type shown next to its code S in a trip's details: a suburban train (S1, S10…).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "S-Bahn" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Suburban train" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Train suburbain" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "S-trein" } }
+      }
+    },
+    "train.P" : {
+      "comment" : "Belgian train type shown next to its code P in a trip's details: an extra train in the rush hour.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hauptverkehrszeit-Zug" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Peak-hour train" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Train d’heure de pointe" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Piekuurtrein" } }
+      }
+    },
     "tripDetails.mysteryStation" : {
       "comment" : "Last stop in a trip's details: the station being searched for.",
       "extractionState" : "manual",

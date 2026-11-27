@@ -79,6 +79,9 @@ struct TripDetailsTests {
             ("HAM", "Hammersmith & City line"),
             ("A", "Metro A"),
             ("11", "Tram 11"),
+            ("L", "Local train"),
+            ("S", "Suburban train"),
+            ("P", "Peak-hour train"),
             ("XYZ", "XYZ"),
         ])
     func trainNames(train: TrainType, name: String) {

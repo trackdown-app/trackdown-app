@@ -65,16 +65,17 @@ extension Network {
             String(
                 localized: "Rotterdam metro and tram", bundle: .module,
                 comment: "Rail network name in the network pill: Rotterdam's metro and tram, not a country.")
+        case .be: String(localized: "Belgium", bundle: .module, comment: "Rail network name in the network pill.")
         }
     }
 
     /// What the network covers, such as "All railway stations".
     var detail: String {
         switch self {
-        case .nl:
+        case .nl, .be:
             String(
                 localized: "All railway stations", bundle: .module,
-                comment: "Under Netherlands in the network list: the stations the game covers.")
+                comment: "Under Netherlands or Belgium in the network list: the stations the game covers.")
         case .gb:
             String(
                 localized: "All National Rail stations", bundle: .module,
@@ -91,5 +92,5 @@ extension Network {
     }
 
     /// Whether the network is new, so the list marks it with a "New" badge.
-    var isNew: Bool { self == .ret }
+    var isNew: Bool { self == .be }
 }

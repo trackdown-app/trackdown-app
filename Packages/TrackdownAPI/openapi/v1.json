@@ -28,7 +28,8 @@
                 "nl",
                 "gb",
                 "lu",
-                "ret"
+                "ret",
+                "be"
               ]
             }
           }
@@ -642,7 +643,8 @@
           "nl",
           "gb",
           "lu",
-          "ret"
+          "ret",
+          "be"
         ]
       },
       "PuzzleArchive": {
@@ -873,6 +875,9 @@
           "SNT",
           "ICE",
           "EC",
+          "L",
+          "S",
+          "P",
           "AW",
           "CC",
           "CH",
