@@ -259,7 +259,7 @@
       }
     },
     "All railway stations" : {
-      "comment" : "Under Netherlands in the network list: the stations the game covers.",
+      "comment" : "Under Netherlands or Belgium in the network list: the stations the game covers.",
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Alle Bahnhöfe" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Toutes les gares" } },
@@ -283,7 +283,7 @@
       }
     },
     "Belgium" : {
-      "comment" : "Rail network still to come.",
+      "comment" : "Rail network name in the network pill.",
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Belgien" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Belgique" } },

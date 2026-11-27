@@ -26,7 +26,7 @@ struct NetworkChoiceTests {
 
     @Test("Falls back to the Dutch network for a network this version does not know")
     func unknownValue() {
-        defaults.set("be", forKey: NetworkChoice.key)
+        defaults.set("ch", forKey: NetworkChoice.key)
         #expect(NetworkChoice(defaults: defaults).network == .nl)
     }
 }

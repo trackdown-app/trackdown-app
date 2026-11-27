@@ -13,13 +13,13 @@ struct ChooseNetworkModelTests {
         ChooseNetworkModel(current: current, store: GameStore(service: service, storage: MemoryGameStorage(games)))
     }
 
-    @Test("Lists every playable network, the current one chosen and the Rotterdam metro and tram new")
+    @Test("Lists every playable network, the current one chosen and Belgium new")
     func networks() {
         let model = makeModel(current: .gb)
-        #expect(model.networks.map(\.network) == [.nl, .gb, .lu, .ret])
+        #expect(model.networks.map(\.network) == [.nl, .gb, .lu, .ret, .be])
         #expect(model.networks.filter(\.isChosen).map(\.network) == [.gb])
-        #expect(model.networks.filter(\.isNew).map(\.network) == [.ret])
-        #expect(model.upcoming == [.be, .de, .ch, .jp])
+        #expect(model.networks.filter(\.isNew).map(\.network) == [.be])
+        #expect(model.upcoming == [.de, .ch, .jp])
     }
 
     @Test("Loads each network's own streak")
@@ -46,9 +46,12 @@ struct ChooseNetworkModelTests {
             ("rotterdam", [.ret], []),
             ("tram", [.ret], []),
             ("RET", [.ret], []),
+            ("belg", [.be], []),
+            ("BE", [.be], []),
+            ("railway", [.nl, .be], []),
             ("zwitser", [], []),
             ("switz", [], [.ch]),
-            ("  ", [.nl, .gb, .lu, .ret], [.be, .de, .ch, .jp]),
+            ("  ", [.nl, .gb, .lu, .ret, .be], [.de, .ch, .jp]),
         ])
     func search(query: String, networks: [Network], upcoming: [UpcomingNetwork]) {
         let model = makeModel()

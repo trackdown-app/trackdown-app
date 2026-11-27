@@ -6,8 +6,8 @@ import Testing
 @Suite("Puzzle links")
 struct PuzzleLinkTests {
     static let networkPaths = [
-        "nl", "gb", "lu", "ret", "en/nl", "en/gb", "en/lu", "en/ret", "de/nl", "de/gb", "de/lu", "de/ret",
-        "fr/nl", "fr/gb", "fr/lu", "fr/ret",
+        "nl", "gb", "lu", "ret", "be", "en/nl", "en/gb", "en/lu", "en/ret", "en/be", "de/nl", "de/gb", "de/lu",
+        "de/ret", "de/be", "fr/nl", "fr/gb", "fr/lu", "fr/ret", "fr/be",
     ]
 
     @Test("Opens today's puzzle in every language", arguments: networkPaths)
@@ -39,7 +39,7 @@ struct PuzzleLinkTests {
     @Test(
         "Unknown paths preserve the current network",
         arguments: [
-            "", "en", "de", "fr", "be", "nl/unknown", "en/gb/archief", "de/fr/nl", "en/de/nl", "es/nl",
+            "", "en", "de", "fr", "ch", "nl/unknown", "en/gb/archief", "de/fr/nl", "en/de/nl", "es/nl",
             "nl/archief/0", "nl/archief/-1", "nl/archief/+1", "nl/archief/no",
             "nl/archief/999999999999999999999999", "nl/archief/1/extra", "nl//archief/1",
         ])

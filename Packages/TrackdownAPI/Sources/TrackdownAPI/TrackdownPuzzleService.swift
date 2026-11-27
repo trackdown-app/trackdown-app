@@ -235,6 +235,7 @@ extension Components.Schemas.NetworkId {
         case .gb: self = .gb
         case .lu: self = .lu
         case .ret: self = .ret
+        case .be: self = .be
         }
     }
 }
@@ -246,6 +247,7 @@ extension Network {
         case .gb: self = .gb
         case .lu: self = .lu
         case .ret: self = .ret
+        case .be: self = .be
         }
     }
 }

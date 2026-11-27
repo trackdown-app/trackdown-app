@@ -8,10 +8,12 @@ public enum Network: String, Sendable, Hashable, Codable, CaseIterable {
     case lu
     /// Rotterdam's metro and tram, run by RET.
     case ret
+    /// Belgium's railway, run by NMBS/SNCB.
+    case be
 }
 
-/// A station's code, such as `asd` for Amsterdam Centraal, or `rotterdam-centraal` on a network whose stops have
-/// no public codes. Stable across locales.
+/// A station's code, such as `asd` for Amsterdam Centraal, `8814001` (a UIC code) for Bruxelles-Midi / Brussel-Zuid,
+/// or `rotterdam-centraal` on a network whose stops have no public codes. Stable across locales.
 public struct StationCode: RawRepresentable, Sendable, Hashable, Codable, ExpressibleByStringLiteral,
     CustomStringConvertible
 {

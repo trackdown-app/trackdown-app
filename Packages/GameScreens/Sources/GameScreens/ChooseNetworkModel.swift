@@ -3,13 +3,12 @@ import GameCore
 import Observation
 
 extension UpcomingNetwork {
-    /// The country code in the badge, such as `BE`.
+    /// The country code in the badge, such as `DE`.
     public var code: String { rawValue.uppercased() }
 
-    /// The country's name, such as "Belgium".
+    /// The country's name, such as "Germany".
     public var name: String {
         switch self {
-        case .be: String(localized: "Belgium", bundle: .module, comment: "Rail network still to come.")
         case .de: String(localized: "Germany", bundle: .module, comment: "Rail network still to come.")
         case .ch: String(localized: "Switzerland", bundle: .module, comment: "Rail network still to come.")
         case .jp: String(localized: "Japan", bundle: .module, comment: "Rail network still to come.")
@@ -19,7 +18,7 @@ extension UpcomingNetwork {
     /// What the network will cover, such as "National rail".
     public var detail: String {
         switch self {
-        case .be, .ch:
+        case .ch:
             String(
                 localized: "National rail", bundle: .module,
                 comment: "Under a rail network still to come: the trains it will cover.")
